@@ -1439,6 +1439,7 @@ Vấn đề cần hỗ trợ:</pre>
     if (!h) return null;
     b = document.createElement('button');
     b.id = 'themeToggle';
+    b.type = 'button';
     b.setAttribute('aria-label', 'Đổi giao diện sáng/tối');
     b.style.cssText = 'margin-left:4px;width:40px;height:40px;border-radius:50%;border:1.5px solid #454976;background:rgba(255,255,255,.1);cursor:pointer;font-size:19px;line-height:1;flex:0 0 auto;color:#fff;box-shadow:0 2px 8px rgba(0,0,0,.25);transition:transform .15s'; b.onmouseover = function(){ b.style.transform = 'scale(1.1)'; }; b.onmouseout = function(){ b.style.transform = 'scale(1)'; };
     var cluster = h.querySelector('span') ? (function(){
@@ -1453,17 +1454,21 @@ Vấn đề cần hỗ trợ:</pre>
   }
   function syncLabel(){
     var d = document.documentElement.classList.contains('dark');
-    syncLabel();
+    var b = document.getElementById('themeToggle');
+    if (!b) return;
+    b.textContent = d ? '☀️' : '🌙';
+    b.title = d ? 'Chuyển sang chế độ sáng' : 'Chuyển sang chế độ tối';
+    b.setAttribute('aria-pressed', d ? 'true' : 'false');
   }
   function apply(d){
     document.documentElement.classList.toggle('dark', d);
     try { localStorage.setItem(KEY, d ? 'dark' : 'light'); } catch (e) {}
-    var b = document.getElementById('themeToggle');
-    if (b) { b.textContent = d ? '☀️' : '🌙'; b.title = d ? 'Chuyển sang chế độ sáng' : 'Chuyển sang chế độ tối'; }
+    syncLabel();
   }
-  apply(isDark());
   ensureBtn();
-  setTimeout(ensureBtn, 500); setTimeout(ensureBtn, 1500);
+  apply(isDark());
+  setTimeout(function(){ ensureBtn(); syncLabel(); }, 500);
+  setTimeout(function(){ ensureBtn(); syncLabel(); }, 1500);
   try { new MutationObserver(function(){ ensureBtn(); }).observe(document.body, { childList: true, subtree: true }); } catch (e) {}
 })();
 </script>
