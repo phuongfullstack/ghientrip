@@ -3,6 +3,14 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Handbook Sale — ELYDAY &amp; SKKYE Travel Phú Quốc</title>
+<script>
+(function(){
+  var KEY='elyday-theme', v=null;
+  try { v=localStorage.getItem(KEY); } catch(e) {}
+  var dark = v==='dark' || (v!=='light' && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
+  document.documentElement.classList.toggle('dark', !!dark);
+})();
+</script>
 <script src="assets/unpkg-com-react-18-3-1-umd-react-production-min.js"></script>
 <script src="assets/unpkg-com-react-dom-18-3-1-umd-react-dom-production-min.js"></script>
 <script>
@@ -223,6 +231,7 @@ window.__resources = {"scriptsJson":"data:application/json;base64,eyJjYXRlZ29yaW
       <div style="display:flex;align-items:center;gap:10px;font-size:12px;color:#A9AECB">
         <span style="padding:6px 12px;border:1px solid #454976;border-radius:999px;white-space:nowrap">Tài liệu nội bộ</span>
         <span style="padding:6px 12px;border:1px solid #454976;border-radius:999px;white-space:nowrap">Phú Quốc</span>
+        <button id="themeToggle" type="button" sc-camel-on-click="{{ toggleTheme }}" title="{{ themeTitle }}" aria-label="Đổi giao diện sáng/tối" aria-pressed="{{ themePressed }}" style="margin-left:4px;width:40px;height:40px;border-radius:50%;border:1.5px solid #454976;background:rgba(255,255,255,.1);cursor:pointer;font-size:19px;line-height:1;flex:0 0 auto;color:#fff;box-shadow:0 2px 8px rgba(0,0,0,.25)">{{ themeIcon }}</button>
       </div>
     </div>
 
@@ -1423,55 +1432,6 @@ Vấn đề cần hỗ trợ:</pre>
 </div>
 
 </x-dc>
-<script>
-(function(){
-  var KEY = 'elyday-theme';
-  function isDark(){
-    var v = null;
-    try { v = localStorage.getItem(KEY); } catch (e) {}
-    if (v === 'dark' || v === 'light') return v === 'dark';
-    return !!(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
-  }
-  function ensureBtn(){
-    var b = document.getElementById('themeToggle');
-    if (b) return b;
-    var h = document.querySelector('header');
-    if (!h) return null;
-    b = document.createElement('button');
-    b.id = 'themeToggle';
-    b.type = 'button';
-    b.setAttribute('aria-label', 'Đổi giao diện sáng/tối');
-    b.style.cssText = 'margin-left:4px;width:40px;height:40px;border-radius:50%;border:1.5px solid #454976;background:rgba(255,255,255,.1);cursor:pointer;font-size:19px;line-height:1;flex:0 0 auto;color:#fff;box-shadow:0 2px 8px rgba(0,0,0,.25);transition:transform .15s'; b.onmouseover = function(){ b.style.transform = 'scale(1.1)'; }; b.onmouseout = function(){ b.style.transform = 'scale(1)'; };
-    var cluster = h.querySelector('span') ? (function(){
-      var spans = h.querySelectorAll('span');
-      for (var i = 0; i < spans.length; i++) if (spans[i].textContent.trim() === 'Phú Quốc') return spans[i].parentElement;
-      return null;
-    })() : null;
-    (cluster || h).appendChild(b);
-    b.addEventListener('click', function(){ apply(!document.documentElement.classList.contains('dark')); });
-    syncLabel();
-    return b;
-  }
-  function syncLabel(){
-    var d = document.documentElement.classList.contains('dark');
-    var b = document.getElementById('themeToggle');
-    if (!b) return;
-    b.textContent = d ? '☀️' : '🌙';
-    b.title = d ? 'Chuyển sang chế độ sáng' : 'Chuyển sang chế độ tối';
-    b.setAttribute('aria-pressed', d ? 'true' : 'false');
-  }
-  function apply(d){
-    document.documentElement.classList.toggle('dark', d);
-    try { localStorage.setItem(KEY, d ? 'dark' : 'light'); } catch (e) {}
-    syncLabel();
-  }
-  ensureBtn();
-  apply(isDark());
-  setTimeout(function(){ ensureBtn(); syncLabel(); }, 500);
-  setTimeout(function(){ ensureBtn(); syncLabel(); }, 1500);
-  try { new MutationObserver(function(){ ensureBtn(); }).observe(document.body, { childList: true, subtree: true }); } catch (e) {}
-})();
-</script>
 
 <div id="tlightbox" aria-hidden="true">
   <button id="tlb-close" aria-label="Đóng" title="Đóng (Esc)">×</button>
@@ -1686,6 +1646,18 @@ const CHECKLIST = [
 const BOOKING_FORM = 'NEW BOOKING\nFanpage\n+ Tên khách:\nSđt:\n+ Check in:\n+ Check out:\n+ N of G:\n+ N of Room:\n+ Rate:\n+ Service:\n+ Total:\n+ Dep:\n+ Remain:';
 const REPORT_FORM = 'BÁO CÁO SALES NGÀY …/…/…\nLead mới:\nĐã tư vấn:\nĐã báo giá:\nĐang cân nhắc:\nChờ cọc:\nBooking đã chốt:\nDoanh thu đã chốt:\nTiền cọc đã nhận:\nKhách cần chăm sóc lại:\nVấn đề cần hỗ trợ:';
 const LS = 'elyday-training-v1';
+const THEME_KEY = 'elyday-theme';
+function readDark() {
+  try {
+    var v = localStorage.getItem(THEME_KEY);
+    if (v === 'dark' || v === 'light') return v === 'dark';
+  } catch (e) {}
+  return !!(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
+}
+function applyThemeClass(dark) {
+  document.documentElement.classList.toggle('dark', !!dark);
+  try { localStorage.setItem(THEME_KEY, dark ? 'dark' : 'light'); } catch (e) {}
+}
 const CM_CHIPS = [
   ['cm-khuvuc', 'Khu vực Phú Quốc'],
   ['cm-thuatngu', 'Thuật ngữ'],
@@ -1708,10 +1680,12 @@ class Component extends DCLogic {
     comboIdx: 0, copied: '',
     answers: {}, done: {},
     scripts: [], cats: [], tickets: [], combos: [],
-    calc: { ticket: -1, adult: '2', child: '0', senior: '0', room: '', other: '' }
+    calc: { ticket: -1, adult: '2', child: '0', senior: '0', room: '', other: '' },
+    dark: readDark()
   };
 
   componentDidMount() {
+    applyThemeClass(this.state.dark);
     try {
       document.addEventListener('keydown', (e) => {
         const tag = (document.activeElement && document.activeElement.tagName) || '';
@@ -1983,6 +1957,14 @@ class Component extends DCLogic {
       goScript: () => this.setState({ tab: 'script' }), goGia: () => this.setState({ tab: 'gia' }),
       goCamnang: () => this.setState({ tab: 'camnang' }),
       goKpi: () => this.setState({ tab: 'kpi' }),
+      themeIcon: st.dark ? '☀️' : '🌙',
+      themeTitle: st.dark ? 'Chuyển sang chế độ sáng' : 'Chuyển sang chế độ tối',
+      themePressed: st.dark ? 'true' : 'false',
+      toggleTheme: () => {
+        var next = !this.state.dark;
+        applyThemeClass(next);
+        this.setState({ dark: next });
+      },
       isHome: st.tab === 'home', isLotrinh: st.tab === 'lotrinh', isQuytrinh: st.tab === 'quytrinh',
       isLead: st.tab === 'lead', isBooking: st.tab === 'booking', isCare: st.tab === 'care',
       isScript: st.tab === 'script', isGia: st.tab === 'gia', isCamnang: st.tab === 'camnang', isKpi: st.tab === 'kpi',
