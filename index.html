@@ -235,7 +235,8 @@ window.__resources = {"scriptsJson":"data:application/json;base64,eyJjYXRlZ29yaW
       </div>
     </div>
 
-    <div class="navtabs" style="position:sticky;top:0;z-index:60;background:#2A2D5C;box-shadow:0 10px 26px rgba(21,23,56,.45);max-width:1280px;margin:0 auto;display:flex;gap:3px;overflow-x:auto;overscroll-behavior-x:contain;scrollbar-width:thin;scrollbar-color:#5A5F92 transparent">
+    <div class="navwrap">
+      <nav id="siteNav" class="navtabs" aria-label="Chuyên mục">
       <button class="navbtn" title="Phím 1 — Tổng quan" sc-camel-on-click="{{ goHome }}" style="background:{{ tabHome.bg }};color:{{ tabHome.fg }};border:0;border-radius:10px 10px 0 0;padding:11px 11px;font-family:Outfit,sans-serif;font-size:14px;font-weight:500;cursor:pointer;white-space:nowrap;flex:0 0 auto">🏠 Tổng quan</button>
       <button class="navbtn" title="Phím 2 — Lộ trình 7 ngày" sc-camel-on-click="{{ goLotrinh }}" style="background:{{ tabLotrinh.bg }};color:{{ tabLotrinh.fg }};border:0;border-radius:10px 10px 0 0;padding:11px 11px;font-family:Outfit,sans-serif;font-size:14px;font-weight:500;cursor:pointer;white-space:nowrap;flex:0 0 auto">🧭 Lộ trình 7 ngày</button>
       <span class="navsep" aria-hidden="true"></span>
@@ -246,8 +247,9 @@ window.__resources = {"scriptsJson":"data:application/json;base64,eyJjYXRlZ29yaW
       <span class="navsep" aria-hidden="true"></span>
       <button class="navbtn" title="Phím 7 — Script" sc-camel-on-click="{{ goScript }}" style="background:{{ tabScript.bg }};color:{{ tabScript.fg }};border:0;border-radius:10px 10px 0 0;padding:11px 11px;font-family:Outfit,sans-serif;font-size:14px;font-weight:500;cursor:pointer;white-space:nowrap;flex:0 0 auto">📝 Script</button>
       <button class="navbtn" title="Phím 8 — Bảng giá" sc-camel-on-click="{{ goGia }}" style="background:{{ tabGia.bg }};color:{{ tabGia.fg }};border:0;border-radius:10px 10px 0 0;padding:11px 11px;font-family:Outfit,sans-serif;font-size:14px;font-weight:500;cursor:pointer;white-space:nowrap;flex:0 0 auto">💰 Bảng giá</button>
-            <button class="navbtn" title="Phím 9 — Cẩm nang" sc-camel-on-click="{{ goCamnang }}" style="background:{{ tabCamnang.bg }};color:{{ tabCamnang.fg }};border:0;border-radius:10px 10px 0 0;padding:11px 11px;font-family:Outfit,sans-serif;font-size:14px;font-weight:500;cursor:pointer;white-space:nowrap;flex:0 0 auto">📖 Cẩm nang</button>
+      <button class="navbtn" title="Phím 9 — Cẩm nang" sc-camel-on-click="{{ goCamnang }}" style="background:{{ tabCamnang.bg }};color:{{ tabCamnang.fg }};border:0;border-radius:10px 10px 0 0;padding:11px 11px;font-family:Outfit,sans-serif;font-size:14px;font-weight:500;cursor:pointer;white-space:nowrap;flex:0 0 auto">📖 Cẩm nang</button>
       <button class="navbtn" title="Phím 0 — Checklist" sc-camel-on-click="{{ goKpi }}" style="background:{{ tabKpi.bg }};color:{{ tabKpi.fg }};border:0;border-radius:10px 10px 0 0;padding:11px 11px;font-family:Outfit,sans-serif;font-size:14px;font-weight:500;cursor:pointer;white-space:nowrap;flex:0 0 auto">✅ Checklist</button>
+      </nav>
     </div>
   </header>
 
@@ -1009,18 +1011,11 @@ Vấn đề cần hỗ trợ:</pre>
 
           <sc-if value="{{ isSubCalc }}" hint-placeholder-val="{{ false }}">
             <section style="background:#fff;border:1px solid #E6E8EF;border-radius:16px;padding:clamp(16px,4vw,24px)">
-              <h3 style="font-family:Outfit,sans-serif;font-size:17px;font-weight:600;color:#2A2D5C;margin:0 0 6px">Tính báo giá nhanh</h3>
-              <p style="font-size:14px;color:#6B7080;margin:0 0 20px">Chọn vé theo giá niêm yết, thêm tiền phòng và dịch vụ khác. Công cụ tính tổng và mức cọc 30% để bạn dán vào tin nhắn.</p>
-              <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(220px,100%),1fr));gap:14px">
-                <label style="display:flex;flex-direction:column;gap:6px">
-                  <span style="font-size:12.5px;font-weight:600;color:#2A2D5C">Loại vé</span>
-                  <sc-raw-select value="{{ calcTicket }}" sc-camel-on-change="{{ onTicket }}" style="border:1px solid #D9DCE6;border-radius:10px;padding:12px;font-family:'Be Vietnam Pro',sans-serif;font-size:14px;color:#2C2F3A;min-height:44px;background:#fff">
-                    <option value="-1">Không chọn vé</option>
-                    <sc-for list="{{ ticketOptions }}" as="t" hint-placeholder-count="10">
-                      <option value="{{ t.value }}">{{ t.label }}</option>
-                    </sc-for>
-                  </sc-raw-select>
-                </label>
+              <h3 style="font-family:Outfit,sans-serif;font-size:17px;font-weight:600;color:#2A2D5C;margin:0 0 6px">Giỏ báo giá nhanh</h3>
+              <p style="font-size:14px;color:#6B7080;margin:0 0 20px">Thêm từng hạng mục vào giỏ: vé lẻ (nhiều loại), nhiều loại phòng, combo lịch trình và dịch vụ lẻ. Tổng, cọc 30% và văn mẫu lấy đúng dòng trong giỏ. Combo itinerary không có giá niêm yết — sale nhập giá gói hiện hành; combo thường đã gồm phòng/vé nên không cộng trùng.</p>
+
+              <div style="font-family:Outfit,sans-serif;font-size:13px;font-weight:600;color:#2A2D5C;margin-bottom:8px">1. Đoàn khách (để chia đầu người)</div>
+              <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(160px,100%),1fr));gap:12px">
                 <label style="display:flex;flex-direction:column;gap:6px">
                   <span style="font-size:12.5px;font-weight:600;color:#2A2D5C">Người lớn</span>
                   <input type="text" sc-camel-input-mode="numeric" sc-camel-auto-complete="off" placeholder="0" value="{{ calcAdult }}" sc-camel-on-input="{{ onAdult }}" style="border:1px solid #D9DCE6;border-radius:10px;padding:12px;font-family:'Be Vietnam Pro',sans-serif;font-size:14px;color:#2C2F3A;min-height:44px">
@@ -1033,51 +1028,171 @@ Vấn đề cần hỗ trợ:</pre>
                   <span style="font-size:12.5px;font-weight:600;color:#2A2D5C">Cao tuổi (có giấy tờ)</span>
                   <input type="text" sc-camel-input-mode="numeric" sc-camel-auto-complete="off" placeholder="0" value="{{ calcSenior }}" sc-camel-on-input="{{ onSenior }}" style="border:1px solid #D9DCE6;border-radius:10px;padding:12px;font-family:'Be Vietnam Pro',sans-serif;font-size:14px;color:#2C2F3A;min-height:44px">
                 </label>
+              </div>
+              <div style="margin-top:10px;font-size:13px;color:#6B7080;line-height:1.55">{{ childRateNote }}</div>
+
+              <div style="font-family:Outfit,sans-serif;font-size:13px;font-weight:600;color:#2A2D5C;margin:18px 0 8px">2. Vé lẻ — chọn loại rồi thêm vào giỏ (có thể thêm nhiều loại)</div>
+              <div style="display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:end">
                 <label style="display:flex;flex-direction:column;gap:6px">
-                  <span style="font-size:12.5px;font-weight:600;color:#2A2D5C">Tiền phòng cả kỳ (đ)</span>
+                  <span style="font-size:12.5px;font-weight:600;color:#2A2D5C">Loại vé</span>
+                  <sc-raw-select value="{{ calcTicket }}" sc-camel-on-change="{{ onTicket }}" style="border:1px solid #D9DCE6;border-radius:10px;padding:12px;font-family:'Be Vietnam Pro',sans-serif;font-size:14px;color:#2C2F3A;min-height:44px;background:#fff">
+                    <option value="-1">Chọn vé niêm yết</option>
+                    <sc-for list="{{ ticketOptions }}" as="t" hint-placeholder-count="10">
+                      <option value="{{ t.value }}">{{ t.label }}</option>
+                    </sc-for>
+                  </sc-raw-select>
+                </label>
+                <button sc-camel-on-click="{{ addTicketLine }}" style="border:1px solid #4FB3A6;background:#fff;color:#1E6B5E;border-radius:10px;padding:12px 16px;font-family:Outfit,sans-serif;font-size:14px;font-weight:500;cursor:pointer;min-height:44px;white-space:nowrap">+ Thêm vé</button>
+              </div>
+
+              <div style="font-family:Outfit,sans-serif;font-size:13px;font-weight:600;color:#2A2D5C;margin:18px 0 8px">3. Phòng — gộp nhiều loại (giá bảng thấp điểm)</div>
+              <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(160px,100%),1fr));gap:12px;margin-bottom:10px">
+                <label style="display:flex;flex-direction:column;gap:6px">
+                  <span style="font-size:12.5px;font-weight:600;color:#2A2D5C">Đêm ngày thường</span>
+                  <input type="text" sc-camel-input-mode="numeric" sc-camel-auto-complete="off" placeholder="0" value="{{ calcNightsWd }}" sc-camel-on-input="{{ onNightsWd }}" style="border:1px solid #D9DCE6;border-radius:10px;padding:12px;font-family:'Be Vietnam Pro',sans-serif;font-size:14px;color:#2C2F3A;min-height:44px">
+                </label>
+                <label style="display:flex;flex-direction:column;gap:6px">
+                  <span style="font-size:12.5px;font-weight:600;color:#2A2D5C">Đêm cuối tuần</span>
+                  <input type="text" sc-camel-input-mode="numeric" sc-camel-auto-complete="off" placeholder="0" value="{{ calcNightsWe }}" sc-camel-on-input="{{ onNightsWe }}" style="border:1px solid #D9DCE6;border-radius:10px;padding:12px;font-family:'Be Vietnam Pro',sans-serif;font-size:14px;color:#2C2F3A;min-height:44px">
+                </label>
+                <label style="display:flex;flex-direction:column;gap:6px">
+                  <span style="font-size:12.5px;font-weight:600;color:#2A2D5C">Phòng ngoài bảng (đ cả kỳ)</span>
                   <input type="text" sc-camel-input-mode="numeric" sc-camel-auto-complete="off" placeholder="0" value="{{ calcRoom }}" sc-camel-on-input="{{ onRoom }}" style="border:1px solid #D9DCE6;border-radius:10px;padding:12px;font-family:'Be Vietnam Pro',sans-serif;font-size:14px;color:#2C2F3A;min-height:44px">
                 </label>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:6px;max-height:240px;overflow:auto;border:1px solid #E6E8EF;border-radius:12px;padding:8px">
+                <sc-for list="{{ roomPickers }}" as="r" hint-placeholder-count="6">
+                  <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px 10px;border-bottom:1px solid #F0F1F6;flex-wrap:wrap">
+                    <div style="min-width:0;flex:1 1 180px">
+                      <div style="font-size:11px;color:#6B7080">{{ r.hotel }}</div>
+                      <div style="font-size:13.5px;font-weight:600;color:#2A2D5C">{{ r.name }}</div>
+                      <div style="font-size:12px;color:#3D6A62">Ngày thường {{ r.wdF }} · Cuối tuần {{ r.weF }}</div>
+                    </div>
+                    <button sc-camel-on-click="{{ r.onAdd }}" style="border:1px solid #4FB3A6;background:#fff;color:#1E6B5E;border-radius:8px;padding:8px 12px;font-family:Outfit,sans-serif;font-size:13px;font-weight:500;cursor:pointer;min-height:36px;white-space:nowrap">+ Thêm phòng</button>
+                  </div>
+                </sc-for>
+              </div>
+
+              <div style="font-family:Outfit,sans-serif;font-size:13px;font-weight:600;color:#2A2D5C;margin:18px 0 8px">4. Combo lịch trình — nhập giá gói (không tự bịa giá)</div>
+              <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(200px,100%),1fr));gap:10px;align-items:end">
                 <label style="display:flex;flex-direction:column;gap:6px">
-                  <span style="font-size:12.5px;font-weight:600;color:#2A2D5C">Dịch vụ khác (đ)</span>
+                  <span style="font-size:12.5px;font-weight:600;color:#2A2D5C">Combo</span>
+                  <sc-raw-select value="{{ calcComboPick }}" sc-camel-on-change="{{ onComboPick }}" style="border:1px solid #D9DCE6;border-radius:10px;padding:12px;font-family:'Be Vietnam Pro',sans-serif;font-size:14px;color:#2C2F3A;min-height:44px;background:#fff">
+                    <sc-for list="{{ comboPickOptions }}" as="t" hint-placeholder-count="8">
+                      <option value="{{ t.value }}">{{ t.label }}</option>
+                    </sc-for>
+                  </sc-raw-select>
+                </label>
+                <label style="display:flex;flex-direction:column;gap:6px">
+                  <span style="font-size:12.5px;font-weight:600;color:#2A2D5C">Giá gói (đ)</span>
+                  <input type="text" sc-camel-input-mode="numeric" sc-camel-auto-complete="off" placeholder="Nhập giá hiện hành" value="{{ calcComboPrice }}" sc-camel-on-input="{{ onComboPrice }}" style="border:1px solid #D9DCE6;border-radius:10px;padding:12px;font-family:'Be Vietnam Pro',sans-serif;font-size:14px;color:#2C2F3A;min-height:44px">
+                </label>
+                <button sc-camel-on-click="{{ addComboLine }}" style="border:1px solid #4FB3A6;background:#fff;color:#1E6B5E;border-radius:10px;padding:12px 16px;font-family:Outfit,sans-serif;font-size:14px;font-weight:500;cursor:pointer;min-height:44px;white-space:nowrap">+ Thêm combo</button>
+              </div>
+
+              <div style="font-family:Outfit,sans-serif;font-size:13px;font-weight:600;color:#2A2D5C;margin:18px 0 8px">5. Dịch vụ lẻ khác (xe, ăn, phụ thu…)</div>
+              <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(180px,100%),1fr));gap:10px;align-items:end">
+                <label style="display:flex;flex-direction:column;gap:6px">
+                  <span style="font-size:12.5px;font-weight:600;color:#2A2D5C">Tên dịch vụ</span>
+                  <input type="text" sc-camel-auto-complete="off" placeholder="VD: Xe đưa đón" value="{{ calcLeName }}" sc-camel-on-input="{{ onLeName }}" style="border:1px solid #D9DCE6;border-radius:10px;padding:12px;font-family:'Be Vietnam Pro',sans-serif;font-size:14px;color:#2C2F3A;min-height:44px">
+                </label>
+                <label style="display:flex;flex-direction:column;gap:6px">
+                  <span style="font-size:12.5px;font-weight:600;color:#2A2D5C">Số tiền (đ)</span>
                   <input type="text" sc-camel-input-mode="numeric" sc-camel-auto-complete="off" placeholder="0" value="{{ calcOther }}" sc-camel-on-input="{{ onOther }}" style="border:1px solid #D9DCE6;border-radius:10px;padding:12px;font-family:'Be Vietnam Pro',sans-serif;font-size:14px;color:#2C2F3A;min-height:44px">
                 </label>
+                <button sc-camel-on-click="{{ addLeLine }}" style="border:1px solid #4FB3A6;background:#fff;color:#1E6B5E;border-radius:10px;padding:12px 16px;font-family:Outfit,sans-serif;font-size:14px;font-weight:500;cursor:pointer;min-height:44px;white-space:nowrap">+ Thêm dịch vụ lẻ</button>
               </div>
-              <div style="margin-top:12px;font-size:13px;color:#6B7080;line-height:1.55">{{ childRateNote }}</div>
-              <div style="margin-top:20px;background:#2A2D5C;border-radius:14px;padding:22px;color:#fff">
-                <div style="display:flex;gap:22px;flex-wrap:wrap">
-                  <div style="flex:1 1 150px">
-                    <div style="font-size:12px;color:#A9AECB">Tiền vé</div>
-                    <div style="font-family:Outfit,sans-serif;font-size:20px;font-weight:600;margin-top:3px">{{ calcTicketTotal }}</div>
+
+              <div style="margin-top:20px;background:#F7F8FB;border:1px solid #E6E8EF;border-radius:14px;padding:16px">
+                <div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:center">
+                  <div style="font-family:Outfit,sans-serif;font-size:15px;font-weight:600;color:#2A2D5C">Giỏ hàng</div>
+                  <div style="font-size:13px;color:#6B7080">{{ cartCountLabel }}</div>
+                </div>
+                <sc-if value="{{ cartEmpty }}" hint-placeholder-val="{{ true }}">
+                  <div style="margin-top:10px;font-size:13.5px;color:#6B7080;line-height:1.55">Chưa có hạng mục. Thêm vé, phòng, combo hoặc dịch vụ lẻ để tính tổng.</div>
+                </sc-if>
+                <sc-if value="{{ cartHasItems }}" hint-placeholder-val="{{ false }}">
+                  <div style="display:flex;flex-direction:column;gap:8px;margin-top:10px">
+                    <sc-for list="{{ cartLines }}" as="ln" hint-placeholder-count="3">
+                      <div style="background:#fff;border:1px solid #E6E8EF;border-radius:11px;padding:12px 14px">
+                        <div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:flex-start">
+                          <div style="min-width:0;flex:1 1 200px">
+                            <div style="font-size:11px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:#6B7080">{{ ln.kindLabel }}</div>
+                            <div style="font-size:14px;font-weight:600;color:#2A2D5C;line-height:1.4;margin-top:2px">{{ ln.title }}</div>
+                            <div style="font-size:12.5px;color:#6B7080;margin-top:3px">{{ ln.meta }}</div>
+                          </div>
+                          <div style="font-family:Outfit,sans-serif;font-size:16px;font-weight:700;color:#1E6B5E;white-space:nowrap">{{ ln.amtF }}</div>
+                        </div>
+                        <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;align-items:center">
+                          <sc-if value="{{ ln.isTicket }}" hint-placeholder-val="{{ false }}">
+                            <span style="font-size:12px;color:#6B7080">NL</span>
+                            <button sc-camel-on-click="{{ ln.onAdultMinus }}" style="border:1px solid #D9DCE6;background:#fff;border-radius:8px;width:34px;height:34px;cursor:pointer;font-size:16px">−</button>
+                            <span style="font-family:Outfit,sans-serif;font-weight:600;min-width:16px;text-align:center">{{ ln.nA }}</span>
+                            <button sc-camel-on-click="{{ ln.onAdultPlus }}" style="border:1px solid #D9DCE6;background:#fff;border-radius:8px;width:34px;height:34px;cursor:pointer;font-size:16px">+</button>
+                            <span style="font-size:12px;color:#6B7080;margin-left:6px">TE</span>
+                            <button sc-camel-on-click="{{ ln.onChildMinus }}" style="border:1px solid #D9DCE6;background:#fff;border-radius:8px;width:34px;height:34px;cursor:pointer;font-size:16px">−</button>
+                            <span style="font-family:Outfit,sans-serif;font-weight:600;min-width:16px;text-align:center">{{ ln.nC }}</span>
+                            <button sc-camel-on-click="{{ ln.onChildPlus }}" style="border:1px solid #D9DCE6;background:#fff;border-radius:8px;width:34px;height:34px;cursor:pointer;font-size:16px">+</button>
+                            <span style="font-size:12px;color:#6B7080;margin-left:6px">CT</span>
+                            <button sc-camel-on-click="{{ ln.onSeniorMinus }}" style="border:1px solid #D9DCE6;background:#fff;border-radius:8px;width:34px;height:34px;cursor:pointer;font-size:16px">−</button>
+                            <span style="font-family:Outfit,sans-serif;font-weight:600;min-width:16px;text-align:center">{{ ln.nS }}</span>
+                            <button sc-camel-on-click="{{ ln.onSeniorPlus }}" style="border:1px solid #D9DCE6;background:#fff;border-radius:8px;width:34px;height:34px;cursor:pointer;font-size:16px">+</button>
+                          </sc-if>
+                          <sc-if value="{{ ln.isQty }}" hint-placeholder-val="{{ false }}">
+                            <span style="font-size:12px;color:#6B7080">SL</span>
+                            <button sc-camel-on-click="{{ ln.onQtyMinus }}" style="border:1px solid #D9DCE6;background:#fff;border-radius:8px;width:34px;height:34px;cursor:pointer;font-size:16px">−</button>
+                            <span style="font-family:Outfit,sans-serif;font-weight:600;min-width:16px;text-align:center">{{ ln.qty }}</span>
+                            <button sc-camel-on-click="{{ ln.onQtyPlus }}" style="border:1px solid #D9DCE6;background:#fff;border-radius:8px;width:34px;height:34px;cursor:pointer;font-size:16px">+</button>
+                          </sc-if>
+                          <button sc-camel-on-click="{{ ln.onRemove }}" style="margin-left:auto;border:1px solid #F0B9A5;background:#fff;color:#B4441F;border-radius:8px;padding:7px 12px;font-family:Outfit,sans-serif;font-size:12.5px;font-weight:500;cursor:pointer;min-height:34px">Xóa</button>
+                        </div>
+                      </div>
+                    </sc-for>
                   </div>
-                  <div style="flex:1 1 150px">
-                    <div style="font-size:12px;color:#A9AECB">Tổng giá</div>
-                    <div style="font-family:Outfit,sans-serif;font-size:26px;font-weight:700;margin-top:3px;color:#7FD8C9">{{ calcTotal }}</div>
-                  </div>
-                  <div style="flex:1 1 150px">
-                    <div style="font-size:12px;color:#A9AECB">Cọc 30%</div>
-                    <div style="font-family:Outfit,sans-serif;font-size:20px;font-weight:600;margin-top:3px">{{ calcDeposit }}</div>
-                  </div>
-                  <div style="flex:1 1 150px">
-                    <div style="font-size:12px;color:#A9AECB">Còn lại</div>
-                    <div style="font-family:Outfit,sans-serif;font-size:20px;font-weight:600;margin-top:3px">{{ calcRemain }}</div>
-                  </div>
+                </sc-if>
+              </div>
+
+              <sc-if value="{{ overlapOn }}" hint-placeholder-val="{{ false }}">
+                <div style="margin-top:12px;padding:12px 14px;background:#FFF6F3;border:1px solid #F6D9CF;border-radius:12px;font-size:13px;color:#B4441F;line-height:1.6">Giỏ đang có combo kèm vé lẻ hoặc phòng. Combo lịch trình thường đã gồm lưu trú và một số vé — kiểm tra bao gồm/không bao gồm trước khi cộng trùng.</div>
+              </sc-if>
+
+              <div style="margin-top:16px;background:#2A2D5C;border-radius:14px;padding:22px;color:#fff">
+                <div style="display:flex;gap:18px;flex-wrap:wrap">
+                  <div style="flex:1 1 120px"><div style="font-size:12px;color:#A9AECB">Vé lẻ</div><div style="font-family:Outfit,sans-serif;font-size:18px;font-weight:600;margin-top:3px">{{ calcTicketTotal }}</div></div>
+                  <div style="flex:1 1 120px"><div style="font-size:12px;color:#A9AECB">Phòng</div><div style="font-family:Outfit,sans-serif;font-size:18px;font-weight:600;margin-top:3px">{{ calcRoomTotal }}</div></div>
+                  <div style="flex:1 1 120px"><div style="font-size:12px;color:#A9AECB">Combo</div><div style="font-family:Outfit,sans-serif;font-size:18px;font-weight:600;margin-top:3px">{{ calcComboTotal }}</div></div>
+                  <div style="flex:1 1 120px"><div style="font-size:12px;color:#A9AECB">Dịch vụ lẻ</div><div style="font-family:Outfit,sans-serif;font-size:18px;font-weight:600;margin-top:3px">{{ calcLeTotal }}</div></div>
+                  <div style="flex:1 1 140px"><div style="font-size:12px;color:#A9AECB">Tổng giá</div><div style="font-family:Outfit,sans-serif;font-size:26px;font-weight:700;margin-top:3px;color:#7FD8C9">{{ calcTotal }}</div></div>
+                  <div style="flex:1 1 120px"><div style="font-size:12px;color:#A9AECB">Cọc 30%</div><div style="font-family:Outfit,sans-serif;font-size:18px;font-weight:600;margin-top:3px">{{ calcDeposit }}</div></div>
+                  <div style="flex:1 1 120px"><div style="font-size:12px;color:#A9AECB">Còn lại</div><div style="font-family:Outfit,sans-serif;font-size:18px;font-weight:600;margin-top:3px">{{ calcRemain }}</div></div>
+                </div>
+                <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:16px">
+                  <button sc-camel-on-click="{{ copyQuote }}" style="border:1px solid #4FB3A6;background:{{ quoteBtn.bg }};color:{{ quoteBtn.fg }};border-radius:10px;padding:11px 16px;font-family:Outfit,sans-serif;font-size:13.5px;font-weight:500;cursor:pointer;min-height:42px">{{ quoteBtn.label }}</button>
+                  <button sc-camel-on-click="{{ copyMsgTong }}" style="border:1px solid {{ msgTongBtn.bd }};background:{{ msgTongBtn.bg }};color:{{ msgTongBtn.fg }};border-radius:10px;padding:11px 16px;font-family:Outfit,sans-serif;font-size:13.5px;font-weight:500;cursor:pointer;min-height:42px">{{ msgTongBtn.label }}</button>
+                  <button sc-camel-on-click="{{ copyMsgPP }}" style="border:1px solid {{ msgPPBtn.bd }};background:{{ msgPPBtn.bg }};color:{{ msgPPBtn.fg }};border-radius:10px;padding:11px 16px;font-family:Outfit,sans-serif;font-size:13.5px;font-weight:500;cursor:pointer;min-height:42px">{{ msgPPBtn.label }}</button>
                 </div>
               </div>
-              <button sc-camel-on-click="{{ copyQuote }}" style="margin-top:16px;border:1px solid #4FB3A6;background:{{ quoteBtn.bg }};color:{{ quoteBtn.fg }};border-radius:10px;padding:12px 18px;font-family:Outfit,sans-serif;font-size:14px;font-weight:500;cursor:pointer;min-height:44px">{{ quoteBtn.label }}</button>
 
-              <sc-if value="{{ ppReady }}" hint-placeholder-val="{{ false }}">
-                <div style="margin-top:18px;background:#F4FBF9;border:1px solid #D4EFE8;border-radius:12px;padding:16px">
-                  <div style="font-family:Outfit,sans-serif;font-size:14px;font-weight:600;color:#1E6B5E">Giá chia đầu người <span style="font-weight:400;color:#3D6A62;font-size:12.5px">— tiền phòng ÷ {{ nGuestsF }} khách, cộng vé theo đối tượng</span></div>
+              <div style="margin-top:18px;background:#F4FBF9;border:1px solid #D4EFE8;border-radius:12px;padding:16px">
+                <div style="font-family:Outfit,sans-serif;font-size:14px;font-weight:600;color:#1E6B5E">Giá chia đầu người <span style="font-weight:400;color:#3D6A62;font-size:12.5px">— phòng + combo + dịch vụ lẻ chia {{ nGuestsF }} khách, vé cộng theo đối tượng</span></div>
+                <sc-if value="{{ ppReady }}" hint-placeholder-val="{{ false }}">
                   <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px">
-                    <div style="background:#fff;border:1px solid #D4EFE8;border-radius:10px;padding:10px 14px;flex:1 1 140px"><div style="font-size:11.5px;color:#3D6A62">Phòng / khách (cả kỳ)</div><div style="font-family:Outfit,sans-serif;font-size:17px;font-weight:700;color:#1E6B5E;margin-top:2px">{{ roomPPF }}</div></div>
-                    <div style="background:#fff;border:1px solid #D4EFE8;border-radius:10px;padding:10px 14px;flex:1 1 140px"><div style="font-size:11.5px;color:#3D6A62">Người lớn / khách</div><div style="font-family:Outfit,sans-serif;font-size:17px;font-weight:700;color:#1E6B5E;margin-top:2px">{{ adultPPF }}</div></div>
-                    <div style="background:#fff;border:1px solid #D4EFE8;border-radius:10px;padding:10px 14px;flex:1 1 140px"><div style="font-size:11.5px;color:#3D6A62">Trẻ em / khách</div><div style="font-family:Outfit,sans-serif;font-size:17px;font-weight:700;color:#1E6B5E;margin-top:2px">{{ childPPF }}</div></div>
+                    <div style="background:#fff;border:1px solid #D4EFE8;border-radius:10px;padding:10px 14px;flex:1 1 140px"><div style="font-size:11.5px;color:#3D6A62">Phần chia đều / khách</div><div style="font-family:Outfit,sans-serif;font-size:17px;font-weight:700;color:#1E6B5E;margin-top:2px">{{ roomPPF }}</div></div>
+                    <sc-if value="{{ showAdultPP }}" hint-placeholder-val="{{ false }}">
+                      <div style="background:#fff;border:1px solid #D4EFE8;border-radius:10px;padding:10px 14px;flex:1 1 140px"><div style="font-size:11.5px;color:#3D6A62">Người lớn / khách</div><div style="font-family:Outfit,sans-serif;font-size:17px;font-weight:700;color:#1E6B5E;margin-top:2px">{{ adultPPF }}</div></div>
+                    </sc-if>
+                    <sc-if value="{{ showChildPP }}" hint-placeholder-val="{{ false }}">
+                      <div style="background:#fff;border:1px solid #D4EFE8;border-radius:10px;padding:10px 14px;flex:1 1 140px"><div style="font-size:11.5px;color:#3D6A62">Trẻ em / khách</div><div style="font-family:Outfit,sans-serif;font-size:17px;font-weight:700;color:#1E6B5E;margin-top:2px">{{ childPPF }}</div></div>
+                    </sc-if>
                     <sc-if value="{{ showSeniorPP }}" hint-placeholder-val="{{ false }}">
                       <div style="background:#fff;border:1px solid #D4EFE8;border-radius:10px;padding:10px 14px;flex:1 1 140px"><div style="font-size:11.5px;color:#3D6A62">Cao tuổi / khách</div><div style="font-family:Outfit,sans-serif;font-size:17px;font-weight:700;color:#1E6B5E;margin-top:2px">{{ seniorPPF }}</div></div>
                     </sc-if>
                   </div>
-                </div>
-              </sc-if>
+                </sc-if>
+                <sc-if value="{{ ppHintOn }}" hint-placeholder-val="{{ true }}">
+                  <div style="margin-top:8px;font-size:13px;color:#3D6A62;line-height:1.55">Nhập số khách và thêm hạng mục vào giỏ để xem giá từng người. Trẻ dưới 1m miễn phí vé, không nhập vào đây.</div>
+                </sc-if>
+              </div>
 
               <div style="margin-top:18px;background:#fff;border:1px solid #E6E8EF;border-radius:12px;padding:16px">
                 <div style="font-family:Outfit,sans-serif;font-size:14px;font-weight:600;color:#2A2D5C">Văn mẫu 1 — gửi báo giá tổng</div>
@@ -1085,14 +1200,12 @@ Vấn đề cần hỗ trợ:</pre>
                 <button sc-camel-on-click="{{ copyMsgTong }}" style="margin-top:10px;border:1px solid {{ msgTongBtn.bd }};background:{{ msgTongBtn.bg }};color:{{ msgTongBtn.fg }};border-radius:10px;padding:11px 16px;font-family:Outfit,sans-serif;font-size:13.5px;font-weight:500;cursor:pointer;min-height:42px}">{{ msgTongBtn.label }}</button>
               </div>
 
-              <sc-if value="{{ ppReady }}" hint-placeholder-val="{{ false }}">
-                <div style="margin-top:12px;background:#fff;border:1px solid #E6E8EF;border-radius:12px;padding:16px">
-                  <div style="font-family:Outfit,sans-serif;font-size:14px;font-weight:600;color:#2A2D5C">Văn mẫu 2 — giải thích giá chia đầu người</div>
-                  <div style="margin-top:8px;white-space:pre-line;font-size:13px;color:#3A3E4C;line-height:1.65;background:#F5F6FA;border-radius:10px;padding:12px 14px">{{ msgPPText }}</div>
-                  <button sc-camel-on-click="{{ copyMsgPP }}" style="margin-top:10px;border:1px solid {{ msgPPBtn.bd }};background:{{ msgPPBtn.bg }};color:{{ msgPPBtn.fg }};border-radius:10px;padding:11px 16px;font-family:Outfit,sans-serif;font-size:13.5px;font-weight:500;cursor:pointer;min-height:42px}">{{ msgPPBtn.label }}</button>
-                </div>
-              </sc-if>
-              <div style="margin-top:16px;padding:14px 16px;background:#FFF6F3;border:1px solid #F6D9CF;border-radius:12px;font-size:13.5px;color:#B4441F;line-height:1.6">Con số ở đây chỉ để tính nhanh theo giá niêm yết. Phải kiểm tra tình trạng chỗ, phụ thu cuối tuần/lễ/Tết và điều kiện áp dụng trước khi báo khách.</div>
+              <div style="margin-top:12px;background:#fff;border:1px solid #E6E8EF;border-radius:12px;padding:16px">
+                <div style="font-family:Outfit,sans-serif;font-size:14px;font-weight:600;color:#2A2D5C">Văn mẫu 2 — giải thích giá chia đầu người</div>
+                <div style="margin-top:8px;white-space:pre-line;font-size:13px;color:#3A3E4C;line-height:1.65;background:#F5F6FA;border-radius:10px;padding:12px 14px">{{ msgPPText }}</div>
+                <button sc-camel-on-click="{{ copyMsgPP }}" style="margin-top:10px;border:1px solid {{ msgPPBtn.bd }};background:{{ msgPPBtn.bg }};color:{{ msgPPBtn.fg }};border-radius:10px;padding:11px 16px;font-family:Outfit,sans-serif;font-size:13.5px;font-weight:500;cursor:pointer;min-height:42px}">{{ msgPPBtn.label }}</button>
+              </div>
+              <div style="margin-top:16px;padding:14px 16px;background:#FFF6F3;border:1px solid #F6D9CF;border-radius:12px;font-size:13.5px;color:#B4441F;line-height:1.6">Con số ở đây chỉ để tính nhanh theo giá niêm yết / giá gói sale nhập. Phải kiểm tra tình trạng chỗ, phụ thu cuối tuần/lễ/Tết và điều kiện áp dụng trước khi báo khách.</div>
             </section>
           </sc-if>
         </div>
@@ -1467,30 +1580,6 @@ Vấn đề cần hỗ trợ:</pre>
 })();
 </script>
 
-<script>
-(function(){
-  var cur = null;
-  function bind() {
-    var n = document.querySelector('.navtabs');
-    if (!n || n === cur) return;
-    if (cur) cur.classList.remove('navtabs--l', 'navtabs--r');
-    cur = n;
-    function upd() {
-      var max = n.scrollWidth - n.clientWidth;
-      n.classList.toggle('navtabs--l', n.scrollLeft > 4);
-      n.classList.toggle('navtabs--r', n.scrollLeft < max - 4);
-    }
-    if (n.__upd) n.removeEventListener('scroll', n.__upd);
-    n.__upd = upd;
-    n.addEventListener('scroll', upd, { passive: true });
-    upd();
-  }
-  bind();
-  setTimeout(bind, 400); setTimeout(bind, 1200);
-  try { new MutationObserver(function(){ bind(); }).observe(document.body, { childList: true, subtree: true }); } catch (e) {}
-})();
-</script>
-
 <style>
 .rules-ol li::marker{color:#4FB3A6;font-weight:700}
 /* ── DARK MODE ── */
@@ -1547,17 +1636,21 @@ html.dark .tourfig{background:#232743 !important;border-color:#363B5E !important
 #tlb-prev{left:16px;top:50%;transform:translateY(-50%)}
 #tlb-next{right:16px;top:50%;transform:translateY(-50%)}
 @media(max-width:640px){#tlb-prev{left:8px}#tlb-next{right:8px}}
+.navwrap{position:sticky;top:0;z-index:80;width:100vw;max-width:none;margin-left:calc(50% - 50vw);margin-right:calc(50% - 50vw);background:#2A2D5C;box-shadow:0 10px 26px rgba(21,23,56,.45);padding:4px clamp(14px,4vw,40px) 6px}
+.navtabs{display:flex;flex-wrap:wrap;align-items:stretch;gap:4px;max-width:1280px;margin:0 auto;overflow:visible}
 .navbtn{transition:background .15s,color .15s}
 .navbtn:hover{background:rgba(255,255,255,.14) !important}
 .navbtn[style*="color:#2A2D5C"]{font-weight:600}
-.navsep{flex:0 0 auto;align-self:center;width:1px;height:22px;background:rgba(255,255,255,.22);margin:0 3px}
-@media(max-width:640px){.navbtn{padding:9px 10px !important;font-size:13px !important}.navsep{margin:0 1px}}
-.navtabs::before,.navtabs::after{content:"";position:absolute;top:0;bottom:0;width:16px;z-index:3;pointer-events:none;opacity:0;transition:opacity .25s}
-.navtabs::before{left:0;background:linear-gradient(90deg,#2A2D5C,rgba(42,45,92,0))}
-.navtabs::after{right:0;background:linear-gradient(270deg,#2A2D5C,rgba(42,45,92,0))}
-.navtabs.navtabs--l::before{opacity:1}
-.navtabs.navtabs--r::after{opacity:1}
-[id^="cm-"]{scroll-margin-top:64px}
+.navsep{flex:0 0 auto;align-self:center;width:1px;height:22px;background:rgba(255,255,255,.22);margin:0 2px}
+@media(max-width:960px){
+  .navwrap{padding:3px 8px 4px}
+  .navtabs{display:flex;flex-wrap:wrap;gap:3px;overflow:visible}
+  .navbtn{flex:0 0 auto !important;min-width:0;min-height:0;line-height:1.2;text-align:center;border-radius:999px !important;padding:5px 8px !important;font-size:12px !important;white-space:nowrap}
+  .navsep{display:none}
+  [id^="cm-"]{scroll-margin-top:96px}
+}
+html.dark .navwrap{background:#202449}
+[id^="cm-"]{scroll-margin-top:72px}
 html{scroll-behavior:smooth}
 .cm-chip{border:1px solid #D9DCE6;background:#fff;color:#3A3E4C;border-radius:10px;padding:8px 13px;font-family:'Be Vietnam Pro',sans-serif;font-size:13px;font-weight:500;display:inline-block;min-height:36px;line-height:19px;cursor:pointer}
 .cm-chip:hover{border-color:#4FB3A6;color:#1E6B5E}
@@ -1671,6 +1764,106 @@ const CM_CHIPS = [
   return { label: x[1], onClick: function () { var el = document.getElementById(x[0]); if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' }); } };
 });
 const ROOM_COPY = ["Hillside Apartment — Studio City View (28m², 2 người lớn): Ngày thường 940.000đ/đêm · Cuối tuần 1.130.000đ/đêm (mùa thấp điểm)","Hillside Apartment — Studio Ocean View (28m², 2 người lớn): Ngày thường 1.230.000đ/đêm · Cuối tuần 1.480.000đ/đêm (mùa thấp điểm)","Hillside Apartment — 1 Bedroom City View (45m², 2NL + 2TE<12t): Ngày thường 1.440.000đ/đêm · Cuối tuần 1.650.000đ/đêm (mùa thấp điểm)","Hillside Apartment — 1 Bedroom Ocean View (45m², 2NL + 2TE<12t): Ngày thường 1.570.000đ/đêm · Cuối tuần 1.790.000đ/đêm (mùa thấp điểm)","Hillside Apartment — 2 Bedroom City View (80m², 4NL + 1TE<12t): Ngày thường 2.360.000đ/đêm · Cuối tuần 2.610.000đ/đêm (mùa thấp điểm)","Hillside Apartment — 2 Bedroom Ocean View (80m², 4NL + 1TE<12t): Ngày thường 2.610.000đ/đêm · Cuối tuần 2.860.000đ/đêm (mùa thấp điểm)","Hillside Apartment — 3 Bedroom City View (95m², 6NL + 1TE<12t): Ngày thường 3.150.000đ/đêm · Cuối tuần 3.450.000đ/đêm (mùa thấp điểm)","Hillside Apartment — 3 Bedroom Ocean View (95m², 6NL + 1TE<12t): Ngày thường 3.450.000đ/đêm · Cuối tuần 3.750.000đ/đêm (mùa thấp điểm)","ELYDAY CASA — Classic Queen (16m², 2 khách): Ngày thường 630.000đ/đêm · Cuối tuần 690.000đ/đêm (Mùa Thường May–Oct, đã gồm thuế & phí, chưa gồm ăn sáng)","ELYDAY CASA — Superior Queen (20m², 2 khách): Ngày thường 680.000đ/đêm · Cuối tuần 940.000đ/đêm (Mùa Thường May–Oct, đã gồm thuế & phí, chưa gồm ăn sáng)","ELYDAY CASA — Deluxe Queen (20m², 2 khách + 1 trẻ<12t): Ngày thường 680.000đ/đêm · Cuối tuần 940.000đ/đêm (Mùa Thường May–Oct, đã gồm thuế & phí, chưa gồm ăn sáng)","ELYDAY CASA — Family Deluxe (28m², 2NL + 2TE<12t): Ngày thường 1.100.000đ/đêm · Cuối tuần 1.350.000đ/đêm (Mùa Thường May–Oct, đã gồm thuế & phí, chưa gồm ăn sáng)","ELYDAY CASA — Suite Homey 1BR (28m², 2 khách + 2TE<12t): Ngày thường 1.660.000đ/đêm · Cuối tuần 1.780.000đ/đêm (Mùa Thường May–Oct, đã gồm thuế & phí, chưa gồm ăn sáng)","ELYDAY CASA — Suite Casa 1BR with Bathtub (16m², 2 khách): Ngày thường 1.900.000đ/đêm · Cuối tuần 2.020.000đ/đêm (Mùa Thường May–Oct, đã gồm thuế & phí, chưa gồm ăn sáng)"];
+const ROOM_CATALOG = [
+  { hotel: 'Hillside Apartment', name: 'Studio City View', wd: 940000, we: 1130000 },
+  { hotel: 'Hillside Apartment', name: 'Studio Ocean View', wd: 1230000, we: 1480000 },
+  { hotel: 'Hillside Apartment', name: '1 Bedroom City View', wd: 1440000, we: 1650000 },
+  { hotel: 'Hillside Apartment', name: '1 Bedroom Ocean View', wd: 1570000, we: 1790000 },
+  { hotel: 'Hillside Apartment', name: '2 Bedroom City View', wd: 2360000, we: 2610000 },
+  { hotel: 'Hillside Apartment', name: '2 Bedroom Ocean View', wd: 2610000, we: 2860000 },
+  { hotel: 'Hillside Apartment', name: '3 Bedroom City View', wd: 3150000, we: 3450000 },
+  { hotel: 'Hillside Apartment', name: '3 Bedroom Ocean View', wd: 3450000, we: 3750000 },
+  { hotel: 'ELYDAY CASA', name: 'Classic Queen', wd: 630000, we: 690000 },
+  { hotel: 'ELYDAY CASA', name: 'Superior Queen', wd: 680000, we: 940000 },
+  { hotel: 'ELYDAY CASA', name: 'Deluxe Queen', wd: 680000, we: 940000 },
+  { hotel: 'ELYDAY CASA', name: 'Family Deluxe', wd: 1100000, we: 1350000 },
+  { hotel: 'ELYDAY CASA', name: 'Suite Homey 1BR', wd: 1660000, we: 1780000 },
+  { hotel: 'ELYDAY CASA', name: 'Suite Casa 1BR with Bathtub', wd: 1900000, we: 2020000 }
+];
+function calcDigits(v) {
+  return String(v == null ? '' : v).replace(/[^0-9]/g, '');
+}
+function calcNum(v) {
+  const d = calcDigits(v);
+  return d === '' ? 0 : parseInt(d, 10);
+}
+function ticketRates(t) {
+  if (!t) return { adult: 0, child: 0, senior: 0, hasChildRate: false };
+  const hasChildRate = t.child !== null && t.child !== undefined && t.child !== '' && !isNaN(+t.child);
+  const child = hasChildRate ? +t.child : (+t.adult || 0);
+  const senior = (t.senior !== null && t.senior !== undefined && t.senior !== '' && !isNaN(+t.senior)) ? +t.senior : (+t.adult || 0);
+  return { adult: +t.adult || 0, child: child, senior: senior, hasChildRate: hasChildRate };
+}
+function computeQuoteCart(calc, flatTickets, combos) {
+  const lines = calc.lines || [];
+  const nAdult = calcNum(calc.adult);
+  const nChild = calcNum(calc.child);
+  const nSenior = calcNum(calc.senior);
+  const nGuests = nAdult + nChild + nSenior;
+  let ticketTotal = 0, roomCart = 0, comboAmt = 0, leCart = 0;
+  let ticketAdultRate = 0, ticketChildRate = 0, ticketSeniorRate = 0;
+  let hasTicket = false, hasRoomLine = false, hasCombo = false;
+  const lineOut = [];
+  lines.forEach(function (line) {
+    if (line.kind === 'ticket') {
+      const t = flatTickets[line.ticket];
+      const r = ticketRates(t);
+      const nA = calcNum(line.adult), nC = calcNum(line.child), nS = calcNum(line.senior);
+      const amt = nA * r.adult + nC * r.child + nS * r.senior;
+      ticketTotal += amt;
+      if (nA > 0) ticketAdultRate += r.adult;
+      if (nC > 0) ticketChildRate += r.child;
+      if (nS > 0) ticketSeniorRate += r.senior;
+      hasTicket = true;
+      lineOut.push({ kind: 'ticket', id: line.id, title: t ? t.name.replace(/\n/g, ' ') : 'Vé', amt: amt, nA: nA, nC: nC, nS: nS, rates: r });
+    } else if (line.kind === 'room') {
+      const room = ROOM_CATALOG[line.roomId];
+      if (!room) return;
+      const qty = calcNum(line.qty);
+      const wd = calcNum(line.nightsWd), we = calcNum(line.nightsWe);
+      const amt = qty * (wd * room.wd + we * room.we);
+      roomCart += amt;
+      hasRoomLine = true;
+      lineOut.push({ kind: 'room', id: line.id, title: room.hotel + ' — ' + room.name, amt: amt, qty: qty, wd: wd, we: we });
+    } else if (line.kind === 'combo') {
+      const combo = combos[line.comboIdx];
+      const qty = calcNum(line.qty);
+      const amt = calcNum(line.amount) * qty;
+      comboAmt += amt;
+      hasCombo = true;
+      const title = combo ? ((combo.desc || '').split('\n')[0] || combo.sheet) : 'Combo';
+      lineOut.push({ kind: 'combo', id: line.id, title: title, amt: amt, qty: qty, pax: calcNum(line.pax) });
+    } else if (line.kind === 'le') {
+      const qty = calcNum(line.qty);
+      const amt = calcNum(line.amount) * qty;
+      leCart += amt;
+      lineOut.push({ kind: 'le', id: line.id, title: line.name || 'Dịch vụ lẻ', amt: amt, qty: qty });
+    }
+  });
+  const extraRoom = calcNum(calc.room);
+  const extraOther = 0;
+  const roomAmt = roomCart + extraRoom;
+  const otherAmt = leCart;
+  const total = ticketTotal + roomAmt + comboAmt + otherAmt;
+  const dep = Math.round(total * 0.3 / 1000) * 1000;
+  const remain = total - dep;
+  const sharedAmt = roomAmt + comboAmt + otherAmt;
+  const roomPP = (nGuests > 0 && sharedAmt > 0) ? Math.round(sharedAmt / nGuests) : 0;
+  const adultPP = roomPP + ticketAdultRate;
+  const childPP = roomPP + ticketChildRate;
+  const seniorPP = roomPP + ticketSeniorRate;
+  const ppReady = nGuests > 0 && total > 0;
+  return {
+    nAdult: nAdult, nChild: nChild, nSenior: nSenior, nGuests: nGuests,
+    ticketTotal: ticketTotal, roomAmt: roomAmt, roomCart: roomCart, extraRoom: extraRoom,
+    comboAmt: comboAmt, otherAmt: otherAmt, leCart: leCart, extraOther: extraOther,
+    total: total, dep: dep, remain: remain, sharedAmt: sharedAmt,
+    roomPP: roomPP, adultPP: adultPP, childPP: childPP, seniorPP: seniorPP, ppReady: ppReady,
+    ticketAdultRate: ticketAdultRate, ticketChildRate: ticketChildRate, ticketSeniorRate: ticketSeniorRate,
+    hasTicket: hasTicket, hasRoomLine: hasRoomLine, hasCombo: hasCombo, lineOut: lineOut,
+    overlap: hasCombo && (hasTicket || hasRoomLine || extraRoom > 0)
+  };
+}
 
 
 class Component extends DCLogic {
@@ -1680,9 +1873,17 @@ class Component extends DCLogic {
     comboIdx: 0, copied: '',
     answers: {}, done: {},
     scripts: [], cats: [], tickets: [], combos: [],
-    calc: { ticket: -1, adult: '2', child: '0', senior: '0', room: '', other: '' },
+    calc: {
+      ticket: -1, adult: '2', child: '0', senior: '0', room: '', other: '',
+      nightsWd: '2', nightsWe: '0', comboPick: '0', comboPrice: '', leName: '',
+      lines: [], nextId: 1
+    },
     dark: readDark()
   };
+
+  setTab(name, extra) {
+    this.setState(Object.assign({ tab: name }, extra || {}));
+  }
 
   componentDidMount() {
     applyThemeClass(this.state.dark);
@@ -1691,13 +1892,13 @@ class Component extends DCLogic {
         const tag = (document.activeElement && document.activeElement.tagName) || '';
         if (e.key === '/' && tag !== 'INPUT' && tag !== 'TEXTAREA' && tag !== 'SELECT') {
           e.preventDefault();
-          this.setState({ tab: 'script' });
+          this.setTab('script');
           setTimeout(() => { const el = document.querySelector('input[placeholder^="Tìm theo"]'); if (el) el.focus(); }, 60);
         }
         if (/^[0-9]$/.test(e.key) && tag !== 'INPUT' && tag !== 'TEXTAREA' && tag !== 'SELECT') {
           var navMap = ['home', 'lotrinh', 'quytrinh', 'lead', 'booking', 'care', 'script', 'gia', 'camnang', 'kpi'];
           var navIdx = e.key === '0' ? 9 : (+e.key - 1);
-          if (navMap[navIdx]) { e.preventDefault(); this.setState({ tab: navMap[navIdx] }); }
+          if (navMap[navIdx]) { e.preventDefault(); this.setTab(navMap[navIdx]); }
         }
       });
     } catch (err) {}
@@ -1774,6 +1975,63 @@ class Component extends DCLogic {
     if (this.state.copied === key) return { bg: '#4FB3A6', fg: '#fff', bd: '#4FB3A6', label: 'Đã copy' };
     if (this.state.copied === '!' + key) return { bg: '#FFF6F3', fg: '#B4441F', bd: '#F0B9A5', label: 'Chưa copy được' };
     return { bg: '#fff', fg: '#1E6B5E', bd: '#4FB3A6', label: label };
+  }
+
+  patchCalc(partial) {
+    this.setState({ calc: Object.assign({}, this.state.calc, partial) });
+  }
+  addCartLine(line) {
+    const calc = this.state.calc;
+    const id = calc.nextId || 1;
+    this.patchCalc({ nextId: id + 1, lines: (calc.lines || []).concat([Object.assign({ id: id }, line)]) });
+  }
+  removeCartLine(id) {
+    this.patchCalc({ lines: (this.state.calc.lines || []).filter(function (ln) { return ln.id !== id; }) });
+  }
+  bumpCartLine(id, field, delta) {
+    const lines = (this.state.calc.lines || []).map(function (ln) {
+      if (ln.id !== id) return ln;
+      const next = Object.assign({}, ln);
+      const n = Math.max(0, calcNum(ln[field]) + delta);
+      next[field] = n === 0 ? '0' : String(n);
+      return next;
+    });
+    this.patchCalc({ lines: lines });
+  }
+  addTicketLine() {
+    const c = this.state.calc;
+    if (!(c.ticket >= 0)) return;
+    this.addCartLine({ kind: 'ticket', ticket: c.ticket, adult: c.adult || '0', child: c.child || '0', senior: c.senior || '0' });
+  }
+  addRoomLine(roomId) {
+    const c = this.state.calc;
+    let wd = calcNum(c.nightsWd), we = calcNum(c.nightsWe);
+    if (wd + we === 0) wd = 1;
+    this.addCartLine({ kind: 'room', roomId: roomId, qty: '1', nightsWd: String(wd), nightsWe: String(we) });
+  }
+  addComboLine() {
+    const c = this.state.calc;
+    const amount = calcDigits(c.comboPrice);
+    if (!amount) return;
+    this.addCartLine({
+      kind: 'combo',
+      comboIdx: calcNum(c.comboPick),
+      amount: amount,
+      qty: '1',
+      pax: String(calcNum(c.adult) + calcNum(c.child) + calcNum(c.senior) || 1)
+    });
+  }
+  addLeLine() {
+    const c = this.state.calc;
+    const amount = calcDigits(c.other);
+    if (!amount) return;
+    const name = String(c.leName || '').trim() || 'Dịch vụ lẻ';
+    const id = c.nextId || 1;
+    this.patchCalc({
+      other: '', leName: '',
+      nextId: id + 1,
+      lines: (c.lines || []).concat([{ id: id, kind: 'le', name: name, amount: amount, qty: '1' }])
+    });
   }
 
   renderVals() {
@@ -1867,79 +2125,117 @@ class Component extends DCLogic {
       label: r.name.replace(/\n/g, ' ').slice(0, 70) + ' — ' + this.money(r.adult)
     }));
 
-    const c = st.calc;
-    const digits = (v) => String(v === null || v === undefined ? '' : v).replace(/[^0-9]/g, '');
-    const num = (v) => { const d = digits(v); return d === '' ? 0 : parseInt(d, 10); };
-    const grp = (v) => { const d = digits(v); return d === '' ? '' : parseInt(d, 10).toLocaleString('vi-VN'); };
-    const t = (c.ticket >= 0 && flatTickets[c.ticket]) ? flatTickets[c.ticket] : null;
-    const nAdult = num(c.adult);
-    const nChild = num(c.child);
-    const nSenior = num(c.senior);
-    const hasChildRate = !!(t && t.child !== null && t.child !== undefined && t.child !== '' && !isNaN(+t.child));
-    const childRate = t ? (hasChildRate ? +t.child : (+t.adult || 0)) : 0;
-    const seniorRate = t ? ((t.senior !== null && t.senior !== undefined && t.senior !== '' && !isNaN(+t.senior)) ? +t.senior : (+t.adult || 0)) : 0;
-    const ticketTotal = t ? nAdult * (+t.adult || 0) + nChild * childRate + nSenior * seniorRate : 0;
-    const roomAmt = num(c.room);
-    const otherAmt = num(c.other);
-    const total = ticketTotal + roomAmt + otherAmt;
-    const dep = Math.round(total * 0.3 / 1000) * 1000;
-    const remain = total - dep;
-    const nGuests = nAdult + nChild + nSenior;
-    const roomPP = (nGuests > 0 && roomAmt > 0) ? Math.round(roomAmt / nGuests) : 0;
-    const adultPP = roomPP + (t ? (+t.adult || 0) : 0);
-    const childPP = roomPP + childRate;
-    const seniorPP = roomPP + seniorRate;
-    const guestsParts = [];
-    if (nAdult > 0) guestsParts.push(nAdult + ' người lớn');
-    if (nChild > 0) guestsParts.push(nChild + ' trẻ em');
-    if (nSenior > 0) guestsParts.push(nSenior + ' người cao tuổi');
-    const guestsLabel = guestsParts.length ? guestsParts.join(' + ') : '0 khách';
-    const svcLabel = t ? t.name.replace(/\n/g, ' ') : 'phòng và dịch vụ theo phương án đã trao đổi';
-    const setTicket = (e) => {
-      const v = parseInt(e.target.value, 10);
-      this.setState({ calc: Object.assign({}, this.state.calc, { ticket: isNaN(v) ? -1 : v }) });
-    };
-    const setField = (k, max) => (e) => {
-      const d = digits(e.target.value).slice(0, max).replace(/^0+(?=\d)/, '');
-      this.setState({ calc: Object.assign({}, this.state.calc, { ticket: this.state.calc.ticket, [k]: d }) });
-    };
-    const quoteLines = ['BÁO GIÁ THAM KHẢO'];
-    if (t) {
-      quoteLines.push('- Vé: ' + t.name.replace(/\n/g, ' '));
-      const parts = [];
-      if (nAdult > 0) parts.push(nAdult + ' người lớn x ' + this.money(t.adult));
-      if (nChild > 0) parts.push(nChild + ' trẻ em x ' + this.money(childRate));
-      if (nSenior > 0) parts.push(nSenior + ' cao tuổi x ' + this.money(seniorRate));
-      quoteLines.push('  ' + (parts.length ? parts.join(' + ') + ' = ' : '') + this.money(ticketTotal));
-    }
-    if (roomAmt > 0) quoteLines.push('- Phòng: ' + this.money(roomAmt));
-    if (otherAmt > 0) quoteLines.push('- Dịch vụ khác: ' + this.money(otherAmt));
-    quoteLines.push('Tổng giá: ' + this.money(total));
-    quoteLines.push('Cọc 30%: ' + this.money(dep));
-    quoteLines.push('Còn lại: ' + this.money(remain));
-    const quoteText = quoteLines.join('\n');
-    const msgTongText = 'Dạ em gửi anh/chị phương án và giá tham khảo ạ:\n• Dịch vụ: ' + svcLabel + '\n• Số khách: ' + guestsLabel + '\n• Tổng booking: ' + this.money(total) + '\n• Cọc 30%: ' + this.money(dep) + ' — chuyển trước để giữ chỗ và giữ giá\n• Còn lại: ' + this.money(remain) + ' thanh toán tại quầy khi nhận phòng\nGiá hiệu lực trong hôm nay và có thể thay đổi theo tình trạng chỗ. Anh/chị xem phương án và phản hồi giúp em nhé ạ.';
-    const ppLines = [];
-    if (nGuests > 0 && roomAmt > 0) {
-      ppLines.push('Dạ tiền phòng em chia đều theo đầu người, cộng thêm giá vé/tour theo từng đối tượng ạ:');
-      ppLines.push('• Tiền phòng: ' + this.money(roomAmt) + ' ÷ ' + nGuests + ' khách = ' + this.money(roomPP) + '/khách (cả kỳ lưu trú)');
-      if (nAdult > 0) ppLines.push('• Giá người lớn: ' + this.money(adultPP) + '/khách' + (t ? ' (phòng ' + this.money(roomPP) + ' + vé ' + this.money(+t.adult || 0) + ')' : ''));
-      if (nChild > 0) ppLines.push('• Giá trẻ em: ' + this.money(childPP) + '/khách' + (t ? ' (phòng ' + this.money(roomPP) + ' + vé ' + this.money(childRate) + ')' : ''));
-      if (nSenior > 0) ppLines.push('• Giá cao tuổi: ' + this.money(seniorPP) + '/khách' + (t ? ' (phòng ' + this.money(roomPP) + ' + vé ' + this.money(seniorRate) + ')' : ''));
-      ppLines.push('• Tổng booking: ' + this.money(total) + ' — cọc 30% ' + this.money(dep) + ', còn lại ' + this.money(remain) + ' tại quầy.');
-      ppLines.push('Mỗi khách trả khác nhau vì vé tính theo đối tượng, phần phòng thì bằng nhau ạ. Anh/chị cần điều chỉnh gì báo em nhé.');
-    }
-    const msgPPText = ppLines.length ? ppLines.join('\n') : '';
-    const ppReady = nGuests > 0 && roomAmt > 0;
-    const mTong = this.copyBtn('msgtong', '⧉ Copy văn mẫu');
-    const mPP = this.copyBtn('msgpp', '⧉ Copy văn mẫu');
-
     const combos = st.combos;
     const combo = combos[st.comboIdx] || { desc: '', d1: '', d2: '', d3: '', inc: '', exc: '' };
     const comboChips = combos.map((x, i) => Object.assign(
       { label: x.desc.split('\n')[0].replace('COMBO ', ''), onClick: () => this.setState({ comboIdx: i }) },
       this.pill(st.comboIdx === i)
     ));
+
+    const c = st.calc;
+    const grp = (v) => { const d = calcDigits(v); return d === '' ? '' : parseInt(d, 10).toLocaleString('vi-VN'); };
+    const t = (c.ticket >= 0 && flatTickets[c.ticket]) ? flatTickets[c.ticket] : null;
+    const cq = computeQuoteCart(c, flatTickets, combos);
+    const nAdult = cq.nAdult, nChild = cq.nChild, nSenior = cq.nSenior, nGuests = cq.nGuests;
+    const ticketTotal = cq.ticketTotal, roomAmt = cq.roomAmt, otherAmt = cq.otherAmt, total = cq.total, dep = cq.dep, remain = cq.remain;
+    const roomPP = cq.roomPP, adultPP = cq.adultPP, childPP = cq.childPP, seniorPP = cq.seniorPP, ppReady = cq.ppReady;
+    const hasChildRate = !!(t && ticketRates(t).hasChildRate);
+    const guestsParts = [];
+    if (nAdult > 0) guestsParts.push(nAdult + ' người lớn');
+    if (nChild > 0) guestsParts.push(nChild + ' trẻ em');
+    if (nSenior > 0) guestsParts.push(nSenior + ' người cao tuổi');
+    const guestsLabel = guestsParts.length ? guestsParts.join(' + ') : '0 khách';
+    const svcBits = cq.lineOut.map(function (ln) { return ln.title; });
+    if (cq.extraRoom > 0) svcBits.push('phòng ngoài bảng');
+    const svcLabel = svcBits.length ? svcBits.join('; ') : 'phòng và dịch vụ theo phương án đã trao đổi';
+    const setTicket = (e) => {
+      const v = parseInt(e.target.value, 10);
+      this.setState({ calc: Object.assign({}, this.state.calc, { ticket: isNaN(v) ? -1 : v }) });
+    };
+    const setField = (k, max) => (e) => {
+      const raw = e.target.value;
+      const d = (k === 'leName') ? String(raw).slice(0, 80) : calcDigits(raw).slice(0, max).replace(/^0+(?=\d)/, '');
+      this.setState({ calc: Object.assign({}, this.state.calc, { [k]: d }) });
+    };
+    const quoteLines = ['BÁO GIÁ THAM KHẢO', 'Số khách: ' + guestsLabel];
+    cq.lineOut.forEach((ln) => {
+      if (ln.kind === 'ticket') {
+        const parts = [];
+        if (ln.nA > 0) parts.push(ln.nA + ' người lớn x ' + this.money(ln.rates.adult));
+        if (ln.nC > 0) parts.push(ln.nC + ' trẻ em x ' + this.money(ln.rates.child));
+        if (ln.nS > 0) parts.push(ln.nS + ' cao tuổi x ' + this.money(ln.rates.senior));
+        quoteLines.push('- Vé lẻ: ' + ln.title);
+        quoteLines.push('  ' + (parts.length ? parts.join(' + ') + ' = ' : '') + this.money(ln.amt));
+      } else if (ln.kind === 'room') {
+        quoteLines.push('- Phòng: ' + ln.title + ' × ' + ln.qty + ' · ' + ln.wd + ' đêm ngày thường + ' + ln.we + ' đêm cuối tuần = ' + this.money(ln.amt));
+      } else if (ln.kind === 'combo') {
+        quoteLines.push('- Combo: ' + ln.title + (ln.qty > 1 ? ' × ' + ln.qty : '') + ' = ' + this.money(ln.amt));
+      } else {
+        quoteLines.push('- Dịch vụ lẻ: ' + ln.title + (ln.qty > 1 ? ' × ' + ln.qty : '') + ' = ' + this.money(ln.amt));
+      }
+    });
+    if (cq.extraRoom > 0) quoteLines.push('- Phòng ngoài bảng: ' + this.money(cq.extraRoom));
+    quoteLines.push('Vé lẻ: ' + this.money(ticketTotal));
+    quoteLines.push('Phòng: ' + this.money(roomAmt));
+    quoteLines.push('Combo: ' + this.money(cq.comboAmt));
+    quoteLines.push('Dịch vụ lẻ: ' + this.money(otherAmt));
+    quoteLines.push('Tổng giá: ' + this.money(total));
+    quoteLines.push('Cọc 30%: ' + this.money(dep));
+    quoteLines.push('Còn lại: ' + this.money(remain));
+    if (cq.overlap) quoteLines.push('Lưu ý: combo thường đã gồm phòng/vé — kiểm tra không cộng trùng.');
+    const quoteText = quoteLines.join('\n');
+    const msgTongText = 'Dạ em gửi anh/chị phương án và giá tham khảo ạ:\n• Dịch vụ: ' + svcLabel + '\n• Số khách: ' + guestsLabel + '\n• Tổng booking: ' + this.money(total) + '\n• Cọc 30%: ' + this.money(dep) + ' — chuyển trước để giữ chỗ và giữ giá\n• Còn lại: ' + this.money(remain) + ' thanh toán tại quầy khi nhận phòng\nGiá hiệu lực trong hôm nay và có thể thay đổi theo tình trạng chỗ. Anh/chị xem phương án và phản hồi giúp em nhé ạ.';
+    const ppLines = [];
+    if (ppReady) {
+      ppLines.push('Dạ em chia phần phòng/combo/dịch vụ lẻ đều theo đầu người, cộng thêm giá vé lẻ theo từng đối tượng ạ:');
+      if (cq.sharedAmt > 0) ppLines.push('• Phần chia đều: ' + this.money(cq.sharedAmt) + ' ÷ ' + nGuests + ' khách = ' + this.money(roomPP) + '/khách (cả kỳ)');
+      if (nAdult > 0) ppLines.push('• Giá người lớn: ' + this.money(adultPP) + '/khách' + (cq.ticketAdultRate ? ' (chia đều ' + this.money(roomPP) + ' + vé lẻ ' + this.money(cq.ticketAdultRate) + ')' : ''));
+      if (nChild > 0) ppLines.push('• Giá trẻ em: ' + this.money(childPP) + '/khách' + (cq.ticketChildRate ? ' (chia đều ' + this.money(roomPP) + ' + vé lẻ ' + this.money(cq.ticketChildRate) + ')' : ''));
+      if (nSenior > 0) ppLines.push('• Giá cao tuổi: ' + this.money(seniorPP) + '/khách' + (cq.ticketSeniorRate ? ' (chia đều ' + this.money(roomPP) + ' + vé lẻ ' + this.money(cq.ticketSeniorRate) + ')' : ''));
+      ppLines.push('• Tổng booking: ' + this.money(total) + ' — cọc 30% ' + this.money(dep) + ', còn lại ' + this.money(remain) + ' tại quầy.');
+      if (cq.overlap) ppLines.push('Combo lịch trình thường đã gồm một phần phòng/vé; em không cộng trùng phần đã nằm trong gói ạ.');
+      ppLines.push('Mỗi khách trả khác nhau vì vé tính theo đối tượng, phần chia đều thì bằng nhau ạ. Anh/chị cần điều chỉnh gì báo em nhé.');
+    } else {
+      ppLines.push('Nhập số khách và thêm hạng mục vào giỏ để em soạn văn mẫu chia đầu người ạ.');
+    }
+    const msgPPText = ppLines.join('\n');
+    const mTong = this.copyBtn('msgtong', '⧉ Copy văn mẫu tổng');
+    const mPP = this.copyBtn('msgpp', '⧉ Copy văn mẫu đầu người');
+    const self = this;
+    const cartLines = cq.lineOut.map(function (ln) {
+      const isTicket = ln.kind === 'ticket';
+      const isQty = ln.kind === 'room' || ln.kind === 'combo' || ln.kind === 'le';
+      let meta = '';
+      if (isTicket) meta = ln.nA + ' NL · ' + ln.nC + ' TE · ' + ln.nS + ' CT';
+      else if (ln.kind === 'room') meta = ln.qty + ' phòng · ' + ln.wd + ' đêm ngày thường · ' + ln.we + ' đêm cuối tuần';
+      else if (ln.kind === 'combo') meta = 'SL ' + ln.qty + (ln.pax ? ' · ' + ln.pax + ' khách ghi chú' : '');
+      else meta = 'SL ' + ln.qty;
+      return {
+        id: ln.id, title: ln.title, meta: meta, amtF: self.money(ln.amt),
+        kindLabel: isTicket ? 'Vé lẻ' : (ln.kind === 'room' ? 'Phòng' : (ln.kind === 'combo' ? 'Combo' : 'Dịch vụ lẻ')),
+        isTicket: isTicket, isQty: isQty, nA: ln.nA, nC: ln.nC, nS: ln.nS, qty: ln.qty,
+        onRemove: function () { self.removeCartLine(ln.id); },
+        onAdultMinus: function () { self.bumpCartLine(ln.id, 'adult', -1); },
+        onAdultPlus: function () { self.bumpCartLine(ln.id, 'adult', 1); },
+        onChildMinus: function () { self.bumpCartLine(ln.id, 'child', -1); },
+        onChildPlus: function () { self.bumpCartLine(ln.id, 'child', 1); },
+        onSeniorMinus: function () { self.bumpCartLine(ln.id, 'senior', -1); },
+        onSeniorPlus: function () { self.bumpCartLine(ln.id, 'senior', 1); },
+        onQtyMinus: function () { self.bumpCartLine(ln.id, 'qty', -1); },
+        onQtyPlus: function () { self.bumpCartLine(ln.id, 'qty', 1); }
+      };
+    });
+    const roomPickers = ROOM_CATALOG.map(function (r, i) {
+      return {
+        hotel: r.hotel, name: r.name, wdF: self.money(r.wd), weF: self.money(r.we),
+        onAdd: function () { self.addRoomLine(i); }
+      };
+    });
+    const comboPickOptions = combos.map(function (x, i) {
+      return { value: String(i), label: ((x.desc || '').split('\n')[0] || x.sheet || 'Combo').slice(0, 70) };
+    });
+    const cartHasItems = cartLines.length > 0;
+    const cartEmpty = !cartHasItems;
 
     const subPill = (name) => this.pill(st.sub === name);
     const dayPill = (n) => this.pill(st.day === n);
@@ -1948,15 +2244,15 @@ class Component extends DCLogic {
       tabHome: this.tab('home'), tabLotrinh: this.tab('lotrinh'), tabQuytrinh: this.tab('quytrinh'),
       tabLead: this.tab('lead'), tabBooking: this.tab('booking'), tabCare: this.tab('care'),
       tabScript: this.tab('script'), tabGia: this.tab('gia'), tabCamnang: this.tab('camnang'), tabKpi: this.tab('kpi'),
-      goHome: () => this.setState({ tab: 'home' }), goLotrinh: () => this.setState({ tab: 'lotrinh' }),
-      quickScripts: () => { this.setState({ tab: 'script' }); setTimeout(function () { var el = document.querySelector('input[placeholder^="Tìm theo"]'); if (el) el.focus(); }, 60); },
-      quickGiaVe: () => this.setState({ tab: 'gia', sub: 've' }),
-      quickCalc: () => this.setState({ tab: 'gia', sub: 'calc' }),
-      goQuytrinh: () => this.setState({ tab: 'quytrinh' }), goLead: () => this.setState({ tab: 'lead' }),
-      goBooking: () => this.setState({ tab: 'booking' }), goCare: () => this.setState({ tab: 'care' }),
-      goScript: () => this.setState({ tab: 'script' }), goGia: () => this.setState({ tab: 'gia' }),
-      goCamnang: () => this.setState({ tab: 'camnang' }),
-      goKpi: () => this.setState({ tab: 'kpi' }),
+      goHome: () => this.setTab('home'), goLotrinh: () => this.setTab('lotrinh'),
+      quickScripts: () => { this.setTab('script'); setTimeout(function () { var el = document.querySelector('input[placeholder^="Tìm theo"]'); if (el) el.focus(); }, 60); },
+      quickGiaVe: () => this.setTab('gia', { sub: 've' }),
+      quickCalc: () => this.setTab('gia', { sub: 'calc' }),
+      goQuytrinh: () => this.setTab('quytrinh'), goLead: () => this.setTab('lead'),
+      goBooking: () => this.setTab('booking'), goCare: () => this.setTab('care'),
+      goScript: () => this.setTab('script'), goGia: () => this.setTab('gia'),
+      goCamnang: () => this.setTab('camnang'),
+      goKpi: () => this.setTab('kpi'),
       themeIcon: st.dark ? '☀️' : '🌙',
       themeTitle: st.dark ? 'Chuyển sang chế độ sáng' : 'Chuyển sang chế độ tối',
       themePressed: st.dark ? 'true' : 'false',
@@ -1996,22 +2292,31 @@ class Component extends DCLogic {
 
       calcTicket: String(c.ticket), calcAdult: c.adult, calcChild: c.child, calcSenior: c.senior,
       calcRoom: grp(c.room), calcOther: grp(c.other),
+      calcNightsWd: c.nightsWd, calcNightsWe: c.nightsWe,
+      calcComboPick: String(c.comboPick || '0'), calcComboPrice: grp(c.comboPrice), calcLeName: c.leName || '',
       onTicket: setTicket, onAdult: setField('adult', 3), onChild: setField('child', 3), onSenior: setField('senior', 3),
+      onNightsWd: setField('nightsWd', 2), onNightsWe: setField('nightsWe', 2),
+      onComboPick: (e) => this.patchCalc({ comboPick: String(e.target.value) }),
+      onComboPrice: setField('comboPrice', 11), onLeName: setField('leName', 80),
+      onRoom: setField('room', 11), onOther: setField('other', 11),
+      addTicketLine: () => this.addTicketLine(), addComboLine: () => this.addComboLine(), addLeLine: () => this.addLeLine(),
+      roomPickers, comboPickOptions, cartLines,
+      cartHasItems: cartHasItems, cartEmpty: cartEmpty,
+      cartCountLabel: cartHasItems ? cartLines.length + ' hạng mục' : 'Trống',
+      overlapOn: cq.overlap,
       copyQuote: () => this.copy(quoteText, 'quote'), quoteBtn: this.copyBtn('quote', 'Copy báo giá'),
       roomPPF: this.money(roomPP), adultPPF: this.money(adultPP), childPPF: this.money(childPP), seniorPPF: this.money(seniorPP),
-      nGuestsF: nGuests, ppReady, showSeniorPP: nSenior > 0 && ppReady,
-      msgTongText, msgPPText,
+      nGuestsF: nGuests, ppReady: ppReady, ppHintOn: !ppReady,
+      showAdultPP: nAdult > 0 && ppReady, showChildPP: nChild > 0 && ppReady, showSeniorPP: nSenior > 0 && ppReady,
+      msgTongText: msgTongText, msgPPText: msgPPText,
       copyMsgTong: () => this.copy(msgTongText, 'msgtong'), msgTongBtn: mTong,
       copyMsgPP: () => this.copy(msgPPText, 'msgpp'), msgPPBtn: mPP,
-      onRoom: setField('room', 11), onOther: setField('other', 11),
-      calcTicketTotal: this.money(ticketTotal), calcTotal: this.money(total),
-      calcDeposit: this.money(dep), calcRemain: this.money(remain),
-      childRateNote: !t ? 'Chọn loại vé để tính tiền vé.'
-        : (hasChildRate ? 'Giá trẻ em của vé này: ' + this.money(t.child) + '. Trẻ dưới 1m miễn phí, không tính vào đây.'
-          : 'Vé này không có giá trẻ em riêng — đang tính bằng giá người lớn.'),
-      calcTicket: String(c.ticket), calcAdult: c.adult, calcChild: c.child, calcSenior: c.senior,
-      calcRoom: grp(c.room), calcOther: grp(c.other),
-      onTicket: setTicket, onAdult: setField('adult', 3), onChild: setField('child', 3), onSenior: setField('senior', 3),
+      calcTicketTotal: this.money(ticketTotal), calcRoomTotal: this.money(roomAmt),
+      calcComboTotal: this.money(cq.comboAmt), calcLeTotal: this.money(otherAmt),
+      calcTotal: this.money(total), calcDeposit: this.money(dep), calcRemain: this.money(remain),
+      childRateNote: !t ? 'Trẻ dưới 1m miễn phí vé, không nhập vào số trẻ. Chọn vé rồi nhấn Thêm vé — có thể thêm nhiều loại.'
+        : (hasChildRate ? 'Vé đang chọn: trẻ em ' + this.money(t.child) + '. Trẻ dưới 1m miễn phí, không tính vào đây. Nhấn Thêm vé để vào giỏ.'
+          : 'Vé đang chọn không có giá trẻ em riêng — sẽ tính bằng giá người lớn khi thêm vào giỏ.'),
 
       copyRoom1: () => this.copy(ROOM_COPY[0], 'room0'), roomBtn1: this.copyBtn('room0', '⧉ Copy'),
       copyRoom2: () => this.copy(ROOM_COPY[1], 'room1'), roomBtn2: this.copyBtn('room1', '⧉ Copy'),
