@@ -1423,6 +1423,46 @@ Vấn đề cần hỗ trợ:</pre>
 </div>
 
 </x-dc>
+<script>
+(function(){
+  var KEY = 'elyday-theme';
+  function isDark(){
+    var v = null;
+    try { v = localStorage.getItem(KEY); } catch (e) {}
+    if (v === 'dark' || v === 'light') return v === 'dark';
+    return !!(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
+  }
+  function ensureBtn(){
+    var b = document.getElementById('themeToggle');
+    if (b) return b;
+    var h = document.querySelector('header');
+    if (!h) return null;
+    b = document.createElement('button');
+    b.id = 'themeToggle';
+    b.setAttribute('aria-label', 'Đổi giao diện sáng/tối');
+    b.style.cssText = 'margin-left:4px;width:36px;height:36px;border-radius:50%;border:1px solid #454976;background:rgba(255,255,255,.08);cursor:pointer;font-size:16px;line-height:1;flex:0 0 auto;color:#fff';
+    var cluster = h.querySelector('span') ? (function(){
+      var spans = h.querySelectorAll('span');
+      for (var i = 0; i < spans.length; i++) if (spans[i].textContent.trim() === 'Phú Quốc') return spans[i].parentElement;
+      return null;
+    })() : null;
+    (cluster || h).appendChild(b);
+    b.addEventListener('click', function(){ apply(!document.documentElement.classList.contains('dark')); });
+    return b;
+  }
+  function apply(d){
+    document.documentElement.classList.toggle('dark', d);
+    try { localStorage.setItem(KEY, d ? 'dark' : 'light'); } catch (e) {}
+    var b = document.getElementById('themeToggle');
+    if (b) { b.textContent = d ? '☀️' : '🌙'; b.title = d ? 'Chuyển sang chế độ sáng' : 'Chuyển sang chế độ tối'; }
+  }
+  apply(isDark());
+  ensureBtn();
+  setTimeout(ensureBtn, 500); setTimeout(ensureBtn, 1500);
+  try { new MutationObserver(function(){ ensureBtn(); }).observe(document.body, { childList: true, subtree: true }); } catch (e) {}
+})();
+</script>
+
 <div id="tlightbox" aria-hidden="true">
   <button id="tlb-close" aria-label="Đóng" title="Đóng (Esc)">×</button>
   <button id="tlb-prev" aria-label="Ảnh trước" title="Trước (←)">‹</button>
@@ -1483,6 +1523,29 @@ Vấn đề cần hỗ trợ:</pre>
 
 <style>
 .rules-ol li::marker{color:#4FB3A6;font-weight:700}
+/* ── DARK MODE ── */
+html.dark body{background:#171A30}
+html.dark :is([style*="background:#fff"],[style*="background: rgb(255, 255, 255)"],[style*="background:rgb(255,255,255)"]){background:#232743 !important}
+html.dark :is([style*="background:#F5F6FA"],[style*="background: rgb(245, 246, 250)"]){background:#2B2F4E !important}
+html.dark :is([style*="background:#EAF7F4"],[style*="background:#F4FBF9"],[style*="background: rgb(234, 247, 244)"],[style*="background: rgb(244, 251, 249)"]){background:#1E3A36 !important}
+html.dark :is([style*="background:#FFF6F3"],[style*="background: rgb(255, 246, 243)"]){background:#38251F !important}
+html.dark :is([style*="background:#2A2D5C"],[style*="background: rgb(42, 45, 92)"]){background:#202449 !important}
+html.dark :is([style*="#CDE9E2"],[style*="rgb(205, 233, 226)"]){background:#2E5A50 !important}
+html.dark :is([style*="#E6E8EF"],[style*="rgb(230, 232, 239)"]){border-color:#363B5E !important}
+html.dark :is([style*="#D9DCE6"],[style*="rgb(217, 220, 230)"]){border-color:#3E4368 !important}
+html.dark :is([style*="#EEF0F5"],[style*="rgb(238, 240, 245)"]){border-color:#333859 !important}
+html.dark :is([style*="#D4EFE8"],[style*="rgb(212, 239, 232)"]){border-color:#2E5A50 !important}
+html.dark :is([style*="#F6D9CF"],[style*="#F0B9A5"],[style*="rgb(246, 217, 207)"]){border-color:#5A3324 !important}
+html.dark :is([style*="color:#2A2D5C"],[style*="color: rgb(42, 45, 92)"]){color:#E8EAF6 !important}
+html.dark :is([style*="color:#3A3E4C"],[style*="color:#2C2F3A"],[style*="color: rgb(58, 62, 76)"],[style*="color: rgb(44, 47, 58)"]){color:#C7CBE2 !important}
+html.dark :is([style*="color:#6B7080"],[style*="color: rgb(107, 112, 128)"]){color:#9AA1C0 !important}
+html.dark :is([style*="color:#1E6B5E"],[style*="color: rgb(30, 107, 94)"]){color:#7FD8C9 !important}
+html.dark :is([style*="color:#3D6A62"],[style*="color: rgb(61, 106, 98)"]){color:#9FD8CB !important}
+html.dark :is([style*="color:#B4441F"],[style*="color: rgb(180, 68, 31)"]){color:#F2A085 !important}
+html.dark :is([style*="color:#6D4234"]){color:#E5B7A5 !important}
+html.dark .cm-chip{background:#232743 !important;border-color:#3E4368 !important;color:#C7CBE2 !important}
+html.dark .pr-chip{background:#2B2F4E !important;border-color:#363B5E !important;color:#E8EAF6 !important}
+html.dark .tourfig{background:#232743 !important;border-color:#363B5E !important}
 .qa-btn{display:flex;align-items:center;gap:12px;text-align:left;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.16);border-radius:12px;padding:13px 15px;cursor:pointer;min-height:64px;transition:background .15s,border-color .15s}
 .qa-btn:hover{background:rgba(255,255,255,.14);border-color:rgba(127,216,201,.5)}
 .qa-ico{font-size:22px;flex:0 0 auto}
