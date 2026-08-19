@@ -226,17 +226,19 @@ window.__resources = {"scriptsJson":"data:application/json;base64,eyJjYXRlZ29yaW
       </div>
     </div>
 
-    <div style="position:sticky;top:0;z-index:60;background:#2A2D5C;box-shadow:0 10px 26px rgba(21,23,56,.45);max-width:1280px;margin:0 auto;display:flex;gap:3px;overflow-x:auto;overscroll-behavior-x:contain;scrollbar-width:thin;scrollbar-color:#5A5F92 transparent">
-      <button sc-camel-on-click="{{ goHome }}" style="background:{{ tabHome.bg }};color:{{ tabHome.fg }};border:0;border-radius:10px 10px 0 0;padding:11px 11px;font-family:Outfit,sans-serif;font-size:14px;font-weight:500;cursor:pointer;white-space:nowrap;flex:0 0 auto">Tổng quan</button>
-      <button sc-camel-on-click="{{ goLotrinh }}" style="background:{{ tabLotrinh.bg }};color:{{ tabLotrinh.fg }};border:0;border-radius:10px 10px 0 0;padding:11px 11px;font-family:Outfit,sans-serif;font-size:14px;font-weight:500;cursor:pointer;white-space:nowrap;flex:0 0 auto">Lộ trình 7 ngày</button>
-      <button sc-camel-on-click="{{ goQuytrinh }}" style="background:{{ tabQuytrinh.bg }};color:{{ tabQuytrinh.fg }};border:0;border-radius:10px 10px 0 0;padding:11px 11px;font-family:Outfit,sans-serif;font-size:14px;font-weight:500;cursor:pointer;white-space:nowrap;flex:0 0 auto">Quy trình</button>
-      <button sc-camel-on-click="{{ goLead }}" style="background:{{ tabLead.bg }};color:{{ tabLead.fg }};border:0;border-radius:10px 10px 0 0;padding:11px 11px;font-family:Outfit,sans-serif;font-size:14px;font-weight:500;cursor:pointer;white-space:nowrap;flex:0 0 auto">Trạng thái lead</button>
-      <button sc-camel-on-click="{{ goBooking }}" style="background:{{ tabBooking.bg }};color:{{ tabBooking.fg }};border:0;border-radius:10px 10px 0 0;padding:11px 11px;font-family:Outfit,sans-serif;font-size:14px;font-weight:500;cursor:pointer;white-space:nowrap;flex:0 0 auto">Chốt booking</button>
-      <button sc-camel-on-click="{{ goCare }}" style="background:{{ tabCare.bg }};color:{{ tabCare.fg }};border:0;border-radius:10px 10px 0 0;padding:11px 11px;font-family:Outfit,sans-serif;font-size:14px;font-weight:500;cursor:pointer;white-space:nowrap;flex:0 0 auto">Chăm sóc</button>
-      <button sc-camel-on-click="{{ goScript }}" style="background:{{ tabScript.bg }};color:{{ tabScript.fg }};border:0;border-radius:10px 10px 0 0;padding:11px 11px;font-family:Outfit,sans-serif;font-size:14px;font-weight:500;cursor:pointer;white-space:nowrap;flex:0 0 auto">Script</button>
-      <button sc-camel-on-click="{{ goGia }}" style="background:{{ tabGia.bg }};color:{{ tabGia.fg }};border:0;border-radius:10px 10px 0 0;padding:11px 11px;font-family:Outfit,sans-serif;font-size:14px;font-weight:500;cursor:pointer;white-space:nowrap;flex:0 0 auto">Bảng giá</button>
-            <button sc-camel-on-click="{{ goCamnang }}" style="background:{{ tabCamnang.bg }};color:{{ tabCamnang.fg }};border:0;border-radius:10px 10px 0 0;padding:11px 11px;font-family:Outfit,sans-serif;font-size:14px;font-weight:500;cursor:pointer;white-space:nowrap;flex:0 0 auto">Cẩm nang</button>
-      <button sc-camel-on-click="{{ goKpi }}" style="background:{{ tabKpi.bg }};color:{{ tabKpi.fg }};border:0;border-radius:10px 10px 0 0;padding:11px 11px;font-family:Outfit,sans-serif;font-size:14px;font-weight:500;cursor:pointer;white-space:nowrap;flex:0 0 auto">Checklist</button>
+    <div class="navtabs" style="position:sticky;top:0;z-index:60;background:#2A2D5C;box-shadow:0 10px 26px rgba(21,23,56,.45);max-width:1280px;margin:0 auto;display:flex;gap:3px;overflow-x:auto;overscroll-behavior-x:contain;scrollbar-width:thin;scrollbar-color:#5A5F92 transparent">
+      <button class="navbtn" title="Phím 1 — Tổng quan" sc-camel-on-click="{{ goHome }}" style="background:{{ tabHome.bg }};color:{{ tabHome.fg }};border:0;border-radius:10px 10px 0 0;padding:11px 11px;font-family:Outfit,sans-serif;font-size:14px;font-weight:500;cursor:pointer;white-space:nowrap;flex:0 0 auto">🏠 Tổng quan</button>
+      <button class="navbtn" title="Phím 2 — Lộ trình 7 ngày" sc-camel-on-click="{{ goLotrinh }}" style="background:{{ tabLotrinh.bg }};color:{{ tabLotrinh.fg }};border:0;border-radius:10px 10px 0 0;padding:11px 11px;font-family:Outfit,sans-serif;font-size:14px;font-weight:500;cursor:pointer;white-space:nowrap;flex:0 0 auto">🧭 Lộ trình 7 ngày</button>
+      <span class="navsep" aria-hidden="true"></span>
+      <button class="navbtn" title="Phím 3 — Quy trình" sc-camel-on-click="{{ goQuytrinh }}" style="background:{{ tabQuytrinh.bg }};color:{{ tabQuytrinh.fg }};border:0;border-radius:10px 10px 0 0;padding:11px 11px;font-family:Outfit,sans-serif;font-size:14px;font-weight:500;cursor:pointer;white-space:nowrap;flex:0 0 auto">🔄 Quy trình</button>
+      <button class="navbtn" title="Phím 4 — Trạng thái lead" sc-camel-on-click="{{ goLead }}" style="background:{{ tabLead.bg }};color:{{ tabLead.fg }};border:0;border-radius:10px 10px 0 0;padding:11px 11px;font-family:Outfit,sans-serif;font-size:14px;font-weight:500;cursor:pointer;white-space:nowrap;flex:0 0 auto">📌 Trạng thái lead</button>
+      <button class="navbtn" title="Phím 5 — Chốt booking" sc-camel-on-click="{{ goBooking }}" style="background:{{ tabBooking.bg }};color:{{ tabBooking.fg }};border:0;border-radius:10px 10px 0 0;padding:11px 11px;font-family:Outfit,sans-serif;font-size:14px;font-weight:500;cursor:pointer;white-space:nowrap;flex:0 0 auto">💳 Chốt booking</button>
+      <button class="navbtn" title="Phím 6 — Chăm sóc" sc-camel-on-click="{{ goCare }}" style="background:{{ tabCare.bg }};color:{{ tabCare.fg }};border:0;border-radius:10px 10px 0 0;padding:11px 11px;font-family:Outfit,sans-serif;font-size:14px;font-weight:500;cursor:pointer;white-space:nowrap;flex:0 0 auto">💬 Chăm sóc</button>
+      <span class="navsep" aria-hidden="true"></span>
+      <button class="navbtn" title="Phím 7 — Script" sc-camel-on-click="{{ goScript }}" style="background:{{ tabScript.bg }};color:{{ tabScript.fg }};border:0;border-radius:10px 10px 0 0;padding:11px 11px;font-family:Outfit,sans-serif;font-size:14px;font-weight:500;cursor:pointer;white-space:nowrap;flex:0 0 auto">📝 Script</button>
+      <button class="navbtn" title="Phím 8 — Bảng giá" sc-camel-on-click="{{ goGia }}" style="background:{{ tabGia.bg }};color:{{ tabGia.fg }};border:0;border-radius:10px 10px 0 0;padding:11px 11px;font-family:Outfit,sans-serif;font-size:14px;font-weight:500;cursor:pointer;white-space:nowrap;flex:0 0 auto">💰 Bảng giá</button>
+            <button class="navbtn" title="Phím 9 — Cẩm nang" sc-camel-on-click="{{ goCamnang }}" style="background:{{ tabCamnang.bg }};color:{{ tabCamnang.fg }};border:0;border-radius:10px 10px 0 0;padding:11px 11px;font-family:Outfit,sans-serif;font-size:14px;font-weight:500;cursor:pointer;white-space:nowrap;flex:0 0 auto">📖 Cẩm nang</button>
+      <button class="navbtn" title="Phím 0 — Checklist" sc-camel-on-click="{{ goKpi }}" style="background:{{ tabKpi.bg }};color:{{ tabKpi.fg }};border:0;border-radius:10px 10px 0 0;padding:11px 11px;font-family:Outfit,sans-serif;font-size:14px;font-weight:500;cursor:pointer;white-space:nowrap;flex:0 0 auto">✅ Checklist</button>
     </div>
   </header>
 
@@ -247,24 +249,25 @@ window.__resources = {"scriptsJson":"data:application/json;base64,eyJjYXRlZ29yaW
       <!-- ══ TỔNG QUAN ══ -->
       <sc-if value="{{ isHome }}" hint-placeholder-val="{{ true }}">
         <div style="display:flex;flex-direction:column;gap:20px">
+          <div style="background:#2A2D5C;border-radius:16px;padding:18px 20px"><div style="font-family:Outfit,sans-serif;font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#7FD8C9;margin-bottom:12px">Bắt đầu nhanh</div><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(200px,100%),1fr));gap:10px"><button class="qa-btn" sc-camel-on-click="{{ quickScripts }}"><span class="qa-ico">🔎</span><span class="qa-txt"><b>Tìm script</b><small>152 mẫu — hoặc nhấn phím <kbd>/</kbd></small></span></button><button class="qa-btn" sc-camel-on-click="{{ quickGiaVe }}"><span class="qa-ico">🧾</span><span class="qa-txt"><b>Bảng giá vé</b><small>Sun World + Vin — phím <kbd>8</kbd></small></span></button><button class="qa-btn" sc-camel-on-click="{{ quickCalc }}"><span class="qa-ico">🧮</span><span class="qa-txt"><b>Tính báo giá</b><small>Kèm văn mẫu copy — phím <kbd>8</kbd></small></span></button></div></div>
           <section style="background:#fff;border:1px solid #E6E8EF;border-radius:16px;padding:clamp(18px,4.5vw,28px)">
             <div style="display:inline-block;padding:5px 11px;border-radius:999px;background:#EAF7F4;color:#1E6B5E;font-size:11px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase">Nguyên tắc cốt lõi</div>
-            <p style="font-family:Outfit,sans-serif;font-size:clamp(22px,3vw,30px);line-height:1.35;font-weight:600;color:#2A2D5C;margin:14px 0 0;text-wrap:pretty">Hỏi đúng nhu cầu — Tư vấn đúng sản phẩm — Báo giá rõ ràng — Theo sát khách — Chốt đúng thông tin — Bàn giao đầy đủ — Chăm sóc đến khi hoàn thành dịch vụ.</p>
+            <div class="pr-chips"><div class="pr-chip"><span>01</span>Hỏi đúng nhu cầu</div><div class="pr-chip"><span>02</span>Tư vấn đúng sản phẩm</div><div class="pr-chip"><span>03</span>Báo giá rõ ràng</div><div class="pr-chip"><span>04</span>Theo sát khách</div><div class="pr-chip"><span>05</span>Chốt đúng thông tin</div><div class="pr-chip"><span>06</span>Bàn giao đầy đủ</div><div class="pr-chip"><span>07</span>Chăm sóc đến khi hoàn tất</div></div>
             <div style="display:flex;gap:14px;flex-wrap:wrap;margin-top:24px;padding-top:22px;border-top:1px solid #EEF0F5">
               <div style="flex:1 1 150px">
-                <div style="font-family:Outfit,sans-serif;font-size:22px;font-weight:600;color:#2A2D5C">10–30</div>
+                <div style="font-family:Outfit,sans-serif;font-size:22px;font-weight:600;color:#2A2D5C">📥 10–30</div>
                 <div style="font-size:13px;color:#6B7080;margin-top:2px">lead/ngày, tùy lượng khách thực tế</div>
               </div>
               <div style="flex:1 1 150px">
-                <div style="font-family:Outfit,sans-serif;font-size:22px;font-weight:600;color:#2A2D5C">05 phút</div>
+                <div style="font-family:Outfit,sans-serif;font-size:22px;font-weight:700;color:#1E6B5E">⏱ 05 phút</div>
                 <div style="font-size:13px;color:#6B7080;margin-top:2px">thời gian phản hồi tối đa cho lead mới</div>
               </div>
               <div style="flex:1 1 150px">
-                <div style="font-family:Outfit,sans-serif;font-size:22px;font-weight:600;color:#2A2D5C">30%</div>
+                <div style="font-family:Outfit,sans-serif;font-size:22px;font-weight:600;color:#2A2D5C">💰 30%</div>
                 <div style="font-size:13px;color:#6B7080;margin-top:2px">tiền cọc để booking được tính là đã chốt</div>
               </div>
               <div style="flex:1 1 150px">
-                <div style="font-family:Outfit,sans-serif;font-size:22px;font-weight:600;color:#2A2D5C">7 ngày</div>
+                <div style="font-family:Outfit,sans-serif;font-size:22px;font-weight:600;color:#2A2D5C">📅 7 ngày</div>
                 <div style="font-size:13px;color:#6B7080;margin-top:2px">lộ trình training trước khi làm độc lập</div>
               </div>
             </div>
@@ -813,14 +816,14 @@ Vấn đề cần hỗ trợ:</pre>
 
           <div style="font-size:13px;color:#6B7080;padding:0 4px">{{ scriptCountLabel }}</div>
 
-          <div style="display:flex;flex-direction:column;gap:12px">
+          <div style="display:flex;flex-direction:column;gap:14px">
             <sc-for list="{{ scriptList }}" as="s" hint-placeholder-count="6">
-              <section style="background:#fff;border:1px solid #E6E8EF;border-radius:14px;padding:clamp(16px,4vw,20px)">
+              <section style="background:#fff;border:1px solid #E6E8EF;border-radius:14px;padding:clamp(18px,4vw,24px)">
                 <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:14px;flex-wrap:wrap">
                   <div style="flex:1 1 260px;min-width:0">
                     <div style="display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-bottom:7px">
                       <span style="font-family:Outfit,sans-serif;font-size:11.5px;font-weight:600;color:#4FB3A6;letter-spacing:0.04em">{{ s.code }}</span>
-                      <span style="font-size:11px;color:#8A90A6;background:#F2F3F8;border-radius:999px;padding:3px 9px">{{ s.cat }}</span>
+                      <span style="font-size:11px;color:#6B7080;background:#F2F3F8;border-radius:999px;padding:3px 9px">{{ s.cat }}</span>
                     </div>
                     <div style="font-family:Outfit,sans-serif;font-size:16px;font-weight:600;color:#2A2D5C;line-height:1.4">{{ s.sit }}</div>
                     <div style="font-size:13px;color:#6B7080;margin-top:3px">Dùng khi: {{ s.when }}</div>
@@ -859,20 +862,20 @@ Vấn đề cần hỗ trợ:</pre>
                       <div style="border:1px solid #E6E8EF;border-radius:11px;padding:14px 16px">
                         <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap">
                           <div style="flex:1 1 240px;min-width:0">
-                            <div style="font-size:11px;color:#8A90A6;letter-spacing:0.05em;text-transform:uppercase;margin-bottom:4px">{{ r.group }}</div>
+                            <div style="font-size:11px;color:#6B7080;letter-spacing:0.05em;text-transform:uppercase;margin-bottom:4px">{{ r.group }}</div>
                             <div style="font-size:14.5px;font-weight:500;color:#2C2F3A;line-height:1.5;white-space:pre-line">{{ r.name }}</div>
                           </div>
                           <div style="display:flex;gap:18px;flex-wrap:wrap">
                             <div>
-                              <div style="font-size:11px;color:#8A90A6">Người lớn</div>
+                              <div style="font-size:11px;color:#6B7080">Người lớn</div>
                               <div style="font-family:Outfit,sans-serif;font-size:16px;font-weight:600;color:#2A2D5C">{{ r.adultF }}</div>
                             </div>
                             <div>
-                              <div style="font-size:11px;color:#8A90A6">Trẻ em</div>
+                              <div style="font-size:11px;color:#6B7080">Trẻ em</div>
                               <div style="font-family:Outfit,sans-serif;font-size:16px;font-weight:600;color:#2A2D5C">{{ r.childF }}</div>
                             </div>
                             <div>
-                              <div style="font-size:11px;color:#8A90A6">Cao tuổi</div>
+                              <div style="font-size:11px;color:#6B7080">Cao tuổi</div>
                               <div style="font-family:Outfit,sans-serif;font-size:16px;font-weight:600;color:#2A2D5C">{{ r.seniorF }}</div>
                             </div>
                           </div>
@@ -991,14 +994,7 @@ Vấn đề cần hỗ trợ:</pre>
             <section style="background:#fff;border:1px solid #E6E8EF;border-radius:16px;padding:clamp(16px,4vw,24px)">
               <h3 style="font-family:Outfit,sans-serif;font-size:17px;font-weight:600;color:#2A2D5C;margin:0 0 6px">Tour du thuyền 3 đảo</h3>
               <p style="font-size:14px;color:#6B7080;margin:0 0 18px">Tài liệu hình ảnh để gửi khách khi tư vấn tour.</p>
-              <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(260px,100%),1fr));gap:14px">
-                <img src="assets/9817c281-d65d-4611-be90-c5f61c8f80ce.jpg" alt="Du thuyền Nautilus" sc-camel-on-click="{{ zoomImg }}" style="width:100%;display:block;border:1px solid #E6E8EF;border-radius:12px;cursor:zoom-in">
-                <img src="assets/9a031319-b993-4a7d-9e9b-cff36bd4faad.jpg" alt="Tour đảo" sc-camel-on-click="{{ zoomImg }}" style="width:100%;display:block;border:1px solid #E6E8EF;border-radius:12px;cursor:zoom-in">
-                <img src="assets/17697274-300b-4ae7-8e19-fd1eb4b40a74.jpg" alt="Hải trình hoàng hôn" sc-camel-on-click="{{ zoomImg }}" style="width:100%;display:block;border:1px solid #E6E8EF;border-radius:12px;cursor:zoom-in">
-                <img src="assets/1e63a518-f3cc-4681-b034-94632c2314f9.jpg" alt="Thể thao biển" sc-camel-on-click="{{ zoomImg }}" style="width:100%;display:block;border:1px solid #E6E8EF;border-radius:12px;cursor:zoom-in">
-                <img src="assets/05d7d623-8e49-4ef2-99b7-ae4f388c9d4e.jpg" alt="Đi bộ dưới biển" sc-camel-on-click="{{ zoomImg }}" style="width:100%;display:block;border:1px solid #E6E8EF;border-radius:12px;cursor:zoom-in">
-                <img src="assets/1a25a21d-0011-49fa-9c68-da0cf7771d35.jpg" alt="Tour check-in" sc-camel-on-click="{{ zoomImg }}" style="width:100%;display:block;border:1px solid #E6E8EF;border-radius:12px;cursor:zoom-in">
-              </div>
+              <div class="tourgall"><figure class="tourfig tourfig--hero"><img class="tourimg" src="assets/9817c281-d65d-4611-be90-c5f61c8f80ce.jpg" alt="Du thuyền Nautilus" data-cap="Du thuyền Nautilus — Tàu du thuyền chính của hành trình 3 đảo"><figcaption><b>Du thuyền Nautilus</b><span>Tàu du thuyền chính của hành trình 3 đảo</span></figcaption></figure><figure class="tourfig"><img class="tourimg" src="assets/9a031319-b993-4a7d-9e9b-cff36bd4faad.jpg" alt="Tour đảo" data-cap="Tour đảo — Ghé thăm và tắm biển tại các đảo"><figcaption><b>Tour đảo</b><span>Ghé thăm và tắm biển tại các đảo</span></figcaption></figure><figure class="tourfig"><img class="tourimg" src="assets/17697274-300b-4ae7-8e19-fd1eb4b40a74.jpg" alt="Hải trình hoàng hôn" data-cap="Hải trình hoàng hôn — Chuyến ngắm hoàng hôn trên biển"><figcaption><b>Hải trình hoàng hôn</b><span>Chuyến ngắm hoàng hôn trên biển</span></figcaption></figure><figure class="tourfig"><img class="tourimg" src="assets/1e63a518-f3cc-4681-b034-94632c2314f9.jpg" alt="Thể thao biển" data-cap="Thể thao biển — Trải nghiệm thể thao dưới nước"><figcaption><b>Thể thao biển</b><span>Trải nghiệm thể thao dưới nước</span></figcaption></figure><figure class="tourfig"><img class="tourimg" src="assets/05d7d623-8e49-4ef2-99b7-ae4f388c9d4e.jpg" alt="Đi bộ dưới biển" data-cap="Đi bộ dưới biển — Đi bộ trên đáy biển, ngắm san hô"><figcaption><b>Đi bộ dưới biển</b><span>Đi bộ trên đáy biển, ngắm san hô</span></figcaption></figure><figure class="tourfig"><img class="tourimg" src="assets/1a25a21d-0011-49fa-9c68-da0cf7771d35.jpg" alt="Tour check-in" data-cap="Tour check-in — Hành trình check-in các điểm đẹp"><figcaption><b>Tour check-in</b><span>Hành trình check-in các điểm đẹp</span></figcaption></figure></div>
             </section>
           </sc-if>
 
@@ -1023,6 +1019,10 @@ Vấn đề cần hỗ trợ:</pre>
                 <label style="display:flex;flex-direction:column;gap:6px">
                   <span style="font-size:12.5px;font-weight:600;color:#2A2D5C">Trẻ em (từ 1m)</span>
                   <input type="text" sc-camel-input-mode="numeric" sc-camel-auto-complete="off" placeholder="0" value="{{ calcChild }}" sc-camel-on-input="{{ onChild }}" style="border:1px solid #D9DCE6;border-radius:10px;padding:12px;font-family:'Be Vietnam Pro',sans-serif;font-size:14px;color:#2C2F3A;min-height:44px">
+                </label>
+                <label style="display:flex;flex-direction:column;gap:6px">
+                  <span style="font-size:12.5px;font-weight:600;color:#2A2D5C">Cao tuổi (có giấy tờ)</span>
+                  <input type="text" sc-camel-input-mode="numeric" sc-camel-auto-complete="off" placeholder="0" value="{{ calcSenior }}" sc-camel-on-input="{{ onSenior }}" style="border:1px solid #D9DCE6;border-radius:10px;padding:12px;font-family:'Be Vietnam Pro',sans-serif;font-size:14px;color:#2C2F3A;min-height:44px">
                 </label>
                 <label style="display:flex;flex-direction:column;gap:6px">
                   <span style="font-size:12.5px;font-weight:600;color:#2A2D5C">Tiền phòng cả kỳ (đ)</span>
@@ -1055,6 +1055,34 @@ Vấn đề cần hỗ trợ:</pre>
                 </div>
               </div>
               <button sc-camel-on-click="{{ copyQuote }}" style="margin-top:16px;border:1px solid #4FB3A6;background:{{ quoteBtn.bg }};color:{{ quoteBtn.fg }};border-radius:10px;padding:12px 18px;font-family:Outfit,sans-serif;font-size:14px;font-weight:500;cursor:pointer;min-height:44px">{{ quoteBtn.label }}</button>
+
+              <sc-if value="{{ ppReady }}" hint-placeholder-val="{{ false }}">
+                <div style="margin-top:18px;background:#F4FBF9;border:1px solid #D4EFE8;border-radius:12px;padding:16px">
+                  <div style="font-family:Outfit,sans-serif;font-size:14px;font-weight:600;color:#1E6B5E">Giá chia đầu người <span style="font-weight:400;color:#3D6A62;font-size:12.5px">— tiền phòng ÷ {{ nGuestsF }} khách, cộng vé theo đối tượng</span></div>
+                  <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px">
+                    <div style="background:#fff;border:1px solid #D4EFE8;border-radius:10px;padding:10px 14px;flex:1 1 140px"><div style="font-size:11.5px;color:#3D6A62">Phòng / khách (cả kỳ)</div><div style="font-family:Outfit,sans-serif;font-size:17px;font-weight:700;color:#1E6B5E;margin-top:2px">{{ roomPPF }}</div></div>
+                    <div style="background:#fff;border:1px solid #D4EFE8;border-radius:10px;padding:10px 14px;flex:1 1 140px"><div style="font-size:11.5px;color:#3D6A62">Người lớn / khách</div><div style="font-family:Outfit,sans-serif;font-size:17px;font-weight:700;color:#1E6B5E;margin-top:2px">{{ adultPPF }}</div></div>
+                    <div style="background:#fff;border:1px solid #D4EFE8;border-radius:10px;padding:10px 14px;flex:1 1 140px"><div style="font-size:11.5px;color:#3D6A62">Trẻ em / khách</div><div style="font-family:Outfit,sans-serif;font-size:17px;font-weight:700;color:#1E6B5E;margin-top:2px">{{ childPPF }}</div></div>
+                    <sc-if value="{{ showSeniorPP }}" hint-placeholder-val="{{ false }}">
+                      <div style="background:#fff;border:1px solid #D4EFE8;border-radius:10px;padding:10px 14px;flex:1 1 140px"><div style="font-size:11.5px;color:#3D6A62">Cao tuổi / khách</div><div style="font-family:Outfit,sans-serif;font-size:17px;font-weight:700;color:#1E6B5E;margin-top:2px">{{ seniorPPF }}</div></div>
+                    </sc-if>
+                  </div>
+                </div>
+              </sc-if>
+
+              <div style="margin-top:18px;background:#fff;border:1px solid #E6E8EF;border-radius:12px;padding:16px">
+                <div style="font-family:Outfit,sans-serif;font-size:14px;font-weight:600;color:#2A2D5C">Văn mẫu 1 — gửi báo giá tổng</div>
+                <div style="margin-top:8px;white-space:pre-line;font-size:13px;color:#3A3E4C;line-height:1.65;background:#F5F6FA;border-radius:10px;padding:12px 14px">{{ msgTongText }}</div>
+                <button sc-camel-on-click="{{ copyMsgTong }}" style="margin-top:10px;border:1px solid {{ msgTongBtn.bd }};background:{{ msgTongBtn.bg }};color:{{ msgTongBtn.fg }};border-radius:10px;padding:11px 16px;font-family:Outfit,sans-serif;font-size:13.5px;font-weight:500;cursor:pointer;min-height:42px}">{{ msgTongBtn.label }}</button>
+              </div>
+
+              <sc-if value="{{ ppReady }}" hint-placeholder-val="{{ false }}">
+                <div style="margin-top:12px;background:#fff;border:1px solid #E6E8EF;border-radius:12px;padding:16px">
+                  <div style="font-family:Outfit,sans-serif;font-size:14px;font-weight:600;color:#2A2D5C">Văn mẫu 2 — giải thích giá chia đầu người</div>
+                  <div style="margin-top:8px;white-space:pre-line;font-size:13px;color:#3A3E4C;line-height:1.65;background:#F5F6FA;border-radius:10px;padding:12px 14px">{{ msgPPText }}</div>
+                  <button sc-camel-on-click="{{ copyMsgPP }}" style="margin-top:10px;border:1px solid {{ msgPPBtn.bd }};background:{{ msgPPBtn.bg }};color:{{ msgPPBtn.fg }};border-radius:10px;padding:11px 16px;font-family:Outfit,sans-serif;font-size:13.5px;font-weight:500;cursor:pointer;min-height:42px}">{{ msgPPBtn.label }}</button>
+                </div>
+              </sc-if>
               <div style="margin-top:16px;padding:14px 16px;background:#FFF6F3;border:1px solid #F6D9CF;border-radius:12px;font-size:13.5px;color:#B4441F;line-height:1.6">Con số ở đây chỉ để tính nhanh theo giá niêm yết. Phải kiểm tra tình trạng chỗ, phụ thu cuối tuần/lễ/Tết và điều kiện áp dụng trước khi báo khách.</div>
             </section>
           </sc-if>
@@ -1064,8 +1092,14 @@ Vấn đề cần hỗ trợ:</pre>
       <!-- ══ CẨM NANG NGHIỆP VỤ ══ -->
       <sc-if value="{{ isCamnang }}" hint-placeholder-val="{{ true }}">
         <div style="display:flex;flex-direction:column;gap:14px">
+            <div style="background:#fff;border:1px solid #E6E8EF;border-radius:14px;padding:10px 14px;display:flex;flex-wrap:wrap;gap:7px;align-items:center">
+              <span style="font-size:11.5px;font-weight:600;color:#6B7080;letter-spacing:.05em;text-transform:uppercase;margin-right:2px">Nhảy tới</span>
+              <sc-for list="{{ cmChips }}" as="c" hint-placeholder-count="8">
+                <button class="cm-chip" sc-camel-on-click="{{ c.onClick }}">{{ c.label }}</button>
+              </sc-for>
+            </div>
           <section style="background:#fff;border:1px solid #E6E8EF;border-radius:16px;padding:clamp(13px,3vw,18px)">
-            <h2 style="font-family:Outfit,sans-serif;font-size:18px;font-weight:600;color:#2A2D5C;margin:0 0 2px">Cẩm nang nghiệp vụ sale</h2>
+            <h2 id="cm-khuvuc" style="font-family:Outfit,sans-serif;font-size:18px;font-weight:600;color:#2A2D5C;margin:0 0 2px">Cẩm nang nghiệp vụ sale</h2>
             <p style="margin:0;color:#6B7080;font-size:14px">Từ điển thuật ngữ, kiến thức sản phẩm Phú Quốc, thư viện option, bảng giá tour trọn gói và FAQ — tổng hợp từ tài liệu training nội bộ. Số liệu chỉ để tham khảo: luôn kiểm tra bảng giá mới nhất trước khi báo khách.</p>
 
             <h3 style="font-family:Outfit,sans-serif;font-size:14px;font-weight:600;color:#2A2D5C;margin:14px 0 7px">Khu vực Phú Quốc — chọn chỗ ở trước, xếp lịch trình sau</h3>
@@ -1080,7 +1114,7 @@ Vấn đề cần hỗ trợ:</pre>
           </section>
 
           <section style="background:#fff;border:1px solid #E6E8EF;border-radius:16px;padding:clamp(13px,3vw,18px)">
-            <h2 style="font-family:Outfit,sans-serif;font-size:18px;font-weight:600;color:#2A2D5C;margin:0 0 2px">Từ điển thuật ngữ</h2>
+            <h2 id="cm-thuatngu" style="font-family:Outfit,sans-serif;font-size:18px;font-weight:600;color:#2A2D5C;margin:0 0 2px">Từ điển thuật ngữ</h2>
             <h3 style="font-family:Outfit,sans-serif;font-size:14px;font-weight:600;color:#2A2D5C;margin:14px 0 7px">Thuật ngữ khách sạn</h3>
             <table style="width:100%;border-collapse:collapse;font-size:12.5px">
               <tr><th style="text-align:left;padding:5px 8px;background:#F5F6FA;color:#2A2D5C;font-weight:600;border-bottom:1px solid #E6E8EF;vertical-align:top">Thuật ngữ</th><th style="text-align:left;padding:5px 8px;background:#F5F6FA;color:#2A2D5C;font-weight:600;border-bottom:1px solid #E6E8EF;vertical-align:top">Nghĩa và cách dùng</th></tr>
@@ -1129,7 +1163,7 @@ Vấn đề cần hỗ trợ:</pre>
           </section>
 
           <section style="background:#fff;border:1px solid #E6E8EF;border-radius:16px;padding:clamp(13px,3vw,18px)">
-            <h2 style="font-family:Outfit,sans-serif;font-size:18px;font-weight:600;color:#2A2D5C;margin:0 0 2px">Thư viện option ghép combo (11 option)</h2>
+            <h2 id="cm-option" style="font-family:Outfit,sans-serif;font-size:18px;font-weight:600;color:#2A2D5C;margin:0 0 2px">Thư viện option ghép combo (11 option)</h2>
             <p style="margin:0 0 6px;color:#6B7080;font-size:12.5px">Mỗi ngày trong combo chỉ chọn 01 chương trình full-day. Sale nắm tối thiểu 02 option cho từng vị trí bán chính: cáp treo – công viên nước, show diễn – ẩm thực đêm.</p>
             <div style="overflow-x:auto">
             <table style="width:100%;border-collapse:collapse;font-size:12.5px;min-width:700px">
@@ -1161,7 +1195,7 @@ Vấn đề cần hỗ trợ:</pre>
           </section>
 
           <section style="background:#fff;border:1px solid #E6E8EF;border-radius:16px;padding:clamp(13px,3vw,18px)">
-            <h2 style="font-family:Outfit,sans-serif;font-size:18px;font-weight:600;color:#2A2D5C;margin:0 0 2px">Bảng giá tour trọn gói (tham khảo)</h2>
+            <h2 id="cm-giatour" style="font-family:Outfit,sans-serif;font-size:18px;font-weight:600;color:#2A2D5C;margin:0 0 2px">Bảng giá tour trọn gói (tham khảo)</h2>
             <p style="margin:0 0 6px;color:#6B7080;font-size:12.5px">Giá trọn gói đã gồm vé máy bay, khách sạn 4–5 sao, ăn theo chương trình, xe và hướng dẫn viên. Số liệu tham khảo — giá thay đổi theo mùa, tình trạng chỗ và thời điểm đặt; giá cuối được xác nhận khi chốt tour.</p>
 
             <h3 style="font-family:Outfit,sans-serif;font-size:14px;font-weight:600;color:#2A2D5C;margin:14px 0 7px">Tour 3N2Đ</h3>
@@ -1199,7 +1233,7 @@ Vấn đề cần hỗ trợ:</pre>
           </section>
 
           <section style="background:#fff;border:1px solid #E6E8EF;border-radius:16px;padding:clamp(13px,3vw,18px)">
-            <h2 style="font-family:Outfit,sans-serif;font-size:18px;font-weight:600;color:#2A2D5C;margin:0 0 2px">Địa điểm nổi bật Phú Quốc</h2>
+            <h2 id="cm-diadiem" style="font-family:Outfit,sans-serif;font-size:18px;font-weight:600;color:#2A2D5C;margin:0 0 2px">Địa điểm nổi bật Phú Quốc</h2>
             <table style="width:100%;border-collapse:collapse;font-size:12.5px">
               <tr><th style="text-align:left;padding:5px 8px;background:#F5F6FA;color:#2A2D5C;font-weight:600;border-bottom:1px solid #E6E8EF;vertical-align:top">Địa điểm</th><th style="text-align:left;padding:5px 8px;background:#F5F6FA;color:#2A2D5C;font-weight:600;border-bottom:1px solid #E6E8EF;vertical-align:top">Nổi bật với</th></tr>
               <tr><td style="padding:5px 8px;border-bottom:1px solid #EEF0F5;color:#3A3E4C;vertical-align:top;line-height:1.45;font-weight:600;color:#2A2D5C;white-space:nowrap">Bãi Sao</td><td style="padding:5px 8px;border-bottom:1px solid #EEF0F5;color:#3A3E4C;vertical-align:top;line-height:1.45">Biển đẹp nhất Nam đảo, bãi cát trắng mịn.</td></tr>
@@ -1217,7 +1251,7 @@ Vấn đề cần hỗ trợ:</pre>
           </section>
 
           <section style="background:#fff;border:1px solid #E6E8EF;border-radius:16px;padding:clamp(13px,3vw,18px)">
-            <h2 style="font-family:Outfit,sans-serif;font-size:18px;font-weight:600;color:#2A2D5C;margin:0 0 2px">Xử lý phản hồi tiêu cực — 6 bước</h2>
+            <h2 id="cm-xuly" style="font-family:Outfit,sans-serif;font-size:18px;font-weight:600;color:#2A2D5C;margin:0 0 2px">Xử lý phản hồi tiêu cực — 6 bước</h2>
             <p style="margin:0 0 6px;color:#6B7080;font-size:12.5px">Ví dụ mẫu: khách phàn nàn phòng bẩn. Phản hồi khách trong 15 phút, xử lý dứt điểm trong 24h.</p>
             <table style="width:100%;border-collapse:collapse;font-size:12.5px">
               <tr><th style="text-align:left;padding:5px 8px;background:#F5F6FA;color:#2A2D5C;font-weight:600;border-bottom:1px solid #E6E8EF;vertical-align:top">Bước</th><th style="text-align:left;padding:5px 8px;background:#F5F6FA;color:#2A2D5C;font-weight:600;border-bottom:1px solid #E6E8EF;vertical-align:top">Việc làm</th></tr>
@@ -1231,7 +1265,7 @@ Vấn đề cần hỗ trợ:</pre>
           </section>
 
           <section style="background:#fff;border:1px solid #E6E8EF;border-radius:16px;padding:clamp(13px,3vw,18px)">
-            <h2 style="font-family:Outfit,sans-serif;font-size:18px;font-weight:600;color:#2A2D5C;margin:0 0 2px">Câu hỏi thường gặp (FAQ)</h2>
+            <h2 id="cm-faq" style="font-family:Outfit,sans-serif;font-size:18px;font-weight:600;color:#2A2D5C;margin:0 0 2px">Câu hỏi thường gặp (FAQ)</h2>
             <table style="width:100%;border-collapse:collapse;font-size:12.5px">
               <tr><th style="text-align:left;padding:5px 8px;background:#F5F6FA;color:#2A2D5C;font-weight:600;border-bottom:1px solid #E6E8EF;vertical-align:top">Khách hỏi</th><th style="text-align:left;padding:5px 8px;background:#F5F6FA;color:#2A2D5C;font-weight:600;border-bottom:1px solid #E6E8EF;vertical-align:top">Trả lời</th></tr>
               <tr><td style="padding:5px 8px;border-bottom:1px solid #EEF0F5;color:#3A3E4C;vertical-align:top;line-height:1.45;font-weight:600;color:#2A2D5C;white-space:nowrap">Tour có gồm vé máy bay không?</td><td style="padding:5px 8px;border-bottom:1px solid #EEF0F5;color:#3A3E4C;vertical-align:top;line-height:1.45">Có, giá trọn gói gồm vé máy bay khứ hồi, khách sạn, ăn theo chương trình, xe đưa đón và HDV.</td></tr>
@@ -1251,7 +1285,7 @@ Vấn đề cần hỗ trợ:</pre>
           </section>
 
           <section style="background:#fff;border:1px solid #E6E8EF;border-radius:16px;padding:clamp(13px,3vw,18px)">
-            <h2 style="font-family:Outfit,sans-serif;font-size:18px;font-weight:600;color:#2A2D5C;margin:0 0 2px">Thu nhập &amp; quy chế hoa hồng (giai đoạn đầu)</h2>
+            <h2 id="cm-thunhap" style="font-family:Outfit,sans-serif;font-size:18px;font-weight:600;color:#2A2D5C;margin:0 0 2px">Thu nhập &amp; quy chế hoa hồng (giai đoạn đầu)</h2>
             <p style="margin:0 0 6px;color:#6B7080;font-size:12.5px">Tổng thu nhập = Lương cứng 4.000.000đ + Hoa hồng Tour + Hoa hồng ELYDAY. Doanh thu Tour và ELYDAY cộng gộp khi xét target.</p>
 
             <h3 style="font-family:Outfit,sans-serif;font-size:14px;font-weight:600;color:#2A2D5C;margin:14px 0 7px">Target doanh thu theo tháng</h3>
@@ -1363,10 +1397,11 @@ Vấn đề cần hỗ trợ:</pre>
           </div>
         </div>
         <div style="font-size:12px;color:#3D6A62;margin-top:8px;line-height:1.45">{{ quizTotalLabel }}</div>
+      <button sc-camel-on-click="{{ goLotrinh }}" style="margin-top:10px;border:1px solid #4FB3A6;background:#fff;color:#1E6B5E;border-radius:10px;padding:10px 14px;font-family:Outfit,sans-serif;font-size:13.5px;font-weight:600;cursor:pointer;min-height:40px;width:100%">🧭 Tiếp tục lộ trình training</button>
       </section>
 
       <section style="background:#fff;border:1px solid #E6E8EF;border-radius:14px;padding:clamp(12px,2.5vw,15px)">
-        <div style="font-family:Outfit,sans-serif;font-size:12px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:#8A90A6;margin-bottom:8px">Nhắc nhanh</div>
+        <div style="font-family:Outfit,sans-serif;font-size:12px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:#6B7080;margin-bottom:8px">Nhắc nhanh</div>
         <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(200px,100%),1fr));align-items:start;gap:7px">
           <div style="display:flex;gap:6px;align-items:baseline">
             <span style="color:#4FB3A6;font-weight:700;flex:0 0 auto">·</span>
@@ -1388,8 +1423,111 @@ Vấn đề cần hỗ trợ:</pre>
 </div>
 
 </x-dc>
+<div id="tlightbox" aria-hidden="true">
+  <button id="tlb-close" aria-label="Đóng" title="Đóng (Esc)">×</button>
+  <button id="tlb-prev" aria-label="Ảnh trước" title="Trước (←)">‹</button>
+  <img id="tlb-img" alt="Ảnh tour phóng to">
+  <div id="tlb-cap"></div>
+  <button id="tlb-next" aria-label="Ảnh sau" title="Sau (→)">›</button>
+</div>
+<script>
+(function(){
+  var box = document.getElementById('tlightbox');
+  if (!box) return;
+  var im = document.getElementById('tlb-img');
+  var cap = document.getElementById('tlb-cap');
+  var list = [], idx = 0;
+  function refresh(){ var els = document.querySelectorAll('.tourimg'); list = []; for (var i=0;i<els.length;i++) list.push({src: els[i].src, cap: els[i].getAttribute('data-cap')||els[i].alt||''}); }
+  function show(i){ if(!list.length) refresh(); if(!list.length) return; idx = (i + list.length) % list.length; im.src = list[idx].src; cap.textContent = list[idx].cap + ' (' + (idx+1) + '/' + list.length + ')'; box.classList.add('show'); box.setAttribute('aria-hidden','false'); }
+  function hide(){ box.classList.remove('show'); box.setAttribute('aria-hidden','true'); }
+  document.addEventListener('click', function(e){
+    var t = e.target && e.target.closest ? e.target.closest('.tourimg') : null;
+    if (t) { refresh(); var els = document.querySelectorAll('.tourimg'); for (var i=0;i<els.length;i++) if (els[i]===t) { show(i); break; } }
+  });
+  document.getElementById('tlb-close').addEventListener('click', hide);
+  document.getElementById('tlb-prev').addEventListener('click', function(){ show(idx-1); });
+  document.getElementById('tlb-next').addEventListener('click', function(){ show(idx+1); });
+  box.addEventListener('click', function(e){ if (e.target === box) hide(); });
+  document.addEventListener('keydown', function(e){
+    if (!box.classList.contains('show')) return;
+    if (e.key === 'Escape') hide();
+    else if (e.key === 'ArrowLeft') show(idx-1);
+    else if (e.key === 'ArrowRight') show(idx+1);
+  });
+})();
+</script>
+
+<script>
+(function(){
+  var cur = null;
+  function bind() {
+    var n = document.querySelector('.navtabs');
+    if (!n || n === cur) return;
+    if (cur) cur.classList.remove('navtabs--l', 'navtabs--r');
+    cur = n;
+    function upd() {
+      var max = n.scrollWidth - n.clientWidth;
+      n.classList.toggle('navtabs--l', n.scrollLeft > 4);
+      n.classList.toggle('navtabs--r', n.scrollLeft < max - 4);
+    }
+    if (n.__upd) n.removeEventListener('scroll', n.__upd);
+    n.__upd = upd;
+    n.addEventListener('scroll', upd, { passive: true });
+    upd();
+  }
+  bind();
+  setTimeout(bind, 400); setTimeout(bind, 1200);
+  try { new MutationObserver(function(){ bind(); }).observe(document.body, { childList: true, subtree: true }); } catch (e) {}
+})();
+</script>
+
 <style>
 .rules-ol li::marker{color:#4FB3A6;font-weight:700}
+.qa-btn{display:flex;align-items:center;gap:12px;text-align:left;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.16);border-radius:12px;padding:13px 15px;cursor:pointer;min-height:64px;transition:background .15s,border-color .15s}
+.qa-btn:hover{background:rgba(255,255,255,.14);border-color:rgba(127,216,201,.5)}
+.qa-ico{font-size:22px;flex:0 0 auto}
+.qa-txt{display:flex;flex-direction:column;gap:2px}
+.qa-txt b{color:#fff;font-family:Outfit,sans-serif;font-size:14.5px;font-weight:600}
+.qa-txt small{color:#A9AECB;font-size:11.5px;line-height:1.4}
+.qa-btn kbd{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.25);border-radius:5px;padding:1px 5px;font-size:10.5px;font-family:ui-monospace,monospace;color:#E6E8F5}
+.pr-chips{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(220px,100%),1fr));gap:8px;margin-top:14px}
+.pr-chip{display:flex;align-items:center;gap:10px;background:#F5F6FA;border:1px solid #E6E8EF;border-radius:10px;padding:10px 13px;font-family:Outfit,sans-serif;font-size:14px;font-weight:500;color:#2A2D5C}
+.pr-chip span{flex:0 0 auto;font-size:11px;font-weight:700;color:#4FB3A6;background:#EAF7F4;border-radius:6px;padding:3px 7px;letter-spacing:.04em}
+.tourgall{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.tourfig{margin:0;position:relative;border:1px solid #E6E8EF;border-radius:12px;overflow:hidden;background:#fff;cursor:zoom-in}
+.tourfig img{width:100%;display:block;aspect-ratio:3/4;object-fit:cover;transition:transform .25s}
+.tourfig:hover img{transform:scale(1.04)}
+.tourfig figcaption{position:absolute;left:0;right:0;bottom:0;padding:24px 12px 10px;background:linear-gradient(transparent,rgba(21,23,56,.85));display:flex;flex-direction:column;gap:1px;text-align:left}
+.tourfig figcaption b{color:#fff;font-size:13.5px;font-weight:600}
+.tourfig figcaption span{color:#C9CDE6;font-size:11.5px;line-height:1.4}
+.tourfig--hero{grid-column:span 2;grid-row:span 2}
+.tourfig--hero img{aspect-ratio:auto;height:100%}
+.tourfig--hero figcaption b{font-size:15px}
+@media(max-width:640px){.tourgall{grid-template-columns:repeat(2,1fr)}.tourfig--hero{grid-column:span 2;grid-row:auto}.tourfig--hero img{aspect-ratio:16/10;height:auto}}
+#tlightbox{position:fixed;inset:0;z-index:200;background:rgba(15,16,38,.92);display:none;align-items:center;justify-content:center;flex-direction:column;padding:20px}
+#tlightbox.show{display:flex}
+#tlightbox img{max-width:92vw;max-height:78vh;border-radius:10px;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+#tlb-cap{color:#E6E8F5;font-size:14px;margin-top:12px;text-align:center;font-family:'Be Vietnam Pro',sans-serif}
+#tlightbox button{position:absolute;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.25);color:#fff;border-radius:50%;width:44px;height:44px;font-size:22px;cursor:pointer;line-height:1}
+#tlightbox button:hover{background:rgba(255,255,255,.22)}
+#tlb-close{top:16px;right:16px}
+#tlb-prev{left:16px;top:50%;transform:translateY(-50%)}
+#tlb-next{right:16px;top:50%;transform:translateY(-50%)}
+@media(max-width:640px){#tlb-prev{left:8px}#tlb-next{right:8px}}
+.navbtn{transition:background .15s,color .15s}
+.navbtn:hover{background:rgba(255,255,255,.14) !important}
+.navbtn[style*="color:#2A2D5C"]{font-weight:600}
+.navsep{flex:0 0 auto;align-self:center;width:1px;height:22px;background:rgba(255,255,255,.22);margin:0 3px}
+@media(max-width:640px){.navbtn{padding:9px 10px !important;font-size:13px !important}.navsep{margin:0 1px}}
+.navtabs::before,.navtabs::after{content:"";position:absolute;top:0;bottom:0;width:16px;z-index:3;pointer-events:none;opacity:0;transition:opacity .25s}
+.navtabs::before{left:0;background:linear-gradient(90deg,#2A2D5C,rgba(42,45,92,0))}
+.navtabs::after{right:0;background:linear-gradient(270deg,#2A2D5C,rgba(42,45,92,0))}
+.navtabs.navtabs--l::before{opacity:1}
+.navtabs.navtabs--r::after{opacity:1}
+[id^="cm-"]{scroll-margin-top:64px}
+html{scroll-behavior:smooth}
+.cm-chip{border:1px solid #D9DCE6;background:#fff;color:#3A3E4C;border-radius:10px;padding:8px 13px;font-family:'Be Vietnam Pro',sans-serif;font-size:13px;font-weight:500;display:inline-block;min-height:36px;line-height:19px;cursor:pointer}
+.cm-chip:hover{border-color:#4FB3A6;color:#1E6B5E}
 #backtop{position:fixed;right:18px;bottom:18px;width:46px;height:46px;border-radius:50%;border:0;background:#2A2D5C;color:#fff;font-size:20px;line-height:1;cursor:pointer;z-index:80;opacity:0;pointer-events:none;transition:opacity .25s;box-shadow:0 8px 22px rgba(21,23,56,.4)}
 #backtop.show{opacity:1;pointer-events:auto}
 #backtop:hover{background:#4FB3A6}
@@ -1475,6 +1613,18 @@ const CHECKLIST = [
 const BOOKING_FORM = 'NEW BOOKING\nFanpage\n+ Tên khách:\nSđt:\n+ Check in:\n+ Check out:\n+ N of G:\n+ N of Room:\n+ Rate:\n+ Service:\n+ Total:\n+ Dep:\n+ Remain:';
 const REPORT_FORM = 'BÁO CÁO SALES NGÀY …/…/…\nLead mới:\nĐã tư vấn:\nĐã báo giá:\nĐang cân nhắc:\nChờ cọc:\nBooking đã chốt:\nDoanh thu đã chốt:\nTiền cọc đã nhận:\nKhách cần chăm sóc lại:\nVấn đề cần hỗ trợ:';
 const LS = 'elyday-training-v1';
+const CM_CHIPS = [
+  ['cm-khuvuc', 'Khu vực Phú Quốc'],
+  ['cm-thuatngu', 'Thuật ngữ'],
+  ['cm-option', '11 Option'],
+  ['cm-giatour', 'Giá tour trọn gói'],
+  ['cm-diadiem', 'Địa điểm'],
+  ['cm-xuly', 'Xử lý phản hồi'],
+  ['cm-faq', 'FAQ'],
+  ['cm-thunhap', 'Thu nhập & hoa hồng']
+].map(function (x) {
+  return { label: x[1], onClick: function () { var el = document.getElementById(x[0]); if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' }); } };
+});
 const ROOM_COPY = ["Hillside Apartment — Studio City View (28m², 2 người lớn): Ngày thường 940.000đ/đêm · Cuối tuần 1.130.000đ/đêm (mùa thấp điểm)","Hillside Apartment — Studio Ocean View (28m², 2 người lớn): Ngày thường 1.230.000đ/đêm · Cuối tuần 1.480.000đ/đêm (mùa thấp điểm)","Hillside Apartment — 1 Bedroom City View (45m², 2NL + 2TE<12t): Ngày thường 1.440.000đ/đêm · Cuối tuần 1.650.000đ/đêm (mùa thấp điểm)","Hillside Apartment — 1 Bedroom Ocean View (45m², 2NL + 2TE<12t): Ngày thường 1.570.000đ/đêm · Cuối tuần 1.790.000đ/đêm (mùa thấp điểm)","Hillside Apartment — 2 Bedroom City View (80m², 4NL + 1TE<12t): Ngày thường 2.360.000đ/đêm · Cuối tuần 2.610.000đ/đêm (mùa thấp điểm)","Hillside Apartment — 2 Bedroom Ocean View (80m², 4NL + 1TE<12t): Ngày thường 2.610.000đ/đêm · Cuối tuần 2.860.000đ/đêm (mùa thấp điểm)","Hillside Apartment — 3 Bedroom City View (95m², 6NL + 1TE<12t): Ngày thường 3.150.000đ/đêm · Cuối tuần 3.450.000đ/đêm (mùa thấp điểm)","Hillside Apartment — 3 Bedroom Ocean View (95m², 6NL + 1TE<12t): Ngày thường 3.450.000đ/đêm · Cuối tuần 3.750.000đ/đêm (mùa thấp điểm)","ELYDAY CASA — Classic Queen (16m², 2 khách): Ngày thường 630.000đ/đêm · Cuối tuần 690.000đ/đêm (Mùa Thường May–Oct, đã gồm thuế & phí, chưa gồm ăn sáng)","ELYDAY CASA — Superior Queen (20m², 2 khách): Ngày thường 680.000đ/đêm · Cuối tuần 940.000đ/đêm (Mùa Thường May–Oct, đã gồm thuế & phí, chưa gồm ăn sáng)","ELYDAY CASA — Deluxe Queen (20m², 2 khách + 1 trẻ<12t): Ngày thường 680.000đ/đêm · Cuối tuần 940.000đ/đêm (Mùa Thường May–Oct, đã gồm thuế & phí, chưa gồm ăn sáng)","ELYDAY CASA — Family Deluxe (28m², 2NL + 2TE<12t): Ngày thường 1.100.000đ/đêm · Cuối tuần 1.350.000đ/đêm (Mùa Thường May–Oct, đã gồm thuế & phí, chưa gồm ăn sáng)","ELYDAY CASA — Suite Homey 1BR (28m², 2 khách + 2TE<12t): Ngày thường 1.660.000đ/đêm · Cuối tuần 1.780.000đ/đêm (Mùa Thường May–Oct, đã gồm thuế & phí, chưa gồm ăn sáng)","ELYDAY CASA — Suite Casa 1BR with Bathtub (16m², 2 khách): Ngày thường 1.900.000đ/đêm · Cuối tuần 2.020.000đ/đêm (Mùa Thường May–Oct, đã gồm thuế & phí, chưa gồm ăn sáng)"];
 
 
@@ -1485,7 +1635,7 @@ class Component extends DCLogic {
     comboIdx: 0, copied: '',
     answers: {}, done: {},
     scripts: [], cats: [], tickets: [], combos: [],
-    calc: { ticket: -1, adult: '2', child: '0', room: '', other: '' }
+    calc: { ticket: -1, adult: '2', child: '0', senior: '0', room: '', other: '' }
   };
 
   componentDidMount() {
@@ -1496,6 +1646,11 @@ class Component extends DCLogic {
           e.preventDefault();
           this.setState({ tab: 'script' });
           setTimeout(() => { const el = document.querySelector('input[placeholder^="Tìm theo"]'); if (el) el.focus(); }, 60);
+        }
+        if (/^[0-9]$/.test(e.key) && tag !== 'INPUT' && tag !== 'TEXTAREA' && tag !== 'SELECT') {
+          var navMap = ['home', 'lotrinh', 'quytrinh', 'lead', 'booking', 'care', 'script', 'gia', 'camnang', 'kpi'];
+          var navIdx = e.key === '0' ? 9 : (+e.key - 1);
+          if (navMap[navIdx]) { e.preventDefault(); this.setState({ tab: navMap[navIdx] }); }
         }
       });
     } catch (err) {}
@@ -1672,14 +1827,27 @@ class Component extends DCLogic {
     const t = (c.ticket >= 0 && flatTickets[c.ticket]) ? flatTickets[c.ticket] : null;
     const nAdult = num(c.adult);
     const nChild = num(c.child);
+    const nSenior = num(c.senior);
     const hasChildRate = !!(t && t.child !== null && t.child !== undefined && t.child !== '' && !isNaN(+t.child));
     const childRate = t ? (hasChildRate ? +t.child : (+t.adult || 0)) : 0;
-    const ticketTotal = t ? nAdult * (+t.adult || 0) + nChild * childRate : 0;
+    const seniorRate = t ? ((t.senior !== null && t.senior !== undefined && t.senior !== '' && !isNaN(+t.senior)) ? +t.senior : (+t.adult || 0)) : 0;
+    const ticketTotal = t ? nAdult * (+t.adult || 0) + nChild * childRate + nSenior * seniorRate : 0;
     const roomAmt = num(c.room);
     const otherAmt = num(c.other);
     const total = ticketTotal + roomAmt + otherAmt;
     const dep = Math.round(total * 0.3 / 1000) * 1000;
     const remain = total - dep;
+    const nGuests = nAdult + nChild + nSenior;
+    const roomPP = (nGuests > 0 && roomAmt > 0) ? Math.round(roomAmt / nGuests) : 0;
+    const adultPP = roomPP + (t ? (+t.adult || 0) : 0);
+    const childPP = roomPP + childRate;
+    const seniorPP = roomPP + seniorRate;
+    const guestsParts = [];
+    if (nAdult > 0) guestsParts.push(nAdult + ' người lớn');
+    if (nChild > 0) guestsParts.push(nChild + ' trẻ em');
+    if (nSenior > 0) guestsParts.push(nSenior + ' người cao tuổi');
+    const guestsLabel = guestsParts.length ? guestsParts.join(' + ') : '0 khách';
+    const svcLabel = t ? t.name.replace(/\n/g, ' ') : 'phòng và dịch vụ theo phương án đã trao đổi';
     const setTicket = (e) => {
       const v = parseInt(e.target.value, 10);
       this.setState({ calc: Object.assign({}, this.state.calc, { ticket: isNaN(v) ? -1 : v }) });
@@ -1694,6 +1862,7 @@ class Component extends DCLogic {
       const parts = [];
       if (nAdult > 0) parts.push(nAdult + ' người lớn x ' + this.money(t.adult));
       if (nChild > 0) parts.push(nChild + ' trẻ em x ' + this.money(childRate));
+      if (nSenior > 0) parts.push(nSenior + ' cao tuổi x ' + this.money(seniorRate));
       quoteLines.push('  ' + (parts.length ? parts.join(' + ') + ' = ' : '') + this.money(ticketTotal));
     }
     if (roomAmt > 0) quoteLines.push('- Phòng: ' + this.money(roomAmt));
@@ -1702,6 +1871,21 @@ class Component extends DCLogic {
     quoteLines.push('Cọc 30%: ' + this.money(dep));
     quoteLines.push('Còn lại: ' + this.money(remain));
     const quoteText = quoteLines.join('\n');
+    const msgTongText = 'Dạ em gửi anh/chị phương án và giá tham khảo ạ:\n• Dịch vụ: ' + svcLabel + '\n• Số khách: ' + guestsLabel + '\n• Tổng booking: ' + this.money(total) + '\n• Cọc 30%: ' + this.money(dep) + ' — chuyển trước để giữ chỗ và giữ giá\n• Còn lại: ' + this.money(remain) + ' thanh toán tại quầy khi nhận phòng\nGiá hiệu lực trong hôm nay và có thể thay đổi theo tình trạng chỗ. Anh/chị xem phương án và phản hồi giúp em nhé ạ.';
+    const ppLines = [];
+    if (nGuests > 0 && roomAmt > 0) {
+      ppLines.push('Dạ tiền phòng em chia đều theo đầu người, cộng thêm giá vé/tour theo từng đối tượng ạ:');
+      ppLines.push('• Tiền phòng: ' + this.money(roomAmt) + ' ÷ ' + nGuests + ' khách = ' + this.money(roomPP) + '/khách (cả kỳ lưu trú)');
+      if (nAdult > 0) ppLines.push('• Giá người lớn: ' + this.money(adultPP) + '/khách' + (t ? ' (phòng ' + this.money(roomPP) + ' + vé ' + this.money(+t.adult || 0) + ')' : ''));
+      if (nChild > 0) ppLines.push('• Giá trẻ em: ' + this.money(childPP) + '/khách' + (t ? ' (phòng ' + this.money(roomPP) + ' + vé ' + this.money(childRate) + ')' : ''));
+      if (nSenior > 0) ppLines.push('• Giá cao tuổi: ' + this.money(seniorPP) + '/khách' + (t ? ' (phòng ' + this.money(roomPP) + ' + vé ' + this.money(seniorRate) + ')' : ''));
+      ppLines.push('• Tổng booking: ' + this.money(total) + ' — cọc 30% ' + this.money(dep) + ', còn lại ' + this.money(remain) + ' tại quầy.');
+      ppLines.push('Mỗi khách trả khác nhau vì vé tính theo đối tượng, phần phòng thì bằng nhau ạ. Anh/chị cần điều chỉnh gì báo em nhé.');
+    }
+    const msgPPText = ppLines.length ? ppLines.join('\n') : '';
+    const ppReady = nGuests > 0 && roomAmt > 0;
+    const mTong = this.copyBtn('msgtong', '⧉ Copy văn mẫu');
+    const mPP = this.copyBtn('msgpp', '⧉ Copy văn mẫu');
 
     const combos = st.combos;
     const combo = combos[st.comboIdx] || { desc: '', d1: '', d2: '', d3: '', inc: '', exc: '' };
@@ -1718,6 +1902,9 @@ class Component extends DCLogic {
       tabLead: this.tab('lead'), tabBooking: this.tab('booking'), tabCare: this.tab('care'),
       tabScript: this.tab('script'), tabGia: this.tab('gia'), tabCamnang: this.tab('camnang'), tabKpi: this.tab('kpi'),
       goHome: () => this.setState({ tab: 'home' }), goLotrinh: () => this.setState({ tab: 'lotrinh' }),
+      quickScripts: () => { this.setState({ tab: 'script' }); setTimeout(function () { var el = document.querySelector('input[placeholder^="Tìm theo"]'); if (el) el.focus(); }, 60); },
+      quickGiaVe: () => this.setState({ tab: 'gia', sub: 've' }),
+      quickCalc: () => this.setState({ tab: 'gia', sub: 'calc' }),
       goQuytrinh: () => this.setState({ tab: 'quytrinh' }), goLead: () => this.setState({ tab: 'lead' }),
       goBooking: () => this.setState({ tab: 'booking' }), goCare: () => this.setState({ tab: 'care' }),
       goScript: () => this.setState({ tab: 'script' }), goGia: () => this.setState({ tab: 'gia' }),
@@ -1750,17 +1937,26 @@ class Component extends DCLogic {
       isSubVe: st.sub === 've', isSubCombo: st.sub === 'combo', isSubPhong: st.sub === 'phong',
       isSubTour: st.sub === 'tour', isSubCalc: st.sub === 'calc',
       ticketGroups, ticketOptions, comboChips, combo,
+      cmChips: CM_CHIPS,
 
-      calcTicket: String(c.ticket), calcAdult: c.adult, calcChild: c.child,
+      calcTicket: String(c.ticket), calcAdult: c.adult, calcChild: c.child, calcSenior: c.senior,
       calcRoom: grp(c.room), calcOther: grp(c.other),
-      onTicket: setTicket, onAdult: setField('adult', 3), onChild: setField('child', 3),
+      onTicket: setTicket, onAdult: setField('adult', 3), onChild: setField('child', 3), onSenior: setField('senior', 3),
+      copyQuote: () => this.copy(quoteText, 'quote'), quoteBtn: this.copyBtn('quote', 'Copy báo giá'),
+      roomPPF: this.money(roomPP), adultPPF: this.money(adultPP), childPPF: this.money(childPP), seniorPPF: this.money(seniorPP),
+      nGuestsF: nGuests, ppReady, showSeniorPP: nSenior > 0 && ppReady,
+      msgTongText, msgPPText,
+      copyMsgTong: () => this.copy(msgTongText, 'msgtong'), msgTongBtn: mTong,
+      copyMsgPP: () => this.copy(msgPPText, 'msgpp'), msgPPBtn: mPP,
       onRoom: setField('room', 11), onOther: setField('other', 11),
       calcTicketTotal: this.money(ticketTotal), calcTotal: this.money(total),
       calcDeposit: this.money(dep), calcRemain: this.money(remain),
       childRateNote: !t ? 'Chọn loại vé để tính tiền vé.'
         : (hasChildRate ? 'Giá trẻ em của vé này: ' + this.money(t.child) + '. Trẻ dưới 1m miễn phí, không tính vào đây.'
           : 'Vé này không có giá trẻ em riêng — đang tính bằng giá người lớn.'),
-      copyQuote: () => this.copy(quoteText, 'quote'), quoteBtn: this.copyBtn('quote', 'Copy báo giá'),
+      calcTicket: String(c.ticket), calcAdult: c.adult, calcChild: c.child, calcSenior: c.senior,
+      calcRoom: grp(c.room), calcOther: grp(c.other),
+      onTicket: setTicket, onAdult: setField('adult', 3), onChild: setField('child', 3), onSenior: setField('senior', 3),
 
       copyRoom1: () => this.copy(ROOM_COPY[0], 'room0'), roomBtn1: this.copyBtn('room0', '⧉ Copy'),
       copyRoom2: () => this.copy(ROOM_COPY[1], 'room1'), roomBtn2: this.copyBtn('room1', '⧉ Copy'),
