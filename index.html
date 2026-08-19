@@ -1440,7 +1440,7 @@ Vấn đề cần hỗ trợ:</pre>
     b = document.createElement('button');
     b.id = 'themeToggle';
     b.setAttribute('aria-label', 'Đổi giao diện sáng/tối');
-    b.style.cssText = 'margin-left:4px;width:36px;height:36px;border-radius:50%;border:1px solid #454976;background:rgba(255,255,255,.08);cursor:pointer;font-size:16px;line-height:1;flex:0 0 auto;color:#fff';
+    b.style.cssText = 'margin-left:4px;width:40px;height:40px;border-radius:50%;border:1.5px solid #454976;background:rgba(255,255,255,.1);cursor:pointer;font-size:19px;line-height:1;flex:0 0 auto;color:#fff;box-shadow:0 2px 8px rgba(0,0,0,.25);transition:transform .15s'; b.onmouseover = function(){ b.style.transform = 'scale(1.1)'; }; b.onmouseout = function(){ b.style.transform = 'scale(1)'; };
     var cluster = h.querySelector('span') ? (function(){
       var spans = h.querySelectorAll('span');
       for (var i = 0; i < spans.length; i++) if (spans[i].textContent.trim() === 'Phú Quốc') return spans[i].parentElement;
@@ -1448,7 +1448,12 @@ Vấn đề cần hỗ trợ:</pre>
     })() : null;
     (cluster || h).appendChild(b);
     b.addEventListener('click', function(){ apply(!document.documentElement.classList.contains('dark')); });
+    syncLabel();
     return b;
+  }
+  function syncLabel(){
+    var d = document.documentElement.classList.contains('dark');
+    syncLabel();
   }
   function apply(d){
     document.documentElement.classList.toggle('dark', d);
