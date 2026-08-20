@@ -1,59 +1,60 @@
 # Handbook ELYDAY & SKKYE Travel — Cẩm nang training Sale & trực Fanpage
 
-Website handbook nội bộ dành cho nhân viên sale (Phú Quốc). Xây dựng trên nền trang
-`Training Sale ELYDAY SKKYE.html` do công ty thiết kế sẵn, đã giải đóng gói để chạy
-độc lập và bổ sung tab **Cẩm nang**.
+Website handbook nội bộ dành cho nhân viên sale (Phú Quốc). Đã migrate từ single-file HTML
+sang **Next.js 15 (App Router, TypeScript, static export)** — giữ nguyên thiết kế và hành vi
+của bản trước, dữ liệu tách riêng để cập nhật dễ dàng.
 
-## Cách chạy
-
-**Cách 1 — Mở trực tiếp:** double-click `index.html` (dữ liệu đã nhúng sẵn trong file,
-không cần Internet trừ font/React nếu cache trình duyệt chưa có).
-
-**Cách 2 — Chạy qua HTTP (khuyến nghị):**
+## Chạy
 
 ```bash
 cd handbook-site
-npx http-server -p 8123
-# mở http://localhost:8123
+npm install
+npm run dev        # phát triển: http://localhost:3000
+
+npm run build      # xuất static vào out/
+npm run serve      # phục vụ bản build: http://localhost:3000 (npx serve out)
 ```
 
 ## Cấu trúc
 
 | Thành phần | Nội dung |
 |---|---|
-| `index.html` | Toàn bộ app + dữ liệu JSON nhúng (data URI) |
-| `assets/` | Ảnh bảng giá phòng, ảnh tour du thuyền, font, React, dữ liệu nguồn |
-| `assets/scriptsJson.json` · `ticketsJson.json` · `combosJson.json` | Dữ liệu nguồn để cập nhật |
+| `src/app/` | layout (fonts, theme pre-paint), page, globals.css (base + dark mode + classes) |
+| `src/components/` | HandbookApp (shell, tab theo URL `?tab=&sub=`, phím tắt) + 12 component tab + Lightbox, Sidebar, BackTop |
+| `src/data/` | `scriptsJson.json` · `ticketsJson.json` · `combosJson.json` — dữ liệu nguồn; `rooms.ts` giá phòng (một nguồn duy nhất); `quiz.ts` (DAYS/QUIZ/CHECKLIST/forms) |
+| `src/lib/` | `quote.ts` (logic tính giỏ báo giá — pure), `format.ts`, `clipboard.ts`, |
+| `public/assets/` | Ảnh bảng giá phòng, ảnh tour, font woff2 |
+| `tests/` | Vitest cho `computeQuoteCart` (quét 33 dòng vé, cọc 30% làm tròn 1.000đ, chia đầu người) |
 
-NaN
+## Phím tắt & deep-link
 
-1. **Tổng quan** — phạm vi công việc, nguyên tắc cốt lõi, 5 quy tắc bắt buộc
-2. **Lộ trình 7 ngày** — chương trình training + 21 câu quiz + checklist 13 mục
-3. **Quy trình** — 6 bước làm việc hằng ngày
-4. **Trạng thái lead** — 13 trạng thái + quy định trực Fanpage
-5. **Chốt booking** — xác nhận thông tin, thanh toán, kiểm tra bill, form NEW BOOKING
-6. **Chăm sóc** — trước/trong/sau chuyến đi, báo cáo cuối ngày
-7. **Script** — 152 mẫu tin nhắn theo 17 hạng mục, tìm kiếm + copy
-8. **Bảng giá** — vé Sun World Hòn Thơm + Vin Phú Quốc, 12 combo lịch trình,
-   bảng ROOM INFO ELYDAY (Hillside Apartment + ELYDAY CASA + chính sách chung),
-   ảnh bảng giá phòng gốc, tour du thuyền 3 đảo, máy tính báo giá + cọc 30%
-9. **Cẩm nang** (mới bổ sung) — từ điển thuật ngữ, khu vực & điểm đến Phú Quốc,
-   11 option ghép combo, bảng giá tour trọn gói 2N1Đ/3N2Đ + phụ thu, FAQ,
-   xử lý phản hồi 6 bước, quy chế thu nhập & hoa hồng
-10. **Checklist** — KPI + xác nhận hoàn thành training
+- `/` — mở thư viện script và focus ô tìm kiếm
+- `1–9`, `0` — chuyển 10 tab theo thứ tự menu
+- URL: `?tab=gia&sub=phong` deep-link thẳng tới Bảng giá → phòng
 
 ## Cập nhật dữ liệu
 
-- **Bảng giá vé / script / combo:** sửa 3 file JSON trong `assets/` rồi chạy lại
-  `node .tools/fix_index.js` (ở thư mục gốc repo) để nhúng lại dữ liệu vào `index.html`.
-- **Bảng ROOM INFO phòng:** sửa khối `roominfo-elyday` trong `index.html`, hoặc sửa `node .tools/add_roominfo.js` rồi chạy lại (script tự bỏ qua nếu đã có).
-- **Ảnh bảng giá phòng / tour:** thay file JPG tương ứng trong `assets/` (giữ nguyên tên).
+- **Script / giá vé / combo:** sửa 3 file JSON trong `src/data/` rồi build lại — không còn
+  bước nhúng data-URI như bản cũ (`fix_index.js` đã lỗi thời).
+- **Giá phòng:** sửa `src/data/rooms.ts` — bảng hiển thị, dòng copy và calculator cùng đọc
+  một nguồn (trước đây phải sửa 3 nơi).
+- **Ảnh:** thay file JPG tương ứng trong `public/assets/` (giữ nguyên tên).
 
-## Nguồn tài liệu
+## Lưu ý dữ liệu giá phòng (đối chiếu 2026-08-20)
 
-- `Training Sale ELYDAY SKKYE.html` — thiết kế web gốc (giải đóng gói)
-- `ELYDAY INFO/cam-nang-sale-tour.pdf` — 32 trang, OCR và đưa vào tab Cẩm nang
-- `ELYDAY INFO/SKKYE COMBO.xlsx` — bảng giá vé niêm yết + lịch trình combo
-- `ELYDAY INFO/NHÂN SỰ/SCRIPT_KICH_BAN_SALE_ELYDAY_SKKYE_EXCEL.xlsx` — 152 script
-- `ELYDAY INFO/NHÂN SỰ/quy_che_luong_thuong_online_sale_FINAL.docx` — quy chế thu nhập
-- `ELYDAY INFO/NHÂN SỰ/Quy_trinh_lam_viec_Training_Sale_Du_lich.docx` — quy trình training
+Giá 14 dòng phòng đã được kiểm chứng khớp **standee gốc** trong
+`ELYDAY INFO/FILE BẢNG GIÁ PNG` (mỗi con số đọc ≥2 lần từ các vùng cắt khác nhau).
+Hai điểm đã chỉnh theo standee, khác bảng cũ:
+
+1. Giờ nhận phòng: **14:00** (bảng cũ ghi 15:00) — trả phòng 12:00.
+2. Ghi chú giá CASA: **mùa thấp điểm 01/06–30/09/2026, chưa gồm thuế & phí**
+   (bảng cũ ghi "Mùa Thường May–Oct, đã gồm thuế & phí").
+
+Mùa hiệu lực Hillside cũng là 01/06–30/09/2026. Khi có standee/bảng giá mới, cập nhật
+`rooms.ts` và ghi lại nguồn ở đây.
+
+## Bản thân repo
+
+Site sống trong repo riêng `ghientrip` (thư mục này có `.git` riêng); repo ngoài
+`trip-handbook` đã bỏ track `handbook-site/` để tránh trùng lặp. Tài liệu nguồn nhạy cảm
+(`ELYDAY INFO/`, HTML training gốc) chỉ nằm ở repo ngoài và đã gitignore.
