@@ -10,6 +10,7 @@
     "test:watch": "vitest"
   },
   "dependencies": {
+    "@microsoft/clarity": "^1.0.2",
     "next": "^15",
     "react": "^19",
     "react-dom": "^19"
