@@ -1,8 +1,8 @@
 'use client'
 
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { combos, flatTickets } from '@/data'
-import { ROOMS } from '@/data/rooms'
+import { CASA_ROOMS, HILLSIDE_ROOMS, ROOMS } from '@/data/rooms'
 import { useCopy } from '@/lib/clipboard'
 import { calcDigits, calcNum, grp, money } from '@/lib/format'
 import { computeQuoteCart, ticketRates, type CalcState, type CartLine, type ComboLine, type LeLine, type RoomLine, type TicketLine } from '@/lib/quote'
@@ -23,25 +23,111 @@ const initialCalc: CalcState = {
   nextId: 1,
 }
 
-const inputStyle = { border: '1px solid #D9DCE6', borderRadius: '10px', padding: '12px', fontFamily: "'Be Vietnam Pro',sans-serif", fontSize: '14px', color: '#2C2F3A', minHeight: '44px' }
+// Giữ giỏ trong phiên làm việc — đổi tab rồi quay lại không mất
+const CALC_KEY = 'elyday-calc-v1'
+function loadCalc(): CalcState {
+  try {
+    const raw = typeof sessionStorage !== 'undefined' ? sessionStorage.getItem(CALC_KEY) : null
+    if (raw) return { ...initialCalc, ...JSON.parse(raw) }
+  } catch {}
+  return initialCalc
+}
+
+const inputStyle = { border: '1px solid #D9DCE6', borderRadius: '10px', padding: '12px', fontFamily: "'Be Vietnam Pro',sans-serif", fontSize: '14px', color: '#2C2F3A', minHeight: '44px', width: '100%' }
 const addActionBtn = { border: '1px solid #4FB3A6', background: '#fff', color: '#1E6B5E', borderRadius: '10px', padding: '12px 16px', fontFamily: 'Outfit,sans-serif', fontSize: '14px', fontWeight: '500', cursor: 'pointer', minHeight: '44px', whiteSpace: 'nowrap' }
+const primaryBtn = { border: '1px solid #4FB3A6', background: '#4FB3A6', color: '#12324A', borderRadius: '10px', padding: '11px 16px', fontFamily: 'Outfit,sans-serif', fontSize: '13.5px', fontWeight: '600', cursor: 'pointer', minHeight: '42px', whiteSpace: 'nowrap' }
 const stepBtn = { border: '1px solid #D9DCE6', background: '#fff', borderRadius: '8px', width: '34px', height: '34px', cursor: 'pointer', fontSize: '16px' }
 
+const KIND_STYLE: Record<string, { bg: string; fg: string; label: string }> = {
+  ticket: { bg: '#EAF7F4', fg: '#1E6B5E', label: 'Vé lẻ' },
+  room: { bg: '#F5F6FA', fg: '#2A2D5C', label: 'Phòng' },
+  combo: { bg: '#FFF6F3', fg: '#B4441F', label: 'Combo' },
+  le: { bg: '#F5F6FA', fg: '#6B7080', label: 'Dịch vụ lẻ' },
+}
+
+// Cách xưng hô với khách trong văn mẫu — rỗng = "anh/chị" (mặc định)
+const XUNG_HO_OPTIONS = [
+  { value: '', label: 'Anh/Chị (mặc định)' },
+  { value: 'anh', label: 'Anh' },
+  { value: 'chị', label: 'Chị' },
+  { value: 'cô/chú', label: 'Cô/Chú' },
+  { value: 'bạn', label: 'Bạn' },
+]
+const XUNG_HO_KEY = 'elyday-xungho-v1'
+const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1)
+function applyAddr(text: string, form: string): string {
+  if (!form) return text
+  return text.split('anh/chị').join(form).split('Anh/chị').join(cap(form))
+}
+
+function StepHead({ no, title, hint }: { no: number; title: string; hint?: string }) {
+  return (
+    <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '12px' }}>
+      <span style={{ flex: '0 0 auto', width: '24px', height: '24px', borderRadius: '8px', background: '#EAF7F4', color: '#1E6B5E', fontFamily: 'Outfit,sans-serif', fontSize: '12.5px', fontWeight: '700', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>{no}</span>
+      <span style={{ fontFamily: 'Outfit,sans-serif', fontSize: '13.5px', fontWeight: '600', color: '#2A2D5C' }}>
+        {title}
+        {hint ? <span style={{ fontWeight: '400', color: '#6B7080', fontSize: '12px' }}> {hint}</span> : null}
+      </span>
+    </div>
+  )
+}
+
 export default function CalcTab() {
-  const [calc, setCalc] = useState<CalcState>(initialCalc)
+  const [calc, setCalc] = useState<CalcState>(loadCalc)
+  const [xungHo, setXungHo] = useState(() => {
+    try {
+      return typeof sessionStorage !== 'undefined' ? sessionStorage.getItem(XUNG_HO_KEY) || '' : ''
+    } catch {
+      return ''
+    }
+  })
   const { copy, copyBtn } = useCopy()
+  const [flash, setFlash] = useState(0)
+  const summaryRef = useRef<HTMLDivElement>(null)
+  const [summaryAway, setSummaryAway] = useState(false)
+
+  useEffect(() => {
+    try {
+      sessionStorage.setItem(XUNG_HO_KEY, xungHo)
+    } catch {}
+  }, [xungHo])
+
+  useEffect(() => {
+    try {
+      sessionStorage.setItem(CALC_KEY, JSON.stringify(calc))
+    } catch {}
+  }, [calc])
+
+  // Thanh tổng nổi: chỉ hiện khi khối tổng quan thật không nằm trong khung nhìn
+  useEffect(() => {
+    const el = summaryRef.current
+    if (!el || typeof IntersectionObserver === 'undefined') return
+    const io = new IntersectionObserver(([e]) => setSummaryAway(!e.isIntersecting))
+    io.observe(el)
+    return () => io.disconnect()
+  }, [])
+
+  const barShow = summaryAway && calc.lines.length > 0
+  useEffect(() => {
+    document.body.classList.toggle('has-calcbar', barShow)
+    return () => document.body.classList.remove('has-calcbar')
+  }, [barShow])
 
   const patch = (partial: Partial<CalcState>) => setCalc((c) => ({ ...c, ...partial }))
 
   type NewCartLine = Omit<TicketLine, 'id'> | Omit<RoomLine, 'id'> | Omit<ComboLine, 'id'> | Omit<LeLine, 'id'>
 
-  const addCartLine = (line: NewCartLine) =>
+  const addCartLine = (line: NewCartLine) => {
     setCalc((c) => {
       const id = c.nextId || 1
       return { ...c, nextId: id + 1, lines: [...(c.lines || []), { ...line, id } as CartLine] }
     })
+    setFlash((f) => f + 1)
+  }
 
   const removeCartLine = (id: number) => patch({ lines: (calc.lines || []).filter((ln) => ln.id !== id) })
+
+  const clearCart = () => patch({ lines: [], nextId: 1 })
 
   const bumpCartLine = (id: number, field: 'adult' | 'child' | 'senior' | 'qty', delta: number) =>
     patch({
@@ -82,6 +168,7 @@ export default function CalcTab() {
     const name = String(calc.leName || '').trim() || 'Dịch vụ lẻ'
     const id = calc.nextId || 1
     patch({ other: '', leName: '', nextId: id + 1, lines: [...(calc.lines || []), { id, kind: 'le', name, amount, qty: '1' }] })
+    setFlash((f) => f + 1)
   }
 
   const setField = (k: keyof CalcState, max: number) => (e: React.FormEvent) => {
@@ -163,6 +250,8 @@ export default function CalcTab() {
     ppLines.push('Nhập số khách và thêm hạng mục vào giỏ để em soạn văn mẫu chia đầu người ạ.')
   }
   const msgPPText = ppLines.join('\n')
+  const msgTongFinal = applyAddr(msgTongText, xungHo)
+  const msgPPFinal = applyAddr(msgPPText, xungHo)
 
   const quoteBtn = copyBtn('quote', 'Copy báo giá')
   const msgTongBtn = copyBtn('msgtong', '⧉ Copy văn mẫu tổng')
@@ -174,219 +263,283 @@ export default function CalcTab() {
       ? 'Vé đang chọn: trẻ em ' + money(t.child) + '. Trẻ dưới 1m miễn phí, không tính vào đây. Nhấn Thêm vé để vào giỏ.'
       : 'Vé đang chọn không có giá trẻ em riêng — sẽ tính bằng giá người lớn khi thêm vào giỏ.'
 
+  const ticketReady = calc.ticket >= 0
+  const comboReady = !!calcDigits(calc.comboPrice)
+  const leReady = !!calcDigits(calc.other)
+  const roomGroups = [
+    { label: 'Hillside Apartment — căn hộ', rooms: HILLSIDE_ROOMS, offset: ROOMS.indexOf(HILLSIDE_ROOMS[0]) },
+    { label: 'ELYDAY CASA — khách sạn', rooms: CASA_ROOMS, offset: ROOMS.indexOf(CASA_ROOMS[0]) },
+  ]
+
   return (
-    <section style={{ background: '#fff', border: '1px solid #E6E8EF', borderRadius: '16px', padding: 'clamp(16px,4vw,24px)' }}>
-      <h3 style={{ fontFamily: 'Outfit,sans-serif', fontSize: '17px', fontWeight: '600', color: '#2A2D5C', margin: '0 0 6px' }}>Giỏ báo giá nhanh</h3>
-      <p style={{ fontSize: '14px', color: '#6B7080', margin: '0 0 20px' }}>Thêm từng hạng mục vào giỏ: vé lẻ (nhiều loại), nhiều loại phòng, combo lịch trình và dịch vụ lẻ. Tổng, cọc 30% và văn mẫu lấy đúng dòng trong giỏ. Combo itinerary không có giá niêm yết — sale nhập giá gói hiện hành; combo thường đã gồm phòng/vé nên không cộng trùng.</p>
+    <div>
+      <section style={{ background: '#fff', border: '1px solid #E6E8EF', borderRadius: '16px', padding: 'clamp(16px,4vw,22px)' }}>
+        <h3 style={{ fontFamily: 'Outfit,sans-serif', fontSize: '17px', fontWeight: '600', color: '#2A2D5C', margin: '0 0 6px' }}>Giỏ báo giá nhanh</h3>
+        <p style={{ fontSize: '14px', color: '#6B7080', margin: 0 }}>Thêm hạng mục bên trái — tổng tiền, cọc và văn mẫu cập nhật liền bên phải. Combo không có giá niêm yết: nhập giá gói hiện hành; combo thường đã gồm phòng/vé nên không cộng trùng.</p>
+      </section>
 
-      <div style={{ fontFamily: 'Outfit,sans-serif', fontSize: '13px', fontWeight: '600', color: '#2A2D5C', marginBottom: '8px' }}>1. Đoàn khách (để chia đầu người)</div>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(min(160px,100%),1fr))', gap: '12px' }}>
-        {([['adult', 'Người lớn'], ['child', 'Trẻ em (từ 1m)'], ['senior', 'Cao tuổi (có giấy tờ)']] as const).map(([k, label]) => (
-          <label key={k} style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-            <span style={{ fontSize: '12.5px', fontWeight: '600', color: '#2A2D5C' }}>{label}</span>
-            <input type="text" inputMode="numeric" autoComplete="off" placeholder="0" value={calc[k]} onInput={setField(k, 3)} style={inputStyle} />
-          </label>
-        ))}
-      </div>
-      <div style={{ marginTop: '10px', fontSize: '13px', color: '#6B7080', lineHeight: '1.55' }}>{childRateNote}</div>
-
-      <div style={{ fontFamily: 'Outfit,sans-serif', fontSize: '13px', fontWeight: '600', color: '#2A2D5C', margin: '18px 0 8px' }}>2. Vé lẻ — chọn loại rồi thêm vào giỏ (có thể thêm nhiều loại)</div>
-      <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0,1fr) auto', gap: '10px', alignItems: 'end' }}>
-        <label style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-          <span style={{ fontSize: '12.5px', fontWeight: '600', color: '#2A2D5C' }}>Loại vé</span>
-          <select value={String(calc.ticket)} onChange={(e) => { const v = parseInt(e.target.value, 10); patch({ ticket: isNaN(v) ? -1 : v }) }} style={{ ...inputStyle, background: '#fff' }}>
-            <option value="-1">Chọn vé niêm yết</option>
-            {ticketOptions.map((t) => (
-              <option key={t.value} value={t.value}>{t.label}</option>
-            ))}
-          </select>
-        </label>
-        <button onClick={addTicketLine} style={addActionBtn}>+ Thêm vé</button>
-      </div>
-
-      <div style={{ fontFamily: 'Outfit,sans-serif', fontSize: '13px', fontWeight: '600', color: '#2A2D5C', margin: '18px 0 8px' }}>3. Phòng — gộp nhiều loại (giá bảng thấp điểm)</div>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(min(160px,100%),1fr))', gap: '12px', marginBottom: '10px' }}>
-        {([['nightsWd', 'Đêm ngày thường'], ['nightsWe', 'Đêm cuối tuần']] as const).map(([k, label]) => (
-          <label key={k} style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-            <span style={{ fontSize: '12.5px', fontWeight: '600', color: '#2A2D5C' }}>{label}</span>
-            <input type="text" inputMode="numeric" autoComplete="off" placeholder="0" value={calc[k]} onInput={setField(k, 2)} style={inputStyle} />
-          </label>
-        ))}
-        <label style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-          <span style={{ fontSize: '12.5px', fontWeight: '600', color: '#2A2D5C' }}>Phòng ngoài bảng (đ cả kỳ)</span>
-          <input type="text" inputMode="numeric" autoComplete="off" placeholder="0" value={grp(calc.room)} onInput={setField('room', 11)} style={inputStyle} />
-        </label>
-      </div>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', maxHeight: '240px', overflow: 'auto', border: '1px solid #E6E8EF', borderRadius: '12px', padding: '8px' }}>
-        {ROOMS.map((r, i) => (
-          <div key={r.name} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '8px', padding: '8px 10px', borderBottom: '1px solid #F0F1F6', flexWrap: 'wrap' }}>
-            <div style={{ minWidth: '0', flex: '1 1 180px' }}>
-              <div style={{ fontSize: '11px', color: '#6B7080' }}>{r.hotel}</div>
-              <div style={{ fontSize: '13.5px', fontWeight: '600', color: '#2A2D5C' }}>{r.name}</div>
-              <div style={{ fontSize: '12px', color: '#3D6A62' }}>Ngày thường {money(r.wd)} · Cuối tuần {money(r.we)}</div>
+      <div className="calcgrid" style={{ marginTop: '14px' }}>
+        {/* ── CỘT TRÁI: form nhập ── */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', minWidth: 0 }}>
+          <section className="calc-card">
+            <StepHead no={1} title="Đoàn khách" hint="(để chia đầu người)" />
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(min(140px,100%),1fr))', gap: '12px' }}>
+              {([['adult', 'Người lớn'], ['child', 'Trẻ em (từ 1m)'], ['senior', 'Cao tuổi (có giấy tờ)']] as const).map(([k, label]) => (
+                <label key={k} style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                  <span style={{ fontSize: '12.5px', fontWeight: '600', color: '#2A2D5C' }}>{label}</span>
+                  <input type="text" inputMode="numeric" autoComplete="off" placeholder="0" value={calc[k]} onInput={setField(k, 3)} style={inputStyle} />
+                </label>
+              ))}
+              <label style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                <span style={{ fontSize: '12.5px', fontWeight: '600', color: '#2A2D5C' }}>Xưng hô với khách</span>
+                <select value={xungHo} onChange={(e) => setXungHo(e.target.value)} style={{ ...inputStyle, background: '#fff' }} aria-label="Xưng hô với khách trong văn mẫu">
+                  {XUNG_HO_OPTIONS.map((o) => (
+                    <option key={o.value} value={o.value}>{o.label}</option>
+                  ))}
+                </select>
+              </label>
             </div>
-            <button onClick={() => addRoomLine(i)} style={{ border: '1px solid #4FB3A6', background: '#fff', color: '#1E6B5E', borderRadius: '8px', padding: '8px 12px', fontFamily: 'Outfit,sans-serif', fontSize: '13px', fontWeight: '500', cursor: 'pointer', minHeight: '36px', whiteSpace: 'nowrap' }}>+ Thêm phòng</button>
-          </div>
-        ))}
-      </div>
+            <div style={{ marginTop: '10px', fontSize: '12.5px', color: '#6B7080', lineHeight: '1.55' }}>{childRateNote}</div>
+          </section>
 
-      <div style={{ fontFamily: 'Outfit,sans-serif', fontSize: '13px', fontWeight: '600', color: '#2A2D5C', margin: '18px 0 8px' }}>4. Combo lịch trình — nhập giá gói (không tự bịa giá)</div>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(min(200px,100%),1fr))', gap: '10px', alignItems: 'end' }}>
-        <label style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-          <span style={{ fontSize: '12.5px', fontWeight: '600', color: '#2A2D5C' }}>Combo</span>
-          <select value={String(calc.comboPick || '0')} onChange={(e) => patch({ comboPick: e.target.value })} style={{ ...inputStyle, background: '#fff' }}>
-            {comboPickOptions.map((t) => (
-              <option key={t.value} value={t.value}>{t.label}</option>
-            ))}
-          </select>
-        </label>
-        <label style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-          <span style={{ fontSize: '12.5px', fontWeight: '600', color: '#2A2D5C' }}>Giá gói (đ)</span>
-          <input type="text" inputMode="numeric" autoComplete="off" placeholder="Nhập giá hiện hành" value={grp(calc.comboPrice)} onInput={setField('comboPrice', 11)} style={inputStyle} />
-        </label>
-        <button onClick={addComboLine} style={addActionBtn}>+ Thêm combo</button>
-      </div>
+          <section className="calc-card">
+            <StepHead no={2} title="Vé lẻ" hint="(thêm được nhiều loại)" />
+            <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0,1fr) auto', gap: '10px', alignItems: 'end' }}>
+              <label style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                <span style={{ fontSize: '12.5px', fontWeight: '600', color: '#2A2D5C' }}>Loại vé niêm yết</span>
+                <select value={String(calc.ticket)} onChange={(e) => { const v = parseInt(e.target.value, 10); patch({ ticket: isNaN(v) ? -1 : v }) }} style={{ ...inputStyle, background: '#fff' }}>
+                  <option value="-1">Chọn vé niêm yết</option>
+                  {ticketOptions.map((t) => (
+                    <option key={t.value} value={t.value}>{t.label}</option>
+                  ))}
+                </select>
+              </label>
+              <button onClick={addTicketLine} disabled={!ticketReady} style={{ ...addActionBtn, ...(ticketReady ? null : { opacity: 0.5, cursor: 'not-allowed' }) }}>+ Thêm vé</button>
+            </div>
+          </section>
 
-      <div style={{ fontFamily: 'Outfit,sans-serif', fontSize: '13px', fontWeight: '600', color: '#2A2D5C', margin: '18px 0 8px' }}>5. Dịch vụ lẻ khác (xe, ăn, phụ thu…)</div>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(min(180px,100%),1fr))', gap: '10px', alignItems: 'end' }}>
-        <label style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-          <span style={{ fontSize: '12.5px', fontWeight: '600', color: '#2A2D5C' }}>Tên dịch vụ</span>
-          <input type="text" autoComplete="off" placeholder="VD: Xe đưa đón" value={calc.leName} onInput={setField('leName', 80)} style={inputStyle} />
-        </label>
-        <label style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-          <span style={{ fontSize: '12.5px', fontWeight: '600', color: '#2A2D5C' }}>Số tiền (đ)</span>
-          <input type="text" inputMode="numeric" autoComplete="off" placeholder="0" value={grp(calc.other)} onInput={setField('other', 11)} style={inputStyle} />
-        </label>
-        <button onClick={addLeLine} style={addActionBtn}>+ Thêm dịch vụ lẻ</button>
-      </div>
-
-      <div style={{ marginTop: '20px', background: '#F7F8FB', border: '1px solid #E6E8EF', borderRadius: '14px', padding: '16px' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', gap: '10px', flexWrap: 'wrap', alignItems: 'center' }}>
-          <div style={{ fontFamily: 'Outfit,sans-serif', fontSize: '15px', fontWeight: '600', color: '#2A2D5C' }}>Giỏ hàng</div>
-          <div style={{ fontSize: '13px', color: '#6B7080' }}>{cq.lineOut.length ? cq.lineOut.length + ' hạng mục' : 'Trống'}</div>
-        </div>
-        {cq.lineOut.length === 0 ? (
-          <div style={{ marginTop: '10px', fontSize: '13.5px', color: '#6B7080', lineHeight: '1.55' }}>Chưa có hạng mục. Thêm vé, phòng, combo hoặc dịch vụ lẻ để tính tổng.</div>
-        ) : (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginTop: '10px' }}>
-            {cq.lineOut.map((ln) => {
-              const isTicket = ln.kind === 'ticket'
-              const isQty = ln.kind === 'room' || ln.kind === 'combo' || ln.kind === 'le'
-              const meta = isTicket
-                ? `${ln.nA} NL · ${ln.nC} TE · ${ln.nS} CT`
-                : ln.kind === 'room'
-                  ? `${ln.qty} phòng · ${ln.wd} đêm ngày thường · ${ln.we} đêm cuối tuần`
-                  : ln.kind === 'combo'
-                    ? `SL ${ln.qty}${ln.pax ? ' · ' + ln.pax + ' khách ghi chú' : ''}`
-                    : `SL ${ln.qty}`
-              const kindLabel = isTicket ? 'Vé lẻ' : ln.kind === 'room' ? 'Phòng' : ln.kind === 'combo' ? 'Combo' : 'Dịch vụ lẻ'
-              return (
-                <div key={ln.id} style={{ background: '#fff', border: '1px solid #E6E8EF', borderRadius: '11px', padding: '12px 14px' }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', gap: '10px', flexWrap: 'wrap', alignItems: 'flex-start' }}>
-                    <div style={{ minWidth: '0', flex: '1 1 200px' }}>
-                      <div style={{ fontSize: '11px', fontWeight: '600', letterSpacing: '.04em', textTransform: 'uppercase', color: '#6B7080' }}>{kindLabel}</div>
-                      <div style={{ fontSize: '14px', fontWeight: '600', color: '#2A2D5C', lineHeight: '1.4', marginTop: '2px' }}>{ln.title}</div>
-                      <div style={{ fontSize: '12.5px', color: '#6B7080', marginTop: '3px' }}>{meta}</div>
+          <section className="calc-card">
+            <StepHead no={3} title="Phòng" hint="(giá bảng thấp điểm, gộp nhiều loại)" />
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(min(140px,100%),1fr))', gap: '12px', marginBottom: '10px' }}>
+              {([['nightsWd', 'Đêm ngày thường'], ['nightsWe', 'Đêm cuối tuần']] as const).map(([k, label]) => (
+                <label key={k} style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                  <span style={{ fontSize: '12.5px', fontWeight: '600', color: '#2A2D5C' }}>{label}</span>
+                  <input type="text" inputMode="numeric" autoComplete="off" placeholder="0" value={calc[k]} onInput={setField(k, 2)} style={inputStyle} />
+                </label>
+              ))}
+              <label style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                <span style={{ fontSize: '12.5px', fontWeight: '600', color: '#2A2D5C' }}>Phòng ngoài bảng (đ cả kỳ)</span>
+                <input type="text" inputMode="numeric" autoComplete="off" placeholder="0" value={grp(calc.room)} onInput={setField('room', 11)} style={inputStyle} />
+              </label>
+            </div>
+            <div style={{ border: '1px solid #E6E8EF', borderRadius: '12px', maxHeight: '300px', overflow: 'auto' }}>
+              {roomGroups.map((g) => (
+                <div key={g.label}>
+                  <div style={{ fontSize: '11px', fontWeight: '700', letterSpacing: '.05em', textTransform: 'uppercase', color: '#4FB3A6', padding: '9px 12px 5px' }}>{g.label}</div>
+                  {g.rooms.map((r, i) => (
+                    <div key={r.name} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '8px', padding: '7px 12px', borderTop: '1px solid #F0F1F6', flexWrap: 'wrap' }}>
+                      <div style={{ minWidth: '0', flex: '1 1 160px' }}>
+                        <div style={{ fontSize: '13px', fontWeight: '600', color: '#2A2D5C' }}>{r.name} <span style={{ fontWeight: 400, color: '#6B7080', fontSize: 11.5 }}>{r.area}</span></div>
+                        <div style={{ fontSize: '11.5px', color: '#3D6A62' }}>Ngày thường {money(r.wd)} · Cuối tuần {money(r.we)}</div>
+                      </div>
+                      <button onClick={() => addRoomLine(g.offset + i)} style={{ border: '1px solid #4FB3A6', background: '#fff', color: '#1E6B5E', borderRadius: '8px', padding: '7px 11px', fontFamily: 'Outfit,sans-serif', fontSize: '12.5px', fontWeight: '500', cursor: 'pointer', minHeight: '34px', whiteSpace: 'nowrap' }}>+ Thêm</button>
                     </div>
-                    <div style={{ fontFamily: 'Outfit,sans-serif', fontSize: '16px', fontWeight: '700', color: '#1E6B5E', whiteSpace: 'nowrap' }}>{money(ln.amt)}</div>
-                  </div>
-                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginTop: '10px', alignItems: 'center' }}>
-                    {isTicket ? (
-                      <>
-                        <span style={{ fontSize: '12px', color: '#6B7080' }}>NL</span>
-                        <button onClick={() => bumpCartLine(ln.id, 'adult', -1)} style={stepBtn}>−</button>
-                        <span style={{ fontFamily: 'Outfit,sans-serif', fontWeight: '600', minWidth: '16px', textAlign: 'center' }}>{ln.nA}</span>
-                        <button onClick={() => bumpCartLine(ln.id, 'adult', 1)} style={stepBtn}>+</button>
-                        <span style={{ fontSize: '12px', color: '#6B7080', marginLeft: '6px' }}>TE</span>
-                        <button onClick={() => bumpCartLine(ln.id, 'child', -1)} style={stepBtn}>−</button>
-                        <span style={{ fontFamily: 'Outfit,sans-serif', fontWeight: '600', minWidth: '16px', textAlign: 'center' }}>{ln.nC}</span>
-                        <button onClick={() => bumpCartLine(ln.id, 'child', 1)} style={stepBtn}>+</button>
-                        <span style={{ fontSize: '12px', color: '#6B7080', marginLeft: '6px' }}>CT</span>
-                        <button onClick={() => bumpCartLine(ln.id, 'senior', -1)} style={stepBtn}>−</button>
-                        <span style={{ fontFamily: 'Outfit,sans-serif', fontWeight: '600', minWidth: '16px', textAlign: 'center' }}>{ln.nS}</span>
-                        <button onClick={() => bumpCartLine(ln.id, 'senior', 1)} style={stepBtn}>+</button>
-                      </>
-                    ) : null}
-                    {isQty ? (
-                      <>
-                        <span style={{ fontSize: '12px', color: '#6B7080' }}>SL</span>
-                        <button onClick={() => bumpCartLine(ln.id, 'qty', -1)} style={stepBtn}>−</button>
-                        <span style={{ fontFamily: 'Outfit,sans-serif', fontWeight: '600', minWidth: '16px', textAlign: 'center' }}>{ln.qty}</span>
-                        <button onClick={() => bumpCartLine(ln.id, 'qty', 1)} style={stepBtn}>+</button>
-                      </>
-                    ) : null}
-                    <button onClick={() => removeCartLine(ln.id)} style={{ marginLeft: 'auto', border: '1px solid #F0B9A5', background: '#fff', color: '#B4441F', borderRadius: '8px', padding: '7px 12px', fontFamily: 'Outfit,sans-serif', fontSize: '12.5px', fontWeight: '500', cursor: 'pointer', minHeight: '34px' }}>Xóa</button>
-                  </div>
+                  ))}
                 </div>
-              )
-            })}
-          </div>
-        )}
-      </div>
-
-      {cq.overlap ? (
-        <div style={{ marginTop: '12px', padding: '12px 14px', background: '#FFF6F3', border: '1px solid #F6D9CF', borderRadius: '12px', fontSize: '13px', color: '#B4441F', lineHeight: '1.6' }}>Giỏ đang có combo kèm vé lẻ hoặc phòng. Combo lịch trình thường đã gồm lưu trú và một số vé — kiểm tra bao gồm/không bao gồm trước khi cộng trùng.</div>
-      ) : null}
-
-      <div style={{ marginTop: '16px', background: '#2A2D5C', borderRadius: '14px', padding: '22px', color: '#fff' }}>
-        <div style={{ display: 'flex', gap: '18px', flexWrap: 'wrap' }}>
-          {[
-            ['Vé lẻ', money(cq.ticketTotal), '18px', '600'],
-            ['Phòng', money(cq.roomAmt), '18px', '600'],
-            ['Combo', money(cq.comboAmt), '18px', '600'],
-            ['Dịch vụ lẻ', money(cq.otherAmt), '18px', '600'],
-            ['Tổng giá', money(cq.total), '26px', '700'],
-            ['Cọc 30%', money(cq.dep), '18px', '600'],
-            ['Còn lại', money(cq.remain), '18px', '600'],
-          ].map(([label, val, fs, fw], i) => (
-            <div key={label} style={{ flex: i === 4 ? '1 1 140px' : '1 1 120px' }}>
-              <div style={{ fontSize: '12px', color: '#A9AECB' }}>{label}</div>
-              <div style={{ fontFamily: 'Outfit,sans-serif', fontSize: fs as string, fontWeight: fw as string, marginTop: '3px', color: i === 4 ? '#7FD8C9' : undefined }}>{val}</div>
+              ))}
             </div>
-          ))}
-        </div>
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginTop: '16px' }}>
-          <button onClick={() => copy(quoteText, 'quote')} style={{ border: '1px solid #4FB3A6', background: quoteBtn.bg, color: quoteBtn.fg, borderRadius: '10px', padding: '11px 16px', fontFamily: 'Outfit,sans-serif', fontSize: '13.5px', fontWeight: '500', cursor: 'pointer', minHeight: '42px' }}>{quoteBtn.label}</button>
-          <button onClick={() => copy(msgTongText, 'msgtong')} style={{ border: `1px solid ${msgTongBtn.bd}`, background: msgTongBtn.bg, color: msgTongBtn.fg, borderRadius: '10px', padding: '11px 16px', fontFamily: 'Outfit,sans-serif', fontSize: '13.5px', fontWeight: '500', cursor: 'pointer', minHeight: '42px' }}>{msgTongBtn.label}</button>
-          <button onClick={() => copy(msgPPText, 'msgpp')} style={{ border: `1px solid ${msgPPBtn.bd}`, background: msgPPBtn.bg, color: msgPPBtn.fg, borderRadius: '10px', padding: '11px 16px', fontFamily: 'Outfit,sans-serif', fontSize: '13.5px', fontWeight: '500', cursor: 'pointer', minHeight: '42px' }}>{msgPPBtn.label}</button>
-        </div>
-      </div>
+          </section>
 
-      <div style={{ marginTop: '18px', background: '#F4FBF9', border: '1px solid #D4EFE8', borderRadius: '12px', padding: '16px' }}>
-        <div style={{ fontFamily: 'Outfit,sans-serif', fontSize: '14px', fontWeight: '600', color: '#1E6B5E' }}>Giá chia đầu người <span style={{ fontWeight: '400', color: '#3D6A62', fontSize: '12.5px' }}>— phòng + combo + dịch vụ lẻ chia {nGuests} khách, vé cộng theo đối tượng</span></div>
-        {ppReady ? (
-          <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', marginTop: '10px' }}>
+          <section className="calc-card">
+            <StepHead no={4} title="Combo lịch trình" hint="(không tự bịa giá)" />
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(min(150px,100%),1fr))', gap: '10px', alignItems: 'end' }}>
+              <label style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                <span style={{ fontSize: '12.5px', fontWeight: '600', color: '#2A2D5C' }}>Combo</span>
+                <select value={String(calc.comboPick || '0')} onChange={(e) => patch({ comboPick: e.target.value })} style={{ ...inputStyle, background: '#fff' }}>
+                  {comboPickOptions.map((t) => (
+                    <option key={t.value} value={t.value}>{t.label}</option>
+                  ))}
+                </select>
+              </label>
+              <label style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                <span style={{ fontSize: '12.5px', fontWeight: '600', color: '#2A2D5C' }}>Giá gói (đ)</span>
+                <input type="text" inputMode="numeric" autoComplete="off" placeholder="Nhập giá hiện hành" value={grp(calc.comboPrice)} onInput={setField('comboPrice', 11)} style={inputStyle} />
+              </label>
+              <button onClick={addComboLine} disabled={!comboReady} style={{ ...addActionBtn, ...(comboReady ? null : { opacity: 0.5, cursor: 'not-allowed' }) }}>+ Thêm combo</button>
+            </div>
+          </section>
+
+          <section className="calc-card">
+            <StepHead no={5} title="Dịch vụ lẻ khác" hint="(xe, ăn, phụ thu…)" />
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(min(150px,100%),1fr))', gap: '10px', alignItems: 'end' }}>
+              <label style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                <span style={{ fontSize: '12.5px', fontWeight: '600', color: '#2A2D5C' }}>Tên dịch vụ</span>
+                <input type="text" autoComplete="off" placeholder="VD: Xe đưa đón" value={calc.leName} onInput={setField('leName', 80)} style={inputStyle} />
+              </label>
+              <label style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                <span style={{ fontSize: '12.5px', fontWeight: '600', color: '#2A2D5C' }}>Số tiền (đ)</span>
+                <input type="text" inputMode="numeric" autoComplete="off" placeholder="0" value={grp(calc.other)} onInput={setField('other', 11)} style={inputStyle} />
+              </label>
+              <button onClick={addLeLine} disabled={!leReady} style={{ ...addActionBtn, ...(leReady ? null : { opacity: 0.5, cursor: 'not-allowed' }) }}>+ Thêm dịch vụ lẻ</button>
+            </div>
+          </section>
+        </div>
+
+        {/* ── CỘT PHẢI: tổng quan + giỏ (sticky) ── */}
+        <div className="calcside">
+          <section ref={summaryRef} style={{ background: '#2A2D5C', borderRadius: '14px', padding: '18px 20px', color: '#fff' }}>
+            <div style={{ fontFamily: 'Outfit,sans-serif', fontSize: '11px', fontWeight: '700', letterSpacing: '.07em', textTransform: 'uppercase', color: '#7FD8C9', marginBottom: '12px' }}>Tổng quan</div>
             {([
-              ['Phần chia đều / khách', money(cq.roomPP), true],
-              ['Người lớn / khách', money(cq.adultPP), nAdult > 0],
-              ['Trẻ em / khách', money(cq.childPP), nChild > 0],
-              ['Cao tuổi / khách', money(cq.seniorPP), nSenior > 0],
-            ] as const).map(([label, val, show]) =>
-              show ? (
-                <div key={label} style={{ background: '#fff', border: '1px solid #D4EFE8', borderRadius: '10px', padding: '10px 14px', flex: '1 1 140px' }}>
-                  <div style={{ fontSize: '11.5px', color: '#3D6A62' }}>{label}</div>
-                  <div style={{ fontFamily: 'Outfit,sans-serif', fontSize: '17px', fontWeight: '700', color: '#1E6B5E', marginTop: '2px' }}>{val}</div>
-                </div>
-              ) : null
+              ['Vé lẻ', cq.ticketTotal],
+              ['Phòng', cq.roomAmt],
+              ['Combo', cq.comboAmt],
+              ['Dịch vụ lẻ', cq.otherAmt],
+            ] as const).map(([label, val]) => (
+              <div key={label} style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', gap: '12px', padding: '7px 0', borderBottom: '1px solid rgba(255,255,255,.12)', fontSize: '13px', color: '#C9CDE6' }}>
+                <span>{label}</span>
+                <span style={{ fontFamily: 'Outfit,sans-serif', fontWeight: '600', color: '#fff' }}>{money(val)}</span>
+              </div>
+            ))}
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '12px', marginTop: '12px', flexWrap: 'wrap' }}>
+              <div style={{ fontSize: '13px', fontWeight: '600', color: '#E8EAF6' }}>Tổng giá</div>
+              <div style={{ fontFamily: 'Outfit,sans-serif', fontSize: '30px', fontWeight: '700', color: '#7FD8C9', lineHeight: 1.1 }}>{money(cq.total)}</div>
+            </div>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', marginTop: '12px' }}>
+              <div style={{ background: 'rgba(255,255,255,.08)', borderRadius: '10px', padding: '10px 12px' }}>
+                <div style={{ fontSize: '11px', color: '#A9AECB' }}>Cọc 30%</div>
+                <div style={{ fontFamily: 'Outfit,sans-serif', fontSize: '16px', fontWeight: '600', marginTop: '2px' }}>{money(cq.dep)}</div>
+              </div>
+              <div style={{ background: 'rgba(255,255,255,.08)', borderRadius: '10px', padding: '10px 12px' }}>
+                <div style={{ fontSize: '11px', color: '#A9AECB' }}>Còn lại</div>
+                <div style={{ fontFamily: 'Outfit,sans-serif', fontSize: '16px', fontWeight: '600', marginTop: '2px' }}>{money(cq.remain)}</div>
+              </div>
+            </div>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginTop: '14px' }}>
+              <button onClick={() => copy(quoteText, 'quote')} style={{ ...primaryBtn, background: quoteBtn.bg === '#4FB3A6' ? '#4FB3A6' : quoteBtn.bg, color: quoteBtn.bg === '#4FB3A6' ? '#12324A' : quoteBtn.fg, border: `1px solid ${quoteBtn.bd}` }}>{quoteBtn.label}</button>
+              <button onClick={() => copy(msgTongFinal, 'msgtong')} style={{ border: `1px solid ${msgTongBtn.bd}`, background: msgTongBtn.bg, color: msgTongBtn.fg, borderRadius: '10px', padding: '11px 16px', fontFamily: 'Outfit,sans-serif', fontSize: '13.5px', fontWeight: '500', cursor: 'pointer', minHeight: '42px' }}>{msgTongBtn.label}</button>
+              <button onClick={() => copy(msgPPFinal, 'msgpp')} style={{ border: `1px solid ${msgPPBtn.bd}`, background: msgPPBtn.bg, color: msgPPBtn.fg, borderRadius: '10px', padding: '11px 16px', fontFamily: 'Outfit,sans-serif', fontSize: '13.5px', fontWeight: '500', cursor: 'pointer', minHeight: '42px' }}>{msgPPBtn.label}</button>
+            </div>
+          </section>
+
+          <section className="calc-card" style={{ padding: '14px 16px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', gap: '10px', flexWrap: 'wrap', alignItems: 'center' }}>
+              <div style={{ fontFamily: 'Outfit,sans-serif', fontSize: '14px', fontWeight: '600', color: '#2A2D5C' }}>Giỏ hàng <span style={{ fontWeight: 400, color: '#6B7080', fontSize: 12.5 }}>· {cq.lineOut.length ? cq.lineOut.length + ' hạng mục' : 'trống'}</span></div>
+              {cq.lineOut.length > 0 ? (
+                <button onClick={clearCart} style={{ border: '1px solid #F0B9A5', background: '#fff', color: '#B4441F', borderRadius: '8px', padding: '6px 11px', fontFamily: 'Outfit,sans-serif', fontSize: '12px', fontWeight: '500', cursor: 'pointer', minHeight: '32px' }}>Xóa hết</button>
+              ) : null}
+            </div>
+            {cq.overlap ? (
+              <div style={{ marginTop: '10px', padding: '10px 12px', background: '#FFF6F3', border: '1px solid #F6D9CF', borderRadius: '10px', fontSize: '12.5px', color: '#B4441F', lineHeight: '1.55' }}>Giỏ có combo kèm vé/phòng — combo thường đã gồm lưu trú và một số vé, kiểm tra trước khi cộng trùng.</div>
+            ) : null}
+            {cq.lineOut.length === 0 ? (
+              <div key="empty" style={{ marginTop: '10px', fontSize: '13px', color: '#6B7080', lineHeight: '1.55' }}>Chưa có hạng mục. Thêm vé, phòng, combo hoặc dịch vụ lẻ để tính tổng.</div>
+            ) : (
+              <div key={flash} className={flash > 0 ? 'cart-flash' : undefined} style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginTop: '10px', borderRadius: '12px' }}>
+                {cq.lineOut.map((ln) => {
+                  const isTicket = ln.kind === 'ticket'
+                  const isQty = ln.kind === 'room' || ln.kind === 'combo' || ln.kind === 'le'
+                  const meta = isTicket
+                    ? `${ln.nA} NL · ${ln.nC} TE · ${ln.nS} CT`
+                    : ln.kind === 'room'
+                      ? `${ln.qty} phòng · ${ln.wd} đêm thường · ${ln.we} đêm cuối tuần`
+                      : ln.kind === 'combo'
+                        ? `SL ${ln.qty}${ln.pax ? ' · ${ln.pax} khách' : ''}`
+                        : `SL ${ln.qty}`
+                  const ks = KIND_STYLE[ln.kind]
+                  return (
+                    <div key={ln.id} style={{ background: '#fff', border: '1px solid #E6E8EF', borderRadius: '11px', padding: '11px 13px' }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', gap: '10px', flexWrap: 'wrap', alignItems: 'flex-start' }}>
+                        <div style={{ minWidth: 0, flex: '1 1 160px' }}>
+                          <span style={{ display: 'inline-block', fontSize: '10.5px', fontWeight: '700', letterSpacing: '.04em', textTransform: 'uppercase', background: ks.bg, color: ks.fg, borderRadius: '6px', padding: '2px 7px' }}>{ks.label}</span>
+                          <div style={{ fontSize: '13.5px', fontWeight: '600', color: '#2A2D5C', lineHeight: '1.4', marginTop: '4px' }}>{ln.title}</div>
+                          <div style={{ fontSize: '12px', color: '#6B7080', marginTop: '2px' }}>{meta}</div>
+                        </div>
+                        <div style={{ fontFamily: 'Outfit,sans-serif', fontSize: '15px', fontWeight: '700', color: '#1E6B5E', whiteSpace: 'nowrap' }}>{money(ln.amt)}</div>
+                      </div>
+                      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginTop: '9px', alignItems: 'center' }}>
+                        {isTicket ? (
+                          <>
+                            <span style={{ fontSize: '12px', color: '#6B7080' }}>NL</span>
+                            <button onClick={() => bumpCartLine(ln.id, 'adult', -1)} style={stepBtn}>−</button>
+                            <span style={{ fontFamily: 'Outfit,sans-serif', fontWeight: '600', minWidth: '16px', textAlign: 'center' }}>{ln.nA}</span>
+                            <button onClick={() => bumpCartLine(ln.id, 'adult', 1)} style={stepBtn}>+</button>
+                            <span style={{ fontSize: '12px', color: '#6B7080', marginLeft: '6px' }}>TE</span>
+                            <button onClick={() => bumpCartLine(ln.id, 'child', -1)} style={stepBtn}>−</button>
+                            <span style={{ fontFamily: 'Outfit,sans-serif', fontWeight: '600', minWidth: '16px', textAlign: 'center' }}>{ln.nC}</span>
+                            <button onClick={() => bumpCartLine(ln.id, 'child', 1)} style={stepBtn}>+</button>
+                            <span style={{ fontSize: '12px', color: '#6B7080', marginLeft: '6px' }}>CT</span>
+                            <button onClick={() => bumpCartLine(ln.id, 'senior', -1)} style={stepBtn}>−</button>
+                            <span style={{ fontFamily: 'Outfit,sans-serif', fontWeight: '600', minWidth: '16px', textAlign: 'center' }}>{ln.nS}</span>
+                            <button onClick={() => bumpCartLine(ln.id, 'senior', 1)} style={stepBtn}>+</button>
+                          </>
+                        ) : null}
+                        {isQty ? (
+                          <>
+                            <span style={{ fontSize: '12px', color: '#6B7080' }}>SL</span>
+                            <button onClick={() => bumpCartLine(ln.id, 'qty', -1)} style={stepBtn}>−</button>
+                            <span style={{ fontFamily: 'Outfit,sans-serif', fontWeight: '600', minWidth: '16px', textAlign: 'center' }}>{ln.qty}</span>
+                            <button onClick={() => bumpCartLine(ln.id, 'qty', 1)} style={stepBtn}>+</button>
+                          </>
+                        ) : null}
+                        <button onClick={() => removeCartLine(ln.id)} style={{ marginLeft: 'auto', border: '1px solid #F0B9A5', background: '#fff', color: '#B4441F', borderRadius: '8px', padding: '6px 11px', fontFamily: 'Outfit,sans-serif', fontSize: '12px', fontWeight: '500', cursor: 'pointer', minHeight: '32px' }}>Xóa</button>
+                      </div>
+                    </div>
+                  )
+                })}
+              </div>
             )}
+          </section>
+
+          <section className="calc-card" style={{ background: '#F4FBF9', borderColor: '#D4EFE8', padding: '14px 16px' }}>
+            <div style={{ fontFamily: 'Outfit,sans-serif', fontSize: '13.5px', fontWeight: '600', color: '#1E6B5E' }}>Giá chia đầu người <span style={{ fontWeight: '400', color: '#3D6A62', fontSize: '12px' }}>— chia {nGuests} khách</span></div>
+            {ppReady ? (
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(min(130px,100%),1fr))', gap: '8px', marginTop: '10px' }}>
+                {([
+                  ['Chia đều / khách', money(cq.roomPP), true],
+                  ['Người lớn', money(cq.adultPP), nAdult > 0],
+                  ['Trẻ em', money(cq.childPP), nChild > 0],
+                  ['Cao tuổi', money(cq.seniorPP), nSenior > 0],
+                ] as const).map(([label, val, show]) =>
+                  show ? (
+                    <div key={label} style={{ background: '#fff', border: '1px solid #D4EFE8', borderRadius: '10px', padding: '8px 11px' }}>
+                      <div style={{ fontSize: '11px', color: '#3D6A62' }}>{label}</div>
+                      <div style={{ fontFamily: 'Outfit,sans-serif', fontSize: '15px', fontWeight: '700', color: '#1E6B5E', marginTop: '2px' }}>{val}</div>
+                    </div>
+                  ) : null
+                )}
+              </div>
+            ) : (
+              <div style={{ marginTop: '8px', fontSize: '12.5px', color: '#3D6A62', lineHeight: '1.55' }}>Nhập số khách và thêm hạng mục để xem giá từng người. Trẻ dưới 1m miễn phí vé, không nhập vào đây.</div>
+            )}
+          </section>
+        </div>
+      </div>
+
+      {/* ── VĂN MẪU ── */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(min(320px,100%),1fr))', gap: '14px', marginTop: '14px' }}>
+        <section className="calc-card">
+          <div style={{ fontFamily: 'Outfit,sans-serif', fontSize: '14px', fontWeight: '600', color: '#2A2D5C' }}>Văn mẫu 1 — gửi báo giá tổng</div>
+          <div style={{ marginTop: '8px', whiteSpace: 'pre-line', fontSize: '13px', color: '#3A3E4C', lineHeight: '1.65', background: '#F5F6FA', borderRadius: '10px', padding: '12px 14px' }}>{msgTongFinal}</div>
+          <button onClick={() => copy(msgTongFinal, 'msgtong')} style={{ marginTop: '10px', border: `1px solid ${msgTongBtn.bd}`, background: msgTongBtn.bg, color: msgTongBtn.fg, borderRadius: '10px', padding: '11px 16px', fontFamily: 'Outfit,sans-serif', fontSize: '13.5px', fontWeight: '500', cursor: 'pointer', minHeight: '42px' }}>{msgTongBtn.label}</button>
+        </section>
+        <section className="calc-card">
+          <div style={{ fontFamily: 'Outfit,sans-serif', fontSize: '14px', fontWeight: '600', color: '#2A2D5C' }}>Văn mẫu 2 — giải thích giá chia đầu người</div>
+          <div style={{ marginTop: '8px', whiteSpace: 'pre-line', fontSize: '13px', color: '#3A3E4C', lineHeight: '1.65', background: '#F5F6FA', borderRadius: '10px', padding: '12px 14px' }}>{msgPPFinal}</div>
+          <button onClick={() => copy(msgPPFinal, 'msgpp')} style={{ marginTop: '10px', border: `1px solid ${msgPPBtn.bd}`, background: msgPPBtn.bg, color: msgPPBtn.fg, borderRadius: '10px', padding: '11px 16px', fontFamily: 'Outfit,sans-serif', fontSize: '13.5px', fontWeight: '500', cursor: 'pointer', minHeight: '42px' }}>{msgPPBtn.label}</button>
+        </section>
+      </div>
+
+      <div style={{ marginTop: '14px', padding: '14px 16px', background: '#FFF6F3', border: '1px solid #F6D9CF', borderRadius: '12px', fontSize: '13.5px', color: '#B4441F', lineHeight: '1.6' }}>Con số ở đây chỉ để tính nhanh theo giá niêm yết / giá gói sale nhập. Phải kiểm tra tình trạng chỗ, phụ thu cuối tuần/lễ/Tết và điều kiện áp dụng trước khi báo khách.</div>
+
+      {/* ── Thanh tổng nổi khi khối tổng quan ra khỏi khung nhìn ── */}
+      {cq.total > 0 ? (
+        <div className={`calcbar${barShow ? ' show' : ''}`} aria-hidden={!barShow}>
+          <div className="calcbar__inner">
+            <span className="calcbar__stats">Tổng <b>{money(cq.total)}</b> · Cọc 30% <b>{money(cq.dep)}</b> · Còn lại <b>{money(cq.remain)}</b></span>
+            <button onClick={() => copy(quoteText, 'quote')} style={primaryBtn}>{quoteBtn.label}</button>
           </div>
-        ) : (
-          <div style={{ marginTop: '8px', fontSize: '13px', color: '#3D6A62', lineHeight: '1.55' }}>Nhập số khách và thêm hạng mục vào giỏ để xem giá từng người. Trẻ dưới 1m miễn phí vé, không nhập vào đây.</div>
-        )}
-      </div>
-
-      <div style={{ marginTop: '18px', background: '#fff', border: '1px solid #E6E8EF', borderRadius: '12px', padding: '16px' }}>
-        <div style={{ fontFamily: 'Outfit,sans-serif', fontSize: '14px', fontWeight: '600', color: '#2A2D5C' }}>Văn mẫu 1 — gửi báo giá tổng</div>
-        <div style={{ marginTop: '8px', whiteSpace: 'pre-line', fontSize: '13px', color: '#3A3E4C', lineHeight: '1.65', background: '#F5F6FA', borderRadius: '10px', padding: '12px 14px' }}>{msgTongText}</div>
-        <button onClick={() => copy(msgTongText, 'msgtong')} style={{ marginTop: '10px', border: `1px solid ${msgTongBtn.bd}`, background: msgTongBtn.bg, color: msgTongBtn.fg, borderRadius: '10px', padding: '11px 16px', fontFamily: 'Outfit,sans-serif', fontSize: '13.5px', fontWeight: '500', cursor: 'pointer', minHeight: '42px' }}>{msgTongBtn.label}</button>
-      </div>
-
-      <div style={{ marginTop: '12px', background: '#fff', border: '1px solid #E6E8EF', borderRadius: '12px', padding: '16px' }}>
-        <div style={{ fontFamily: 'Outfit,sans-serif', fontSize: '14px', fontWeight: '600', color: '#2A2D5C' }}>Văn mẫu 2 — giải thích giá chia đầu người</div>
-        <div style={{ marginTop: '8px', whiteSpace: 'pre-line', fontSize: '13px', color: '#3A3E4C', lineHeight: '1.65', background: '#F5F6FA', borderRadius: '10px', padding: '12px 14px' }}>{msgPPText}</div>
-        <button onClick={() => copy(msgPPText, 'msgpp')} style={{ marginTop: '10px', border: `1px solid ${msgPPBtn.bd}`, background: msgPPBtn.bg, color: msgPPBtn.fg, borderRadius: '10px', padding: '11px 16px', fontFamily: 'Outfit,sans-serif', fontSize: '13.5px', fontWeight: '500', cursor: 'pointer', minHeight: '42px' }}>{msgPPBtn.label}</button>
-      </div>
-      <div style={{ marginTop: '16px', padding: '14px 16px', background: '#FFF6F3', border: '1px solid #F6D9CF', borderRadius: '12px', fontSize: '13.5px', color: '#B4441F', lineHeight: '1.6' }}>Con số ở đây chỉ để tính nhanh theo giá niêm yết / giá gói sale nhập. Phải kiểm tra tình trạng chỗ, phụ thu cuối tuần/lễ/Tết và điều kiện áp dụng trước khi báo khách.</div>
-    </section>
+        </div>
+      ) : null}
+    </div>
   )
 }

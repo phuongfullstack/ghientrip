@@ -248,6 +248,22 @@ html.dark { color-scheme: dark; }
 .dl-btn--bar { position: static; margin-top: 14px; padding: 11px 18px; font-size: 13.5px; min-height: 42px; }
 html.dark .dl-btn { background: rgba(232, 234, 246, .14); }
 html.dark .dl-btn:hover { background: #4FB3A6; color: #12324A; }
+
+/* ── Tính báo giá: 2 cột (form | tổng quan sticky) + thanh tổng nổi ── */
+.calcgrid { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(330px, .85fr); gap: 14px; align-items: start; }
+@media (max-width: 1020px) { .calcgrid { grid-template-columns: 1fr; } }
+.calcside { position: sticky; top: 86px; display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+@media (max-width: 1020px) { .calcside { position: static; } }
+.calc-card { background: #fff; border: 1px solid #E6E8EF; border-radius: 14px; padding: 16px 18px; }
+html.dark .calc-card { background: #232743; border-color: #363B5E; }
+.calcbar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 90; display: flex; justify-content: center; padding: 10px 14px calc(10px + env(safe-area-inset-bottom, 0px)); background: rgba(21, 23, 56, .92); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); box-shadow: 0 -10px 34px rgba(21, 23, 56, .4); transform: translateY(110%); transition: transform .28s ease; pointer-events: none; }
+.calcbar.show { transform: translateY(0); pointer-events: auto; }
+.calcbar__inner { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; width: 100%; max-width: 1020px; color: #fff; }
+.calcbar__stats { font-family: Outfit, sans-serif; font-size: 14px; color: #E8EAF6; }
+.calcbar__stats b { font-weight: 700; color: #7FD8C9; font-size: 16.5px; }
+.has-calcbar .backtop { bottom: 84px; }
+@keyframes cartFlash { from { box-shadow: 0 0 0 3px rgba(79, 179, 166, .85); } to { box-shadow: 0 0 0 3px rgba(79, 179, 166, 0); } }
+.cart-flash { animation: cartFlash .9s ease; }
 .backtop { position: fixed; right: 18px; bottom: 18px; width: 46px; height: 46px; border-radius: 50%; border: 0; background: #2A2D5C; color: #fff; font-size: 20px; line-height: 1; cursor: pointer; z-index: 80; opacity: 0; pointer-events: none; transition: opacity .25s; box-shadow: 0 8px 22px rgba(21,23,56,.4); }
 .backtop.show { opacity: 1; pointer-events: auto; }
 .backtop:hover { background: #4FB3A6; }
