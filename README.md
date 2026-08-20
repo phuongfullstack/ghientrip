@@ -15,6 +15,22 @@ npm run build      # xuất static vào out/
 npm run serve      # phục vụ bản build: http://localhost:3000 (npx serve out)
 ```
 
+## Deploy Vercel
+
+App là Next.js 15 static export (`output: 'export'`, ảnh `unoptimized`) — Vercel tự nhận diện,
+không cần cấu hình thêm:
+
+1. Push repo này lên GitHub (đã có remote `phuongfullstack/ghientrip`).
+2. Vercel → **Add New → Project** → chọn repo `ghientrip` → **Deploy**.
+   - Framework Preset: Next.js (tự nhận) · Root Directory: để trống (app nằm ở gốc repo)
+     · Build Command / Output Directory: để mặc định.
+3. Mỗi lần `git push`, Vercel tự build lại.
+
+**Lưu ý bảo mật (tài liệu nội bộ):** URL `*.vercel.app` là công khai — ai có link đều xem được
+bảng giá và script. Đã set `robots: noindex` để không lọt công cụ tìm kiếm; nếu cần chặn truy
+cập thật sự: Vercel Pro có Password Protection, hoặc deploy lên repo riêng tư + chia sẻ link có
+kiểm soát (Cloudflare Access).
+
 ## Cấu trúc
 
 | Thành phần | Nội dung |

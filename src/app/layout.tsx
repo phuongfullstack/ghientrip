@@ -4,6 +4,8 @@ import './globals.css'
 export const metadata: Metadata = {
   title: 'Handbook ELYDAY & SKKYE Travel — Cẩm nang training Sale & trực Fanpage',
   description: 'Tài liệu nội bộ: quy trình, script, bảng giá và cẩm nang training Sale Phú Quốc.',
+  // Tài liệu nội bộ — không cho công cụ tìm kiếm đánh chỉ mục
+  robots: { index: false, follow: false, nocache: true },
 }
 
 export const viewport: Viewport = {
