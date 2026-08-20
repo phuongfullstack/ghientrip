@@ -69,8 +69,10 @@ export default function HandbookApp() {
       params.set('tab', name)
       if (name === 'gia') params.set('sub', extra?.sub ?? sub)
       router.replace(`?${params.toString()}`, { scroll: false })
+      // Đổi tab là đổi trang — đưa người dùng về đầu nội dung
+      if (name !== tab) window.scrollTo({ top: 0 })
     },
-    [router, sub]
+    [router, sub, tab]
   )
 
   const toggleTheme = useCallback(() => {
@@ -165,7 +167,7 @@ export default function HandbookApp() {
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '12px', color: '#A9AECB' }}>
             <span style={{ padding: '6px 12px', border: '1px solid #454976', borderRadius: '999px', whiteSpace: 'nowrap' }}>Tài liệu nội bộ</span>
             <span style={{ padding: '6px 12px', border: '1px solid #454976', borderRadius: '999px', whiteSpace: 'nowrap' }}>Phú Quốc</span>
-            <button type="button" onClick={toggleTheme} title={dark ? 'Chuyển sang chế độ sáng' : 'Chuyển sang chế độ tối'} aria-label="Đổi giao diện sáng/tối" aria-pressed={dark ? 'true' : 'false'} style={{ marginLeft: '4px', width: '40px', height: '40px', borderRadius: '50%', border: '1.5px solid #454976', background: 'rgba(255,255,255,.1)', cursor: 'pointer', fontSize: '19px', lineHeight: '1', flex: '0 0 auto', color: '#fff', boxShadow: '0 2px 8px rgba(0,0,0,.25)' }}>{dark ? '☀️' : '🌙'}</button>
+            <button type="button" onClick={toggleTheme} title={dark ? 'Chuyển sang chế độ sáng' : 'Chuyển sang chế độ tối'} aria-label="Đổi giao diện sáng/tối" aria-pressed={dark} style={{ marginLeft: '4px', width: '40px', height: '40px', borderRadius: '50%', border: '1.5px solid #454976', background: 'rgba(255,255,255,.1)', cursor: 'pointer', fontSize: '19px', lineHeight: '1', flex: '0 0 auto', color: '#fff', boxShadow: '0 2px 8px rgba(0,0,0,.25)' }}>{dark ? '☀️' : '🌙'}</button>
           </div>
         </div>
 

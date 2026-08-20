@@ -26,7 +26,13 @@ export default function Lightbox({ items, index, onIndex, onClose }: LightboxPro
       else if (e.key === 'ArrowRight') next()
     }
     document.addEventListener('keydown', onKey)
-    return () => document.removeEventListener('keydown', onKey)
+    // Khoá scroll nền khi lightbox mở
+    const prevOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    return () => {
+      document.removeEventListener('keydown', onKey)
+      document.body.style.overflow = prevOverflow
+    }
   }, [next, onClose, prev])
 
   const item = items[index]
