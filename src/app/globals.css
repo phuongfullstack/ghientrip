@@ -242,17 +242,24 @@ html.dark { color-scheme: dark; }
 }
 .cm-chip { border: 1px solid #D9DCE6; background: #fff; color: #3A3E4C; border-radius: 10px; padding: 8px 13px; font-family: 'Be Vietnam Pro', sans-serif; font-size: 13px; font-weight: 500; display: inline-block; min-height: 36px; line-height: 19px; cursor: pointer; }
 .cm-chip:hover { border-color: #4FB3A6; color: #1E6B5E; }
+/* Nút tải ảnh: chột phải ảnh trong gallery, và biến thể thanh dưới lightbox */
+.dl-btn { position: absolute; top: 10px; right: 10px; z-index: 5; display: inline-flex; align-items: center; gap: 6px; background: rgba(42, 45, 92, .85); color: #fff; border-radius: 8px; padding: 7px 11px; font-family: Outfit, sans-serif; font-size: 12px; font-weight: 500; text-decoration: none; line-height: 1; box-shadow: 0 4px 14px rgba(21, 23, 56, .35); }
+.dl-btn:hover { background: #4FB3A6; color: #12324A; }
+.dl-btn--bar { position: static; margin-top: 14px; padding: 11px 18px; font-size: 13.5px; min-height: 42px; }
+html.dark .dl-btn { background: rgba(232, 234, 246, .14); }
+html.dark .dl-btn:hover { background: #4FB3A6; color: #12324A; }
 .backtop { position: fixed; right: 18px; bottom: 18px; width: 46px; height: 46px; border-radius: 50%; border: 0; background: #2A2D5C; color: #fff; font-size: 20px; line-height: 1; cursor: pointer; z-index: 80; opacity: 0; pointer-events: none; transition: opacity .25s; box-shadow: 0 8px 22px rgba(21,23,56,.4); }
 .backtop.show { opacity: 1; pointer-events: auto; }
 .backtop:hover { background: #4FB3A6; }
 @media(max-width:640px) { .backtop { right: 12px; bottom: 12px; width: 42px; height: 42px; } }
 
 /* ── DARK MODE (cơ chế html.dark + override theo thuộc tính style, giữ nguyên từ site cũ) ── */
-html.dark body { background: #171A30; }
+html.dark body { background: #171A30; color: #C7CBE2; }
 html.dark :is([style*="background:#fff"], [style*="background: rgb(255, 255, 255)"], [style*="background:rgb(255,255,255)"]) { background: #232743 !important; }
 html.dark :is([style*="background:#F5F6FA"], [style*="background: rgb(245, 246, 250)"]) { background: #2B2F4E !important; }
 html.dark :is([style*="background:#EAF7F4"], [style*="background:#F4FBF9"], [style*="background: rgb(234, 247, 244)"], [style*="background: rgb(244, 251, 249)"]) { background: #1E3A36 !important; }
 html.dark :is([style*="background:#FFF6F3"], [style*="background: rgb(255, 246, 243)"]) { background: #38251F !important; }
+html.dark :is([style*="background:#FFF9F7"], [style*="background: rgb(255, 249, 247)"]) { background: #38251F !important; }
 html.dark :is([style*="background:#2A2D5C"], [style*="background: rgb(42, 45, 92)"]) { background: #202449 !important; }
 html.dark :is([style*="#CDE9E2"], [style*="rgb(205, 233, 226)"]) { background: #2E5A50 !important; }
 html.dark :is([style*="#E6E8EF"], [style*="rgb(230, 232, 239)"]) { border-color: #363B5E !important; }
@@ -266,8 +273,14 @@ html.dark :is([style*="color:#6B7080"], [style*="color: rgb(107, 112, 128)"]) { 
 html.dark :is([style*="color:#1E6B5E"], [style*="color: rgb(30, 107, 94)"]) { color: #7FD8C9 !important; }
 html.dark :is([style*="color:#3D6A62"], [style*="color: rgb(61, 106, 98)"]) { color: #9FD8CB !important; }
 html.dark :is([style*="color:#B4441F"], [style*="color: rgb(180, 68, 31)"]) { color: #F2A085 !important; }
-html.dark :is([style*="color:#6D4234"]) { color: #E5B7A5 !important; }
+html.dark :is([style*="color:#6D4234"], [style*="color: rgb(109, 66, 52)"]) { color: #E5B7A5 !important; }
+html.dark :is([style*="color:#D9754C"], [style*="color: rgb(217, 117, 76)"]) { color: #F2A085 !important; }
+html.dark :is([style*="color:#9AA0B4"], [style*="color: rgb(154, 160, 180)"]) { color: #A9B0CE !important; }
+html.dark :is([style*="color:#4FB3A6"], [style*="color: rgb(79, 179, 166)"]) { color: #7FD8C9 !important; }
 html.dark .cm-chip { background: #232743 !important; border-color: #3E4368 !important; color: #C7CBE2 !important; }
 html.dark .pr-chip { background: #2B2F4E !important; border-color: #363B5E !important; color: #E8EAF6 !important; }
+html.dark .pr-chip span { color: #7FD8C9 !important; }
+html.dark .qa-btn { background: rgba(255,255,255,.09); border-color: rgba(255,255,255,.22); }
+html.dark .qa-btn:hover { background: rgba(255,255,255,.16); border-color: rgba(127,216,201,.55); }
 html.dark .tourfig { background: #232743 !important; border-color: #363B5E !important; }
 html.dark .navwrap { background: #202449; }

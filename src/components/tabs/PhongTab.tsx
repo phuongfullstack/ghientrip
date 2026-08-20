@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { CASA_ROOMS, HILLSIDE_ROOMS, ROOMS, roomCopy } from '@/data/rooms'
 import type { Room } from '@/data/types'
 import { useCopy } from '@/lib/clipboard'
+import { slugify } from '@/lib/format'
 import Lightbox from '../Lightbox'
 
 const PRICE_IMAGES = [
@@ -91,7 +92,10 @@ export default function PhongTab() {
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(min(280px,100%),1fr))', gap: '14px' }}>
         {PRICE_IMAGES.map((img, i) => (
-          <img key={img.src} src={img.src} alt={img.cap} onClick={() => setLbIdx(i)} style={{ width: '100%', display: 'block', border: '1px solid #E6E8EF', borderRadius: '12px', cursor: 'zoom-in' }} />
+          <figure key={img.src} style={{ margin: 0, position: 'relative' }}>
+            <img src={img.src} alt={img.cap} onClick={() => setLbIdx(i)} style={{ width: '100%', display: 'block', border: '1px solid #E6E8EF', borderRadius: '12px', cursor: 'zoom-in' }} />
+            <a className="dl-btn" href={img.src} download={`${slugify(img.cap)}.jpg`} aria-label={`Tải xuống ${img.cap}`}>⬇</a>
+          </figure>
         ))}
       </div>
 

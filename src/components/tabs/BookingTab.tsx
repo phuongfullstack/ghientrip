@@ -65,19 +65,7 @@ export default function BookingTab() {
               <button onClick={() => copy(BOOKING_FORM, 'booking')} style={{ border: "1px solid #4FB3A6", background: btn.bg, color: btn.fg, borderRadius: "10px", padding: "10px 16px", fontFamily: "Outfit,sans-serif", fontSize: "13.5px", fontWeight: "500", cursor: "pointer", minHeight: "44px" }}>{btn.label}</button>
             </div>
             <p style={{ fontSize: "14px", color: "#6B7080", margin: "0 0 18px" }}>Sau khi khách cọc, Sales gửi booking và bill chuyển khoản vào nhóm phụ trách, dùng đúng form này.</p>
-            <pre style={{ margin: "0 0 20px", background: "#2A2D5C", color: "#E8EAF6", borderRadius: "12px", padding: "clamp(14px,4vw,20px)", fontFamily: "ui-monospace,SFMono-Regular,Menlo,monospace", fontSize: "13.5px", lineHeight: "1.75", overflowX: "auto" }}>NEW BOOKING
-Fanpage
-+ Tên khách:
-Sđt:
-+ Check in:
-+ Check out:
-+ N of G:
-+ N of Room:
-+ Rate:
-+ Service:
-+ Total:
-+ Dep:
-+ Remain:</pre>
+            <pre style={{ margin: "0 0 20px", background: "#2A2D5C", color: "#E8EAF6", borderRadius: "12px", padding: "clamp(14px,4vw,20px)", fontFamily: "ui-monospace,SFMono-Regular,Menlo,monospace", fontSize: "13.5px", lineHeight: "1.75", overflowX: "auto" }}>{BOOKING_FORM}</pre>
             <div style={{ fontSize: "13px", fontWeight: "600", color: "#2A2D5C", marginBottom: "10px" }}>Kèm theo</div>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(min(200px,100%),1fr))", gap: "8px", marginBottom: "20px" }}>
               <div style={{ border: "1px solid #E6E8EF", borderRadius: "10px", padding: "11px 13px", fontSize: "14px", color: "#3A3E4C" }}>Bill chuyển khoản</div>

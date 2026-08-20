@@ -86,17 +86,7 @@ export default function CareTab() {
               <button onClick={() => copy(REPORT_FORM, 'report')} style={{ border: "1px solid #4FB3A6", background: btn.bg, color: btn.fg, borderRadius: "10px", padding: "10px 16px", fontFamily: "Outfit,sans-serif", fontSize: "13.5px", fontWeight: "500", cursor: "pointer", minHeight: "44px" }}>{btn.label}</button>
             </div>
             <p style={{ fontSize: "14px", color: "#6B7080", margin: "0 0 18px" }}>Cuối ngày, Sales gửi báo cáo theo đúng mẫu.</p>
-            <pre style={{ margin: "0", background: "#2A2D5C", color: "#E8EAF6", borderRadius: "12px", padding: "clamp(14px,4vw,20px)", fontFamily: "ui-monospace,SFMono-Regular,Menlo,monospace", fontSize: "13.5px", lineHeight: "1.75", overflowX: "auto" }}>BÁO CÁO SALES NGÀY …/…/…
-Lead mới:
-Đã tư vấn:
-Đã báo giá:
-Đang cân nhắc:
-Chờ cọc:
-Booking đã chốt:
-Doanh thu đã chốt:
-Tiền cọc đã nhận:
-Khách cần chăm sóc lại:
-Vấn đề cần hỗ trợ:</pre>
+            <pre style={{ margin: "0", background: "#2A2D5C", color: "#E8EAF6", borderRadius: "12px", padding: "clamp(14px,4vw,20px)", fontFamily: "ui-monospace,SFMono-Regular,Menlo,monospace", fontSize: "13.5px", lineHeight: "1.75", overflowX: "auto" }}>{REPORT_FORM}</pre>
           </section>
         </div>
   )

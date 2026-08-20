@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { slugify } from '@/lib/format'
 import Lightbox, { type LightboxItem } from '../Lightbox'
 
 const TOUR: (LightboxItem & { hero?: boolean; b: string; s: string })[] = [
@@ -24,6 +25,7 @@ export default function TourTab() {
           <figure key={t.src} className={t.hero ? 'tourfig tourfig--hero' : 'tourfig'} onClick={() => setLbIdx(i)}>
             <img src={t.src} alt={t.b} />
             <figcaption><b>{t.b}</b><span>{t.s}</span></figcaption>
+            <a className="dl-btn" href={t.src} download={`${slugify(t.cap)}.jpg`} aria-label={`Tải xuống ${t.b}`}>⬇</a>
           </figure>
         ))}
       </div>
